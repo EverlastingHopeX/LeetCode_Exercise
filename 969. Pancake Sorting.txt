@@ -1,0 +1,53 @@
+class Solution {
+    private List<Integer> list;
+    
+    public List<Integer> pancakeSort(int[] A) {
+        list=new ArrayList<Integer>();
+        if(A.length<=1)
+            return list;
+        int mIndex=0;
+        int max=A[0];
+        for(int i=1;i<A.length;i++){
+            if(A[i]>max){
+                mIndex=i;
+                max=A[i];
+            }
+        }
+        flip(A, mIndex+1);
+        flip(A, A.length);
+        pancakeSort(A, A.length-1);
+        return list;
+    }
+    
+    private void flip(int[] A, int k){
+        if(k==1)
+            return;
+        int l=0;
+        int r=k-1;
+        for(;l<r;l++,r--){
+            int temp=A[l];
+            A[l]=A[r];
+            A[r]=temp;
+        }
+        list.add(k);
+    }
+    
+    private void pancakeSort(int[] A, int size){
+        if(size==1)
+            return;
+        int mIndex=0;
+        int max=A[0];
+        for(int i=1;i<size;i++){
+            if(A[i]>max){
+                mIndex=i;
+                max=A[i];
+            }
+        }
+        flip(A, mIndex+1);
+        flip(A, size);
+        pancakeSort(A, size-1);
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Pancake Sorting.
+Memory Usage: 37.8 MB, less than 19.81% of Java online submissions for Pancake Sorting.
