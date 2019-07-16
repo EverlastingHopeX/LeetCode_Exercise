@@ -1,0 +1,67 @@
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int peak=findPeak(mountainArr);
+        System.out.println("peak: "+peak);
+        if(target==mountainArr.get(peak)){
+            return peak;
+        }
+        int ans=-1;
+        ans=bisearch(target, mountainArr, 0, peak-1,true);
+        // System.out.println("left slope: "+ans);
+        if(ans==-1){
+            ans=bisearch(target, mountainArr, peak+1,mountainArr.length()-1,false);
+        }
+        return ans;
+    }
+    
+    private int findPeak(MountainArray m){
+        int left=0;
+        int right=m.length()-1;
+        int mid=(left+right)/2;
+        while(mid!=left && mid!=right){
+            // System.out.println(left+","+right);
+            //left slope
+            if(m.get(mid)<m.get(mid+1)){
+                left=mid;
+            }
+            else{
+                right=mid;
+            }
+            mid=(left+right)/2;
+        }
+        return m.get(left)>m.get(right)?left:right;
+    }
+    
+    private int bisearch(int target, MountainArray m, int left, int right, boolean isLeft){
+        // System.out.println(left+","+right);
+        if(left>right){
+            return -1;
+        }
+        int mid=(left+right)/2;
+        if(isLeft){
+            if(target<m.get(mid)){
+                mid=bisearch(target, m, left, mid-1,true);
+            }
+            else if(target>m.get(mid)){
+                mid=bisearch(target, m, mid+1,right,true);
+            }
+        }
+        else{
+            if(target>m.get(mid)){
+                mid=bisearch(target, m, left, mid-1,false);
+            }
+            else if(target<m.get(mid)){
+                mid=bisearch(target, m, mid+1,right,false);
+            }
+        }
+        return mid;
+    }
+}
+
+Runtime: 2 ms, faster than 15.06% of Java online submissions for Find in Mountain Array.
+Memory Usage: 33.1 MB, less than 100.00% of Java online submissions for Find in Mountain Array.
+
+Defining other functions makes it more readable, but also costs more time and space.
+
+The link below provides a more concise solution.
+https://leetcode.com/problems/find-in-mountain-array/discuss/317607/JavaC%2B%2BPython-Triple-Binary-Search
