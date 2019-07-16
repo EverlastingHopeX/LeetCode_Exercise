@@ -1,0 +1,26 @@
+class Solution {
+    public int findPeakElement(int[] nums) {
+        if(nums.length==1 || nums[0]>nums[1])
+            return 0;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]>nums[i-1]){
+                if(i==nums.length-1 || nums[i]>nums[i+1]){
+                    return i;
+                }
+            }
+            if(i<nums.length-1 && nums[i]>nums[i+1]){
+                i++;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Find Peak Element.
+Memory Usage: 38.3 MB, less than 98.81% of Java online submissions for Find Peak Element.
+
+This solution is simple and direct, but it is required that the time complexity should be O(logN), and the worst 
+case for this solution will take O(N) time.
+
+The link below is a great solution with detailed explanation provided by others.
+https://leetcode.com/problems/find-peak-element/discuss/50239/Java-solution-and-explanation-using-invariants
