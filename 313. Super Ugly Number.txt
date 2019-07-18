@@ -1,0 +1,38 @@
+Didn't work it out.
+
+Here is a explanation about solution of uglynumbers.
+https://www.geeksforgeeks.org/ugly-numbers/
+
+And here is three solution for this question.
+https://leetcode.com/problems/super-ugly-number/discuss/76291/Java-three-methods-23ms-36-ms-58ms(with-heap)-performance-explained
+
+I've made some changes to make it more understandable for myself.
+
+class Solution {
+    public int nthSuperUglyNumberI(int n, int[] primes) {
+        //sequence of ugly number
+        int[] ugly = new int[n];
+        //idx[i]: ith prime numbers' index for calculating next ugly number
+        int[] idx = new int[primes.length];
+
+        ugly[0] = 1;
+        for (int i = 1; i < n; i++) {
+            //find next ugly number (comparing the next ugly number for given primes)
+            //the principle for this part can be learned from the first link
+            ugly[i] = Integer.MAX_VALUE;
+            for (int j = 0; j < primes.length; j++){
+                ugly[i] = Math.min(ugly[i], primes[j] * ugly[idx[j]]);
+            }
+
+            //slip duplicate (if the next ugly number of one primes is smaller than latest 
+            //ugly number, it means this number has been add, then add the index to pass it.
+            for (int j = 0; j < primes.length; j++) {
+                if(primes[j] * ugly[idx[j]] <= ugly[i]) {
+                    idx[j]++;
+                }
+            }
+        }
+
+        return ugly[n - 1];
+    }
+}
