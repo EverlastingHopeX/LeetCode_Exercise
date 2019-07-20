@@ -1,0 +1,7 @@
+Didn't work it out.
+
+The link below provides 2 solutions: DFS and union find.
+DFS is quite straight forward and easy to understand.
+Union find can be learned from algorithm class in coursera.
+
+https://leetcode.com/problems/swim-in-rising-water/discuss/118204/Java-DFS-and-Union-Find

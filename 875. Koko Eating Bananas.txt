@@ -1,0 +1,42 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int H) {
+        if(piles.length>H){
+            return -1;
+        }
+        // double sum=0;
+        int max=0;
+        for(int i=0;i<piles.length;i++){
+            // sum+=piles[i];
+            max=piles[i]>max?piles[i]:max;
+        }
+        // int min=(int)sum/H;
+        int h=0;
+        // int lo=min;
+        int lo=1;
+        int hi=max;
+        int mid=(lo+hi)/2;
+        while(lo<hi){
+            mid=(lo+hi)/2;
+            if(mid==0){
+                break;
+            }
+            h=0;
+            for(int i=0;i<piles.length;i++){
+                h+=piles[i]%mid==0?piles[i]/mid:piles[i]/mid+1;
+            }
+            if(h>H){
+                lo=mid+1;
+            }
+            else{
+                hi=mid;
+            }
+        }
+        return hi;
+    }
+}
+
+Runtime: 12 ms, faster than 46.77% of Java online submissions for Koko Eating Bananas.
+Memory Usage: 37.7 MB, less than 99.62% of Java online submissions for Koko Eating Bananas.
+
+Although trying to find the low bound of K seems to be reasonal, it actually costs more time 
+than it saves. So the part calculating min is not neccessary.

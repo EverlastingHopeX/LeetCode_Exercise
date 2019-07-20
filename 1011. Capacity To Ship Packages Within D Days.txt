@@ -1,0 +1,38 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int hi=0;
+        //capacity bigger than this can definitely load all packages in 1 day
+        for(int w:weights){
+            hi+=w;
+        }
+        //capacity lower than this can not load the heaviest package
+        int lo=weights[weights.length-1];
+        int mid=0;
+        while(lo<hi){
+            mid=(lo+hi)/2;
+            int day=0, j=0, load=0;
+            while(day<D && j<weights.length){
+                load=0;
+                while(j<weights.length && load+weights[j]<=mid){
+                    load+=weights[j];
+                    j++;
+                }
+                day++;
+            }
+            //too small
+            if(j<weights.length){
+                lo=mid+1;
+            }
+            else{
+                hi=mid;
+            }
+        }
+        return hi;
+    }
+}
+
+Runtime: 9 ms, faster than 53.77% of Java online submissions for Capacity To Ship Packages Within D Days.
+Memory Usage: 43 MB, less than 84.01% of Java online submissions for Capacity To Ship Packages Within D Days.
+
+
+

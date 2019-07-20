@@ -1,0 +1,23 @@
+This is the brute solution I wrote which is not accepted because of memory limit.
+
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        //table[i][j]=(i+1)*(j+1)
+        int[] table=new int[m*n];
+        for(int i=0;i<m;i++){
+            // System.out.println("i: "+i);
+            for(int j=0;j<n;j++){
+                // System.out.println("j: "+j);
+                // System.out.println("table["+(i*n+j)+"]");
+                table[i*n+j]=(i+1)*(j+1);
+            }
+        }
+        Arrays.sort(table);
+        return table[k-1];
+    }
+}
+
+This link provides a solution based on binary search. It doesn't seem that hard, I should not 
+quit easily next time.
+https://leetcode.com/problems/kth-smallest-number-in-multiplication-table/discuss/106977/Java-solution-binary-search
+
