@@ -1,0 +1,69 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int max=0;
+        long sum=0;
+        for(int n:nums){
+            sum+=n;
+            if(n>max){
+                max=n;
+            }
+        }
+        long lo=max;
+        long hi=sum;
+        // System.out.println("lo: "+lo);
+        // System.out.println("hi: "+hi);
+        long mid=0;
+        while(lo<hi){
+            // System.out.println("lo: "+lo);
+            // System.out.println("hi: "+hi);
+            mid=lo+(hi-lo)/2;
+            // System.out.println("mid: "+mid);
+            //largest sum
+            sum=largestSum(nums,m,mid);
+            // System.out.println("sum: "+sum);
+            if(mid<sum){
+                lo=mid+1;
+            }
+            else{
+                hi=mid;
+            }
+        }
+        return (int)hi;
+    }
+    
+    private long largestSum(int[] nums, int m, long mid){
+        long sum=0;
+        long max=0;
+        int count=0;
+        int i=0;
+        for(i=0;i<nums.length && count<m;i++){
+            if(sum+nums[i]>mid){
+                // System.out.println("split before "+nums[i]);
+                if(sum>max){
+                    max=sum;
+                }
+                sum=nums[i];
+                count++;
+            }
+            else{
+                sum+=nums[i];
+            }
+        }
+        if(sum>max){
+            max=sum;
+        }
+        if(i<nums.length || count==m){
+            // System.out.println("mid too small");
+            max=mid+1;
+        }
+        return max;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Split Array Largest Sum.
+Memory Usage: 34.4 MB, less than 99.68% of Java online submissions for Split Array Largest Sum.
+
+Didn't come up with the idea to solve this by binary search, however I didn't copy the code.
+Here is link of other's solution to use binary search.
+
+https://leetcode.com/problems/split-array-largest-sum/discuss/89817/Clear-Explanation%3A-8ms-Binary-Search-Java

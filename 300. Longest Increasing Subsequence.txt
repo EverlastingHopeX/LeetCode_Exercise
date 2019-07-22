@@ -1,0 +1,38 @@
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] length=new int[nums.length];
+        for(int i=nums.length-1;i>=0;i--){
+            // System.out.println("i: "+i);
+            LIS(nums, length, i);
+        }
+        int ans=0;
+        for(int i=0;i<nums.length;i++){
+            if(length[i]>ans){
+                ans=length[i];
+            }
+        }
+        return ans;
+    }
+    
+    private void LIS(int[] nums, int[] length, int idx){
+        length[idx]=1;
+        for(int i=idx;i<nums.length;i++){
+            //find increasing subsequence
+            if(nums[i]>nums[idx]){
+                //find the longest
+                if(length[i]+1>length[idx]){
+                    length[idx]=length[i]+1;
+                }
+            }
+        }
+        // System.out.println("length["+nums[idx]+"]: "+length[idx]);
+    }
+}
+
+Runtime: 4 ms, faster than 68.19% of Java online submissions for Longest Increasing Subsequence.
+Memory Usage: 36.8 MB, less than 59.34% of Java online submissions for Longest Increasing Subsequence.
+
+This solution's time complexity is O(N^2). 
+Here are links about solution achieved O(NlogN).
+
+https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O(nlogn)-time-with-explanation

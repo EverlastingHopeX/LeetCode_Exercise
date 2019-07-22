@@ -1,0 +1,47 @@
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        Stack<Integer> stack=new Stack<Integer>();
+        int m=nums1.length;
+        int n=nums2.length;
+        int i=0;
+        int j=0;
+        while(i+j<=(m+n)/2){
+            if(i==m || j==n){
+                if(i==m){
+                    stack.push(nums2[j]);
+                    j++;
+                }
+                else{
+                    stack.push(nums1[i]);
+                    i++;
+                }
+            }
+            else{
+                if(nums1[i]<nums2[j]){
+                    stack.push(nums1[i]);
+                    i++;
+                }
+                else{
+                    stack.push(nums2[j]);
+                    j++;
+                }
+            }
+        }
+        //odd
+        if((m+n)%2!=0){
+            return stack.pop();
+        }
+        //even
+        else{
+            return (stack.pop()+stack.pop())/2.0;
+        }
+    }
+}
+
+Runtime: 5 ms, faster than 13.54% of Java online submissions for Median of Two Sorted Arrays.
+Memory Usage: 46.9 MB, less than 88.23% of Java online submissions for Median of Two Sorted Arrays.
+
+This solution's time complexity should be O(M+N), not O(log(M+N)) as required.
+
+This link is the solution with O(log(min(M,N))).
+https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
