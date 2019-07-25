@@ -1,0 +1,50 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        boolean[][] visited=new boolean[grid.length][grid[0].length];
+        int rotten=0;
+        int fresh=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(!visited[i][j] && grid[i][j]==2){
+                    rotten+=updateAd(grid,i-1,j,visited);
+                    rotten+=updateAd(grid,i+1,j,visited);
+                    rotten+=updateAd(grid,i,j-1,visited);
+                    rotten+=updateAd(grid,i,j+1,visited);
+                }
+                else if(grid[i][j]==1){
+                    fresh++;
+                }
+            }
+        }
+        if(rotten==0){
+            if(fresh>0){
+                return -1;
+            }
+            else{
+               return 0; 
+            }
+        }
+        int r=orangesRotting(grid);
+        if(r<0){
+            return -1;
+        }
+        else{
+            return 1+r;
+        }
+    }
+    
+    private int updateAd(int[][] grid, int i, int j, boolean[][] visited){
+        if(i<0 || i==grid.length || j<0 || j== grid[0].length){
+            return 0;
+        }
+        if(grid[i][j]==1){
+            grid[i][j]=2;
+            visited[i][j]=true;
+            return 1;
+        }
+        return 0;
+    }
+}
+
+Runtime: 2 ms, faster than 90.53% of Java online submissions for Rotting Oranges.
+Memory Usage: 40.6 MB, less than 60.84% of Java online submissions for Rotting Oranges.
