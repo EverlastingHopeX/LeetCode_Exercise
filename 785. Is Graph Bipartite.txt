@@ -1,0 +1,50 @@
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        Set<Integer> part1=new HashSet<Integer>();
+        Set<Integer> part2=new HashSet<Integer>();
+        boolean bip=true;
+        for(int i=0;i<graph.length && bip;i++){
+            if(part1.contains(i)){
+                bip=addNodes(part1, part2, graph, i);
+            }
+            else{
+                bip=addNodes(part2, part1, graph, i);
+            }
+        }
+        return bip;
+    }
+    
+    private boolean addNodes(Set<Integer> sourceSet, Set<Integer> targetSet,int[][] graph, int source){
+        // System.out.println("source: "+source);
+        if(sourceSet.contains(source)){
+            return true;
+        }
+        sourceSet.add(source);
+        for(int target:graph[source]){
+            // System.out.println("target: "+target+" of "+source);
+            if(sourceSet.contains(target)){
+                // System.out.println("not bip");
+                return false;
+            }
+            else{
+                if(!targetSet.contains(target)){
+                    // System.out.println("add new node: "+target);
+                    if(!addNodes(targetSet, sourceSet, graph, target)){
+                        return false;
+                    }
+                }
+                else{
+                    // System.out.println("skip "+target);
+                }
+            }
+        }
+        return true;
+    }
+    
+}
+
+Runtime: 2 ms, faster than 32.79% of Java online submissions for Is Graph Bipartite?.
+Memory Usage: 43.9 MB, less than 63.51% of Java online submissions for Is Graph Bipartite?.
+
+A better solution.
+https://leetcode.com/problems/is-graph-bipartite/discuss/115487/Java-Clean-DFS-solution-with-Explanation
