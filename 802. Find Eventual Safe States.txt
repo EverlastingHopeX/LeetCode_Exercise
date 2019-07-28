@@ -1,0 +1,37 @@
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        Set<Integer> safe=new HashSet<Integer>();
+        while(true){
+            int count=0;
+            for(int i=0;i<graph.length;i++){
+                if(safe.contains(i)){
+                    continue;
+                }
+                int j=0;
+                for(j=0;j<graph[i].length;j++){
+                    if(!safe.contains(graph[i][j])){
+                        break;
+                    }
+                }
+                if(j==graph[i].length){
+                    safe.add(i);
+                    count++;
+                }
+            }
+            if(count==0){
+                break;
+            }
+        }
+        List<Integer> ans=new ArrayList<Integer>(safe);
+        Collections.sort(ans);
+        return ans;
+    }
+}
+
+Runtime: 192 ms, faster than 5.67% of Java online submissions for Find Eventual Safe States.
+Memory Usage: 66.7 MB, less than 36.41% of Java online submissions for Find Eventual Safe States.
+
+This solution requires multiple iterations of graph, so its time complexity is high.
+
+The solution with much better performance.
+https://leetcode.com/problems/find-eventual-safe-states/discuss/119871/Straightforward-Java-solution-easy-to-understand!

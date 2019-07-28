@@ -1,0 +1,72 @@
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        boolean[][] matrix=new boolean[numCourses][numCourses];
+        int source=0;
+        int target=0;
+        for(int i=0;i<prerequisites.length;i++){
+            source=prerequisites[i][1];
+            target=prerequisites[i][0];
+            matrix[source][target]=true;
+        }
+        boolean[] visited=new boolean[numCourses];
+        Set<Integer> cur=new HashSet<Integer>();
+        for(int i=0;i<numCourses;i++){
+            int j=0;
+            while(j<numCourses && !matrix[j][i]){
+                j++;
+            }
+            if(j==numCourses){
+                cur.add(i);
+                visited[i]=true;
+            }
+        }
+        int[] ans=new int[numCourses];
+        ans[numCourses-1]=-1;
+        func(matrix, visited, cur, ans, 0);
+        if(ans[numCourses-1]==-1){
+            return new int[0];
+        }
+        return ans;
+    }
+    
+    private void func(boolean[][] matrix, boolean[] visited, Set<Integer> cur, int[] ans, int idx){
+        // System.out.println("func");
+        if(cur.size()==0){
+            // System.out.println("end");
+            return;
+        }
+        Set<Integer> next=new HashSet<Integer>();
+        for(int c:cur){
+            visited[c]=true;
+            // System.out.println("c:"+c);
+            // System.out.println("idx:"+idx);
+            ans[idx]=c;
+            idx++;
+            for(int i=0;i<matrix.length;i++){
+                if(matrix[c][i]==true && visited[i]==false && !next.contains(i)){
+                    next.add(i);
+                }
+            }
+        }
+        Iterator<Integer> it=next.iterator();
+        while(it.hasNext()){
+            int n=it.next();
+            for(int i=0;i<matrix.length;i++){
+                if(matrix[i][n] && !visited[i]){
+                    it.remove();
+                    break;
+                }
+            }
+        }
+        func(matrix, visited, next, ans, idx);
+    }
+}
+
+Runtime: 61 ms, faster than 5.55% of Java online submissions for Course Schedule II.
+Memory Usage: 40.3 MB, less than 99.53% of Java online submissions for Course Schedule II.
+
+It is accepted but the performance is far from satisfying.
+
+The solution below is clean and easy to understand. However, its performance is not that good.
+https://leetcode.com/problems/course-schedule-ii/discuss/59330/Concise-JAVA-solution-based-on-BFS-with-comments
+
