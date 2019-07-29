@@ -1,0 +1,76 @@
+Not accepted as Time Limit Exceeded.
+
+class Solution {
+    public List<Integer> findMinHeightTrees(int n, int[][] edges) {
+        List<Integer> ans=new ArrayList<Integer>();
+        if(edges.length==0){
+            ans.add(0);
+            return ans;
+        }
+        int[] depth=new int[n];
+        Map<Integer, List<Integer>> graph=new HashMap<>();
+        for(int[] e:edges){
+            if(!graph.containsKey(e[0])){
+                graph.put(e[0], new ArrayList<Integer>());
+            }
+            if(!graph.containsKey(e[1])){
+                graph.put(e[1], new ArrayList<Integer>());
+            }
+            graph.get(e[0]).add(e[1]);
+            graph.get(e[1]).add(e[0]);
+        }
+        Set<Integer> leaves=new HashSet<Integer>();
+        Iterator it=graph.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry entry = (Map.Entry) it.next(); 
+            Integer i=(Integer)entry.getKey();
+            List<Integer> list=(List<Integer>)entry.getValue();
+            if(list.size()==1){
+                // System.out.println("leaf:"+i);
+                leaves.add(i);
+            }
+        }
+        int min=n;
+        for(int i=0;i<n;i++){
+            // System.out.println("depth["+i+"]");
+            depth[i]=DFS(graph,leaves,i,i);
+            // System.out.println(depth[i]);
+            if(depth[i]<min){
+                min=depth[i];
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(depth[i]==min){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+    
+    private int DFS(Map<Integer, List<Integer>> graph, Set<Integer> leaves, int cur, int prev){
+        List<Integer> children=graph.get(cur);
+        Iterator<Integer> it=children.iterator();
+        int max=0;
+        int d=0;
+        int child=0;
+        while(it.hasNext()){
+            child=it.next();
+            if(child==prev){
+                continue;
+            }
+            if(leaves.contains(child)){
+                d=1;
+            }
+            else{
+                d=DFS(graph, leaves, child,cur);
+            }
+            if(d>max){
+                max=d;
+            }
+        }
+        return max+1;
+    }
+}
+
+A AC solution.
+https://leetcode.com/problems/minimum-height-trees/discuss/76055/Share-some-thoughts
