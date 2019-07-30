@@ -1,0 +1,76 @@
+Not accepted because of TLE
+
+class Solution {
+    public int numBusesToDestination(int[][] routes, int S, int T) {
+        if(S==T){
+            return 0;
+        }
+        List<Set<Integer>> rList=new ArrayList<>();
+        for(int i=0;i<routes.length;i++){
+            Set<Integer> set=new HashSet<Integer>();
+            for(int j=0;j<routes[i].length;j++){
+                set.add(routes[i][j]);
+            }
+            rList.add(set);
+        }
+        
+        // for(int i=0;i<rList.size();i++){
+        //     System.out.println(rList.get(i));
+        // }
+        
+        int ans=routes.length+1;
+        boolean[] taken=new boolean[routes.length];
+        for(int i=0;i<rList.size();i++){
+            if(rList.get(i).contains(S)){
+                taken[i]=true;
+                int t=DFS(rList, taken, i, S, T);
+                if(t!=-1 && t+1<ans){
+                    // System.out.println(i);
+                    ans=t+1;
+                }
+                taken[i]=false;
+            }
+        }
+        if(ans==routes.length+1){
+            return -1;
+        }
+        return ans;
+    }
+    
+    public int DFS(List<Set<Integer>> rList, boolean[] taken, int curBus, int S, int T){
+        // System.out.println("DFS: "+curBus+": "+S);
+        Set<Integer> stops=rList.get(curBus);
+        if(stops.contains(T)){
+            // System.out.println("found: "+curBus);
+            return 0;
+        }
+        Iterator<Integer> it=stops.iterator();
+        int ans=rList.size()+1;
+        while(it.hasNext()){
+            int stop=it.next();
+            if(stop!=S){
+                for(int i=0;i<rList.size();i++){
+                    if(!taken[i] && rList.get(i).contains(stop)){
+                        taken[i]=true;
+                        // System.out.println(i+":"+stop);
+                        int t=DFS(rList, taken, i, stop, T);
+                        if(t!=-1 && t+1<ans){
+                            ans=t+1;
+                        }
+                        taken[i]=false;
+                    }
+                }
+            }
+        }
+        if(ans==rList.size()+1){
+            taken[curBus]=true;
+            return -1;
+        }
+        return ans;
+    }
+}
+
+This solution based on DFS. BFS solution will be accepted.
+
+One BFS solution.
+https://leetcode.com/problems/bus-routes/discuss/122712/Simple-Java-Solution-using-BFS
