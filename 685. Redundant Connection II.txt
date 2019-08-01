@@ -1,0 +1,4 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/redundant-connection-ii/discuss/108045/C%2B%2BJava-Union-Find-with-explanation-O(n)
