@@ -1,0 +1,24 @@
+class Solution {
+    public int climbStairs(int n) {
+        if(n<3){
+            return n;
+        }
+        int t1=1;
+        int t2=2;
+        int ans=0;
+        for(int i=3;i<=n;i++){
+            ans=t1+t2;
+            t1=t2;
+            t2=ans;
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Climbing Stairs.
+Memory Usage: 32.8 MB, less than 5.06% of Java online submissions for Climbing Stairs.
+
+Considerting that t3 is actually t2+ 1 step and t1+ 2 steps, the sequence of ways of climbing 
+stairs is Fibonacci. So the solution is easy. The numerator and denomintor would be too big 
+using combination technique.
