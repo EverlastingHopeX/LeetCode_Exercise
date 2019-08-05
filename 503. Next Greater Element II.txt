@@ -1,0 +1,29 @@
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int[] ans=new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            ans[i]=nums[i];
+            int j=i;
+            //find next greater element of nums[i]
+            while(j-i<nums.length){
+                // System.out.println("j: "+j);
+                if(nums[j%nums.length]>ans[i]){
+                    ans[i]=nums[j%nums.length];
+                    break;
+                }
+                j++;
+            }
+            if(ans[i]==nums[i])
+                ans[i]=-1;
+            // System.out.println(ans[i]);
+        }
+        return ans;
+    }
+}
+
+Runtime: 126 ms, faster than 9.18% of Java online submissions for Next Greater Element II.
+Memory Usage: 50.7 MB, less than 13.02% of Java online submissions for Next Greater Element II.
+
+This solution is straightforward and thus of low time efficiency, it will cost O(N^2) in the 
+worst case. The link below provides solution with O(N) time complexity.
+https://leetcode.com/problems/next-greater-element-ii/discuss/98273/Java-10-lines-and-C%2B%2B-12-lines-linear-time-complexity-O(n)-with-explanation

@@ -1,0 +1,5 @@
+Didn't work it out.
+Wouldn't spend a lot of time on it if I've known about Trie.
+
+Other's solution.
+https://leetcode.com/problems/word-search-ii/discuss/59784/My-simple-and-clean-Java-code-using-DFS-and-Trie

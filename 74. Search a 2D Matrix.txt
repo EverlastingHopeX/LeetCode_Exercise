@@ -1,0 +1,45 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length==0 || matrix[0].length==0)
+            return false;
+        int lo=0;
+        int hi=matrix.length-1;
+        int mid=(lo+hi)/2;
+        while(lo<=hi){
+            // System.out.println(lo+","+hi);
+            mid=(lo+hi)/2;
+            if(matrix[mid][0]>target){
+                hi=mid-1;
+            }
+            else if(matrix[mid][0]<target){
+                lo=mid+1;
+            }
+            else{
+                return true;
+            }
+        }
+        if(hi<0){
+            return false;
+        }
+        int r=hi;
+        for(lo=0, hi=matrix[lo].length-1;lo<=hi;){
+            // System.out.println(lo+","+hi);
+            mid=(lo+hi)/2;
+            if(matrix[r][mid]>target){
+                hi=mid-1;
+            }
+            else if(matrix[r][mid]<target){
+                lo=mid+1;
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
+    }
+    
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Search a 2D Matrix.
+Memory Usage: 43.1 MB, less than 5.05% of Java online submissions for Search a 2D Matrix.
+Next challenges:

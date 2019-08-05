@@ -1,0 +1,7 @@
+Didn't work it out.
+
+I did completed a straight forward solution but as it keeps sorting and copying arrays, it 
+costs too much time. The link below is a solution using max heap and min heap to calculate 
+the median. One concise solution is added in the comments.
+
+https://leetcode.com/problems/sliding-window-median/discuss/96348/Java-solution-using-two-PriorityQueues

@@ -1,0 +1,87 @@
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> ans=new ArrayList<>();
+        List<String> solution=new ArrayList<String>();
+        Set<Integer> placed=new HashSet<Integer>();
+        boolean[] invalidCol=new boolean[n];
+        for(int i=0;i<n;i++){
+            // System.out.println("main "+i);
+            //one solution for one start
+            placeQueen(0,i,n,placed,invalidCol,solution,ans);
+        }
+        return ans;
+    }
+    
+    private void placeQueen(int r, int c, int n, Set<Integer> placed, boolean[] invalidCol,List<String> solution, List<List<String>> ans){
+        // System.out.println("place: "+r+","+c);
+        // System.out.println(placed);
+        for(int t=1;c+t<n || c-t>=0;t++){
+            // System.out.println("t"+t);
+            // System.out.println((r+t)*n+c+t);
+            // System.out.println((r+t)*n+c-t);
+            // System.out.println((r-t)*n+c+t);
+            // System.out.println((r-t)*n+c-t);
+            if(r-t>=0){
+                if(c-t>=0){
+                    if(placed.contains((r-t)*n+c-t)){
+                        // System.out.println("fail");
+                        return;
+                    }
+                }
+                if(c+t<n){
+                    if(placed.contains((r-t)*n+c+t)){
+                        // System.out.println("fail");
+                        return;
+                    }
+                }
+            }
+            if(r+t<n){
+                if(c-t>=0){
+                    if(placed.contains((r+t)*n+c-t)){
+                        // System.out.println("fail");
+                        return;
+                    }
+                }
+                if(c+t<n){
+                    if(placed.contains((r+t)*n+c+t)){
+                        // System.out.println("fail");
+                        return;
+                    }
+                }
+            }
+        }
+        char[] chs=new char[n];
+        for(int i=0;i<n;i++){
+            if(i==c){
+                chs[i]='Q';
+            }
+            else{
+                chs[i]='.';
+            }
+        }
+        solution.add(String.valueOf(chs));
+        placed.add(r*n+c);
+        invalidCol[c]=true;
+        //found
+        if(r==n-1){
+            // System.out.println("suc");
+            ans.add(new ArrayList<String>(solution));
+        }
+        else{
+            for(int i=0;i<n;i++){
+                if(invalidCol[i]){
+                    continue;
+                }
+                // System.out.println("next: "+(r+1)+","+i);
+                placeQueen(r+1,i,n,placed,invalidCol,solution,ans);
+            }
+        }
+        invalidCol[c]=false;
+        placed.remove(r*n+c);
+        solution.remove(solution.size()-1);
+    }
+}
+
+Runtime: 8 ms, faster than 11.73% of Java online submissions for N-Queens.
+Memory Usage: 39.2 MB, less than 44.54% of Java online submissions for N-Queens.
+

@@ -1,0 +1,11 @@
+Didn't work it out.
+
+The concept of permutation is not that easy to understand at first. However, it is harder 
+to figure out a not straight forward solution as it would be too expensive. The algorithm 
+seems to be very easy if you only try to remember the conclusion it offers, but it may cause 
+unpleasant consequence in an interview.
+
+The link below is a solution provided by others, and the comments below includes a link to a 
+video explaning the principle behind the algorithm.
+
+https://leetcode.com/problems/next-permutation/discuss/13872/Easiest-JAVA-Solution

@@ -1,0 +1,53 @@
+class Solution {
+    
+    int[][] neighbors={{-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
+    
+    public char[][] updateBoard(char[][] board, int[] click) {
+        boolean[][] visited=new boolean[board.length][board[0].length];
+        updateBoard(board,click,visited);
+        return board;
+    }
+    
+    public void updateBoard(char[][] board, int[] click, boolean[][] visited){
+        int i=click[0];
+        int j=click[1];
+        visited[i][j]=true;
+        switch(board[i][j]){
+            case 'M':
+                board[i][j]='X';
+                break;
+            case 'E':
+                int count=0;
+                int x=0;
+                int y=0;
+                for(int k=0;k<8;k++){
+                    x=i+neighbors[k][0];
+                    y=j+neighbors[k][1];
+                    if(x>=0 && x<board.length && y>=0 && y<board[0].length && !visited[x][y]){
+                        if(board[x][y]=='M'){
+                            count++;
+                        }
+                    }
+                }
+                if(count!=0){
+                    board[i][j]=(char)(count+'0');
+                }
+                else{
+                    // System.out.println("no ad");
+                    board[i][j]='B';
+                    for(int k=0;k<8;k++){
+                        x=i+neighbors[k][0];
+                        y=j+neighbors[k][1];
+                        // System.out.println("x,y: "+x+","+y);
+                        if(x>=0 && x<board.length && y>=0 && y<board[0].length && !visited[x][y]){
+                            updateBoard(board,new int[]{x,y}, visited);
+                        }
+                    }
+                }
+                break;
+        }
+    }
+}
+
+Runtime: 1 ms, faster than 89.25% of Java online submissions for Minesweeper.
+Memory Usage: 42.2 MB, less than 45.57% of Java online submissions for Minesweeper.

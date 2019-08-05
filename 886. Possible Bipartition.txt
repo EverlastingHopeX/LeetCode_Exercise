@@ -1,0 +1,47 @@
+class Solution {
+    public enum GroupType{
+        NO,ONE,TWO;
+    }
+    public boolean possibleBipartition(int N, int[][] dislikes) {
+        GroupType[] group=new GroupType[N];
+        Map<Integer, List<Integer>> map=new HashMap<>();
+        for(int i=0;i<N;i++){
+            group[i]=GroupType.NO;
+            map.put(i,new ArrayList<Integer>());
+        }
+        for(int[] d:dislikes){
+            // System.out.println(d[0]+","+d[1]);
+            map.get(d[0]-1).add(d[1]-1);
+            map.get(d[1]-1).add(d[0]-1);
+        }
+        for(int i=0;i<N;i++){
+            if(group[i]==GroupType.NO && !validGroup(map,group,GroupType.ONE,i)){
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean validGroup(Map<Integer, List<Integer>> map, GroupType[] group, GroupType type, int a){
+        // System.out.println("judging "+(a+1));
+        if(group[a]!=GroupType.NO){
+            // System.out.println("already set");
+            // System.out.println("return "+(type==group[a]));
+            return type==group[a];
+        }
+        // System.out.println("set "+(a+1)+" to "+type);
+        group[a]=type;
+        GroupType ntype=type==GroupType.ONE?GroupType.TWO:GroupType.ONE;
+        for(int b:map.get(a)){
+            // System.out.println("check "+(b+1)+" from "+(a+1));
+            if(!validGroup(map,group,ntype,b)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 29 ms, faster than 58.07% of Java online submissions for Possible Bipartition.
+Memory Usage: 58.9 MB, less than 86.02% of Java online submissions for Possible Bipartition.
+
+Based on other's bipartiton solution in 785.

@@ -1,0 +1,6 @@
+Didn't work it out.
+
+This question can not be solved by DFS.
+Here is one solution using BFS.
+
+https://leetcode.com/problems/shortest-path-in-binary-matrix/discuss/312706/JAVA-BFS

@@ -1,0 +1,37 @@
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        boolean[] keys=new boolean[rooms.size()];
+        boolean[] visited=new boolean[rooms.size()];
+        keys[0]=true;
+        int count=0;
+        count+=searchRoom(rooms, 0, keys, visited);
+        System.out.println("count: "+count);
+        return count==rooms.size();
+    }
+    
+    private int searchRoom(List<List<Integer>> rooms, int no, boolean[] keys, boolean[] visited){
+        // System.out.println("searchRoom("+no+")");
+        visited[no]=true;
+        List<Integer> list=rooms.get(no);
+        int count=1;
+        for(int i=0;i<list.size();i++){
+            keys[list.get(i)]=true;
+        }
+        for(int i=0;i<rooms.size();i++){
+            // System.out.println("i:"+i);
+            // System.out.println("key: "+keys[i]);
+            // System.out.println("visited: "+visited[i]);
+            if(keys[i]==true && visited[i]==false){
+                count+=searchRoom(rooms, i, keys, visited);
+            }
+        }
+        return count;
+    }
+}
+
+Runtime: 14 ms, faster than 5.32% of Java online submissions for Keys and Rooms.
+Memory Usage: 44.9 MB, less than 6.73% of Java online submissions for Keys and Rooms.
+
+This solution is brute, and the perfomance is not satisfying.
+Here is link to a solution based on DFS.
+https://leetcode.com/problems/keys-and-rooms/discuss/133855/Straight-Forward

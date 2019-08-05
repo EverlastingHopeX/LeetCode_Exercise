@@ -1,0 +1,5 @@
+Didn't work it out.
+Tried to implement Dijkstra or Floyd but got completly confused.
+
+Link to a solution (using Dijkstra).
+https://leetcode.com/problems/word-ladder/discuss/40704/Java-Solution-using-BFS-with-explanation

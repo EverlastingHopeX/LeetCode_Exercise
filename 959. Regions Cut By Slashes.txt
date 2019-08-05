@@ -1,0 +1,4 @@
+Didn't solve it.
+
+Other's solution.
+https://leetcode.com/problems/regions-cut-by-slashes/discuss/205680/JavaC%2B%2BPython-Split-4-parts-and-Union-Find

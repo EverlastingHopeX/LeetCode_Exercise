@@ -1,0 +1,24 @@
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int sum=0;
+        int max=nums[0];
+        for(int i=0;i<nums.length;i++){
+            sum=0;
+            for(int j=i;j<nums.length;j++){
+                sum+=nums[j];
+                if(sum>max){
+                    max=sum;
+                }
+            }
+        }
+        return max;
+    }
+}
+
+Runtime: 85 ms, faster than 5.05% of Java online submissions for Maximum Subarray.
+Memory Usage: 56.5 MB, less than 5.03% of Java online submissions for Maximum Subarray.
+
+This is the brute solution.
+
+Other's solution.
+https://leetcode.com/problems/maximum-subarray/discuss/20193/DP-solution-and-some-thoughts

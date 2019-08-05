@@ -1,0 +1,36 @@
+class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int closest=nums[0]+nums[1]+nums[2];
+        for(int i=0;i<nums.length-2;i++){
+            // System.out.println("i: "+nums[i]);
+            int lo=i+1;
+            int hi=nums.length-1;
+            int sum=nums[i]+nums[lo]+nums[hi];
+            while(lo<hi){
+                // System.out.println("lo: "+nums[lo]+" hi: "+nums[hi]);
+                sum=nums[i]+nums[lo]+nums[hi];
+                // System.out.println("sum: "+sum);
+                if(Math.abs(sum-target)<Math.abs(closest-target)){
+                    closest=sum;
+                }
+                if(sum==target){
+                    return target;
+                }
+                else if(sum<target){
+                    lo++;
+                }
+                else{
+                    hi--;
+                }
+            }
+        }
+        return closest;
+    }
+}
+
+Runtime: 4 ms, faster than 96.12% of Java online submissions for 3Sum Closest.
+Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for 3Sum Closest.
+
+This solution is based on 15. 3Sum. The runtime is satisfying, however, could be improved by 
+skipping duplicate elements.

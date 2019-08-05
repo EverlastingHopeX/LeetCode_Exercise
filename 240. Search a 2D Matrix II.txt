@@ -1,0 +1,61 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length==0 || matrix[0].length==0)
+            return false;
+        int lo=0;
+        int hi=matrix.length-1;
+        int mid=0;
+        while(lo<=hi){
+            mid=(lo+hi)/2;
+            if(matrix[mid][0]>target){
+                hi=mid-1;
+            }
+            else if(matrix[mid][0]<target){
+                lo=mid+1;
+            }
+            else{
+                return true;
+            }
+        }
+        int rBound=hi;
+        // System.out.println("rBound: "+rBound);
+        lo=0;
+        hi=matrix[0].length-1;
+        while(lo<=hi){
+            mid=(lo+hi)/2;
+            if(matrix[0][mid]>target){
+                hi=mid-1;
+            }
+            else if(matrix[0][mid]<target){
+                lo=mid+1;
+            }
+            else{
+                return true;
+            }
+        }
+        int cBound=hi;
+        // System.out.println("cBound: "+cBound);
+        for(int i=0;i<=rBound;i++){
+            for(int j=0;j<=cBound;j++){
+                if(matrix[i][j]==target){
+                    return true;
+                }
+                else if(matrix[i][j]>target){
+                    break;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 10 ms, faster than 10.61% of Java online submissions for Search a 2D Matrix II.
+Memory Usage: 42.8 MB, less than 100.00% of Java online submissions for Search a 2D Matrix II.
+
+This solution sorted the row and column seperately, thus its time complexity should be 
+O(logN+logM+X), in the worst case X could be M*N, so this solution is not good.
+
+The link below is another solution starts with the top-right corner can search the array like 
+tree, which is much better.
+
+https://leetcode.com/problems/search-a-2d-matrix-ii/discuss/66140/My-concise-O(m%2Bn)-Java-solution

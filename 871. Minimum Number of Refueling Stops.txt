@@ -1,0 +1,64 @@
+Didn't work it out.
+
+Here is my straight forward solution. It can offer correct output but its cost is too expensive.
+
+class Solution {
+    public int minRefuelStops(int target, int startFuel, int[][] stations) {
+        if(startFuel>=target){
+            return 0;
+        }
+        int stops=stations.length+1;
+        // System.out.println(stops);
+        for(int i=0;i<stations.length;i++){
+            if(startFuel<stations[i][0]){
+                break;
+            }
+            int temp=1+func(target, startFuel+stations[i][1], stations, i);
+            if(temp!=0 && temp<stops){
+                stops=temp;
+            }
+            if(stops==1){
+                break;
+            }
+        }
+        if(stops==stations.length+1){
+            return -1;
+        }
+        return stops;
+    }
+    
+    private int func(int target, int totalFuel, int[][] stations, int startStation){
+        // System.out.println("startStation: "+startStation);
+        // System.out.println("totalFuel: "+totalFuel);
+        // System.out.println("target: "+target);
+        if(totalFuel>=target){
+            return 0;
+        }
+        int stops=stations.length-startStation;
+        for(int i=startStation+1;i<stations.length;i++){
+            if(totalFuel<stations[i][0]){
+                break;
+            }
+            int temp=1+func(target, totalFuel+stations[i][1], stations, i);
+            if(temp!=0 && temp<stops){
+                stops=temp;
+            }
+            if(stops==1){
+                break;
+            }
+        }
+        if(stops==stations.length-startStation){
+            return -1;
+        }
+        return stops;
+    }
+}
+
+The key is greedy, as the car should stop at the station with most fuel within car's range. 
+Stop at the furrther station with less gas will not help the car go further, as the final 
+distance it can reach is its start fuel plus the gas get from station, the station's position
+is not involved (as far as the car can reach it).
+
+The link below is a solution uses priority queue.
+
+https://leetcode.com/problems/minimum-number-of-refueling-stops/discuss/149858/Simple-Java-Solution-Using-PriorityQueue-O(nlogn)
