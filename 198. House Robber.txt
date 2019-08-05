@@ -1,0 +1,30 @@
+class Solution {
+    public int rob(int[] nums) {
+        int n=nums.length;
+        int sum[]=new int[n];
+        Arrays.fill(sum,-1);
+        return rob(nums,sum,n-1);
+    }
+    
+    private int rob(int[] nums, int[] sum, int curIdx){
+        // System.out.println("rob "+curIdx);
+        if(curIdx<0){
+            return 0;
+        }
+        if(sum[curIdx]>-1){
+            return sum[curIdx];
+        }
+        int left=rob(nums,sum,curIdx-2)+nums[curIdx];
+        int right=rob(nums,sum,curIdx-1);
+        int max=left>right?left:right;
+        // System.out.println("left: "+left+" right: "+right);
+        sum[curIdx]=max;
+        return max;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for House Robber.
+Memory Usage: 34 MB, less than 100.00% of Java online submissions for House Robber.
+
+Didn't complete this solution by myself.
+https://leetcode.com/problems/house-robber/discuss/351417/JAVA-DP-faster-than-100-time-and-memory
