@@ -1,0 +1,43 @@
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        for(int i=0;i<gas.length;i++){
+            if(run(gas,cost,i)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    private boolean run(int[] gas, int[] cost, int start){
+        int tank=gas[start];
+        if(tank<cost[start]){
+            return false;
+        }
+        tank-=cost[start];
+        int cur=(start+1)%gas.length;
+        while(cur!=start){
+            tank=tank+gas[cur]-cost[cur];
+            if(tank<0){
+                return false;
+            }
+            cur=(cur+1)%gas.length;
+        }
+        return true;
+    }
+}
+
+Runtime: 143 ms, faster than 6.28% of Java online submissions for Gas Station.
+Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for Gas Station.
+
+Terrible performance.
+
+Other's solution.
+The principle behind this solution is exclusive method. First we need to make sure there is one 
+solution, then we can use exclusive method. When traveling from 0 to n, if we meet a break point, 
+it means not only 0 cannot reach this station (i.e. k), but also all stations between 0 and k. 
+Because we have extra fuels taken from stations ahead when we reached these ones, so it should 
+be harder to reach k when start directly from these stations. In that case we can exclude 0 and 
+these stations and start from k. If no break point are met, then k is the solution, otherwise 
+we can continually exclude stations until we reach last station.
+these points to reach k than 0.
+https://leetcode.com/problems/gas-station/discuss/42568/Share-some-of-my-ideas.

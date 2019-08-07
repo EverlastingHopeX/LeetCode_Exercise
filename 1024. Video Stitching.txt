@@ -1,0 +1,64 @@
+class Solution {
+    class Clip{
+        int start;
+        int end;
+        Clip(int s, int e){
+            start=s;
+            end=e;
+        }
+    }
+    
+    public int videoStitching(int[][] clips, int T) {
+        int[] dp=new int[T+1];
+        Queue<Clip> pq=new PriorityQueue<Clip>(new Comparator<Clip>(){
+            @Override
+            public int compare(Clip c1, Clip c2){
+                return c1.start-c2.start;
+            }
+        });
+        for(int[] clip:clips){
+            int start=clip[0];
+            int end=Math.min(clip[1],T);
+            if(start>T || start>=end){
+                continue;
+            }
+            pq.offer(new Clip(start,end));
+        }
+        Clip c=pq.peek();
+        if(pq.size()==0 || c.start>0){
+            return -1;
+        }
+        int last=0;
+        while(pq.size()>0){
+            c=pq.poll();
+            if(c.start>=last && last!=0){
+                return -1;
+            }
+            if(dp[c.end]==0){
+                dp[last]=c.start>0?dp[c.start]+1:1;
+                for(int i=last;i<=c.end;i++){
+                    dp[i]=dp[last];
+                }
+                last=c.end+1;
+            }
+            // System.out. println(c.start+","+c.end);
+            // System.out.println("last:"+last);
+            // for(int i=0;i<=T;i++){
+            //     System.out.print(dp[i]+" ");
+            // }
+            // System.out.println();
+        }
+        if(dp[T]==0){
+            return -1;
+        }
+        return dp[T];
+    }
+}
+
+Runtime: 2 ms, faster than 62.69% of Java online submissions for Video Stitching.
+Memory Usage: 34.5 MB, less than 59.26% of Java online submissions for Video Stitching.
+
+Worked out based on instinct.
+
+Other's solution
+https://leetcode.com/problems/video-stitching/discuss/270350/Java-DP-Short-Solution-!!!
