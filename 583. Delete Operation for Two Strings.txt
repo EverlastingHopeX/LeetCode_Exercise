@@ -1,0 +1,27 @@
+class Solution {
+    public int minDistance(String word1, String word2) {
+        char[] A=word1.toCharArray();
+        char[] B=word2.toCharArray();
+        int m=A.length;
+        int n=B.length;
+        int[][] dp=new int[m+1][n+1];
+        for(int i=1;i<=m;i++){
+            for(int j=1;j<=n;j++){
+                if(A[i-1]==B[j-1]){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=Math.max(dp[i][j-1],dp[i-1][j]);
+                }
+            }
+        }
+        
+        return m+n-2*dp[m][n];
+    }
+}
+
+Runtime: 7 ms, faster than 59.92% of Java online submissions for Delete Operation for Two Strings.
+Memory Usage: 36.8 MB, less than 100.00% of Java online submissions for Delete Operation for Two Strings.
+
+This is similar to 1035 Uncrossed Lines. The restriction of letter's order is just the same as 
+not to cross lines.

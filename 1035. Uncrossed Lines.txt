@@ -1,0 +1,11 @@
+Didn't work it out.
+
+Other's solution.
+
+"dp[i][j] denote the longest common subsequence between the first i elements of A and the 
+first j elements of B"
+So when another connection (i,j) is found, dp[i][j]=1+dp[i-1][j-1], connections counted in 
+dp[i-1][j-1] will not intersect with (i,j) as dp[i-1][j-1] only count connections bewteen m and 
+n which m is smaller than i and n is smaller than j.
+When not connected, dp[i][j]=Math.max(dp[i][j-1],dp[i-1][j]).
+https://leetcode.com/problems/uncrossed-lines/discuss/282842/JavaC%2B%2BPython-DP-The-Longest-Common-Subsequence
