@@ -1,0 +1,20 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int slow=0;
+        int fast=0;
+        while(fast<nums.length && nums[fast]==nums[slow]){
+            fast++;
+        }
+        while(fast<nums.length){
+            slow++;
+            nums[slow]=nums[fast];
+            while(fast<nums.length && nums[fast]==nums[slow]){
+                fast++;
+            }
+        }
+        return slow+1;
+    }
+}
+
+Runtime: 1 ms, faster than 97.12% of Java online submissions for Remove Duplicates from Sorted Array.
+Memory Usage: 39.3 MB, less than 99.47% of Java online submissions for Remove Duplicates from Sorted Array.
