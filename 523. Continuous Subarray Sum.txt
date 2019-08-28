@@ -1,0 +1,4 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/continuous-subarray-sum/discuss/99499/Java-O(n)-time-O(k)-space
