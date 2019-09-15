@@ -1,0 +1,32 @@
+class Solution {
+    public int longestMountain(int[] A) {
+        int res=0;
+        for(int i=0;i<A.length;i++){
+            int j=i+1;
+            int left=1;
+            while(j<A.length && A[j]>A[j-1]){
+                j++;
+                left++;
+            }
+            if(left==1){
+                continue;
+            }
+            int right=0;
+            while(j<A.length && A[j]<A[j-1]){
+                j++;
+                right++;
+            }
+            if(right==0){
+                continue;
+            }
+            res=Math.max(res,left+right);
+        }
+        return res;
+    }
+}
+
+Runtime: 44 ms, faster than 6.14% of Java online submissions for Longest Mountain in Array.
+Memory Usage: 38.6 MB, less than 100.00% of Java online submissions for Longest Mountain in Array.
+
+Other's solution. 1 pass.
+https://leetcode.com/problems/longest-mountain-in-array/discuss/135593/C%2B%2BJavaPython-1-pass-and-O(1)-space

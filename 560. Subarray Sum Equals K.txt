@@ -1,0 +1,29 @@
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int p1=0;
+        int p2=0;
+        int res=0;
+        while(p1<nums.length){
+            // System.out.println("p1:"+p1);
+            int sum=0;
+            p2=p1;
+            while(p2<nums.length){
+                sum+=nums[p2];
+                if(sum==k){
+                    res++;
+                }
+                // System.out.println("p2:"+p2);
+                p2++;
+            }
+            // System.out.println("res:"+res);
+            p1++;
+        }
+        return res;
+    }
+}
+
+Runtime: 118 ms, faster than 22.78% of Java online submissions for Subarray Sum Equals K.
+Memory Usage: 38.9 MB, less than 98.91% of Java online submissions for Subarray Sum Equals K.
+
+Other's solution. 
+https://leetcode.com/problems/subarray-sum-equals-k/discuss/102106/Java-Solution-PreSum-%2B-HashMap

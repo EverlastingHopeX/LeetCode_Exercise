@@ -1,0 +1,22 @@
+class Solution {
+    public int maxProfitAssignment(int[] difficulty, int[] profit, int[] worker) {
+        int res=0;
+        for(int i=0;i<worker.length;i++){
+            int prof=0;
+            for(int j=0;j<difficulty.length;j++){
+                if(difficulty[j]>worker[i]){
+                    continue;
+                }
+                prof=Math.max(prof,profit[j]);
+            }
+            res+=prof;
+        }
+        return res;
+    }
+}
+
+Runtime: 773 ms, faster than 5.02% of Java online submissions for Most Profit Assigning Work.
+Memory Usage: 41.3 MB, less than 77.78% of Java online submissions for Most Profit Assigning Work.
+
+Other's solution using class, collections.sort and Comparator.comparing.
+https://leetcode.com/problems/most-profit-assigning-work/discuss/127031/C%2B%2BJavaPython-Sort-and-Two-pointer

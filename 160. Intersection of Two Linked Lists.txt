@@ -1,0 +1,37 @@
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode cur=headA;
+        int m=0;
+        while(cur!=null){
+            m++;
+            cur=cur.next;
+        }
+        cur=headB;
+        int n=0;
+        while(cur!=null){
+            n++;
+            cur=cur.next;
+        }
+        ListNode a=headA;
+        ListNode b=headB;
+        while(m>n){
+            m--;
+            a=a.next;
+        }
+        while(n>m){
+            n--;
+            b=b.next;
+        }
+        while(a!=b){
+            a=a.next;
+            b=b.next;
+        }
+        return a;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Intersection of Two Linked Lists.
+Memory Usage: 37.8 MB, less than 52.86% of Java online submissions for Intersection of Two Linked Lists.
+
+Other's solution. It will save memory but cost the same time.
+https://leetcode.com/problems/intersection-of-two-linked-lists/discuss/49785/Java-solution-without-knowing-the-difference-in-len!

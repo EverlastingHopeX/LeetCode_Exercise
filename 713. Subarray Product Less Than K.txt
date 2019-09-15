@@ -1,0 +1,4 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/subarray-product-less-than-k/discuss/108861/JavaC%2B%2B-Clean-Code-with-Explanation
