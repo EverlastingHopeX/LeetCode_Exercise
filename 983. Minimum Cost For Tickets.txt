@@ -1,0 +1,35 @@
+Didn't work it out.
+
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        boolean[] travel=new boolean[367];
+        for(int day:days){
+            travel[day]=true;
+        }
+        int[] minCost=new int[367];
+        int i=1;
+        for(;i<367 && i<=days[days.length-1];i++){
+            if(!travel[i]){
+                minCost[i]=minCost[i-1];
+            }
+            else{
+                int min=costs[0]+minCost[i-1];
+                int t=costs[1]+minCost[Math.max(0,i-7)];
+                min=t<min?t:min;
+                t=costs[2]+minCost[Math.max(0,i-30)];
+                min=t<min?t:min;
+                minCost[i]=min;
+                // System.out.println(i+": "+minCost[i]);
+            }
+        }
+        return minCost[i-1];
+    }
+}
+
+Runtime: 1 ms, faster than 93.84% of Java online submissions for Minimum Cost For Tickets.
+Memory Usage: 34.4 MB, less than 100.00% of Java online submissions for Minimum Cost For Tickets.
+
+Other's solution.
+While iterating everyday, the algorithm finds the minimum cost among buy 1 day pass + min cost 
+yesterday, buy 7-day pass + min cost 7 days ago and buy 30-day pass + min cost 30 days ago.
+https://leetcode.com/problems/minimum-cost-for-tickets/discuss/226670/Java-DP-Solution-with-explanation-O(n)

@@ -1,0 +1,5 @@
+Didn't work it out.
+
+It should start from the right-bottom rather than left-top.
+Other's solution.
+https://leetcode.com/problems/dungeon-game/discuss/52805/Best-solution-I-have-found-with-explanations

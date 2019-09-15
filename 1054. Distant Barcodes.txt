@@ -1,0 +1,61 @@
+Completed based on other's solution.
+
+class Solution {
+    class Num{
+        int val;
+        int times;
+        Num(int v, int t){
+            val=v;
+            times=t;
+        }
+    }
+    public int[] rearrangeBarcodes(int[] barcodes) {
+        Queue<Num> pq=new PriorityQueue<Num>(new Comparator<Num>(){
+            @Override
+            public int compare(Num n1,Num n2){
+                return n2.times-n1.times;
+            }
+        });
+        int n=barcodes.length;
+        Arrays.sort(barcodes);
+        int cnt=0;
+        int v=barcodes[0];
+        for(int i=0;i<n;i++){
+            if(barcodes[i]==v){
+                cnt++;
+            }
+            else{
+                pq.offer(new Num(barcodes[i-1],cnt));
+                cnt=1;
+                v=barcodes[i];
+            }
+        }
+        pq.offer(new Num(barcodes[n-1],cnt));
+        int[] ans=new int[n];
+        int i=0;
+        while(pq.size()!=0){
+            Num num=pq.poll();
+            // System.out.println(num.val+":"+num.times);
+            while(num.times>0){
+                // System.out.println(i);
+                if(ans[i]==0){
+                    ans[i]=num.val;
+                    // System.out.println(i+"->"+ans[i]);
+                    num.times--;
+                }
+                i+=2;
+                if(i>=n){
+                    i=1;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 18 ms, faster than 88.87% of Java online submissions for Distant Barcodes.
+Memory Usage: 40.6 MB, less than 100.00% of Java online submissions for Distant Barcodes.
+
+Other's solution.
+https://leetcode.com/problems/distant-barcodes/discuss/299371/C%2B%2B-with-picture-O(N)

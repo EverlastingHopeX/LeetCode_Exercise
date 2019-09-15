@@ -1,0 +1,56 @@
+class Solution {
+    public int numSquares(int n) {
+        int t=(int)Math.sqrt((double)n);
+        // System.out.println(t);
+        if(t*t==n){
+            return 1;
+        }
+        int[] fac=new int[t+1];
+        for(int i=1;i<=t;i++){
+            fac[i]=i*i;
+        }
+        int[] minCnt=new int[n+1];
+        minCount(minCnt,n,fac);
+        
+        return minCnt[n];
+    }
+    
+    private int minCount(int[] minCnt, int n, int[] fac){
+        if(n==0){
+            return 0;
+        }
+        // System.out.println("find minCount of "+n);
+        if(minCnt[n]>0){
+            // System.out.println("already found "+minCnt[n]);
+            return minCnt[n];
+        }
+        int idx=1;
+        while(idx<fac.length && fac[idx]<=n){
+            idx++;
+        }
+        idx--;
+        int min=n;
+        for(int i=idx;i>1;i--){
+            // System.out.println(n+" fac "+fac[i]);
+            for(int j=n/fac[i];j>0;j--){
+                int count=j+minCount(minCnt, n-j*fac[i], fac);
+                if(count<min){
+                    min=count;
+                }
+            }
+        }
+        minCnt[n]=min;
+        // System.out.println("minCount of "+n+" is "+min);
+        return min;
+    }
+}
+
+Runtime: 1455 ms, faster than 5.01% of Java online submissions for Perfect Squares.
+Memory Usage: 35.3 MB, less than 24.29% of Java online submissions for Perfect Squares.
+
+The runtime is not satisfying.
+It seems calculating from 1 to n (bottom-up) is much faster the this top-bottom algorithm. It 
+is counterintuitive to me.
+
+Other's solution.
+https://leetcode.com/problems/perfect-squares/discuss/71495/An-easy-understanding-DP-solution-in-Java

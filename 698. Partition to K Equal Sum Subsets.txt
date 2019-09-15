@@ -1,0 +1,49 @@
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        Arrays.sort(nums);
+        int n=nums.length;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+        }
+        int sub=sum/k;
+        if(sub*k!=sum || nums[n-1]>sub){
+            return false;
+        }
+        // System.out.println("sub: "+sub);
+        boolean[] taken=new boolean[n];
+        
+        return find(nums,taken,sub,sub);
+    }
+    
+    private boolean find(int[] nums, boolean[] taken, int sub, int rem){
+        // System.out.println("rem: "+rem);
+        if(rem==0){
+            rem=sub;
+        }
+        boolean allTaken=true;
+        boolean found=false;
+        for(int i=nums.length-1;i>=0;i--){
+            // System.out.println("nums:"+nums[i]);
+            if(!taken[i]){
+                allTaken=false;
+                if(nums[i]<=rem){
+                    taken[i]=true;
+                    // System.out.println(nums[i]);
+                    if(find(nums,taken,sub,rem-nums[i])){
+                        return true;
+                    };
+                    taken[i]=false;
+                }
+            }
+        }
+        if(allTaken){
+            return true;
+        }
+        return false;
+    }
+}
+
+Runtime: 2 ms, faster than 64.48% of Java online submissions for Partition to K Equal Sum Subsets.
+Memory Usage: 34.2 MB, less than 81.40% of Java online submissions for Partition to K Equal Sum Subsets.
+

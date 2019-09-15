@@ -1,0 +1,31 @@
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int slow=0;
+        int fast=0;
+        while(slow<nums.length && nums[slow]!=0){
+            slow++;
+        }
+        fast=slow;
+        while(fast<nums.length && nums[fast]==0){
+            fast++;
+        }
+        if(fast==nums.length){
+            return;
+        }
+        while(fast<nums.length){
+            // System.out.println("slow"+slow);
+            // System.out.println("fast"+fast);
+            nums[slow]=nums[fast];
+            nums[fast]=0;
+            while(nums[slow]!=0){
+                slow++;
+            }
+            while(fast<nums.length && nums[fast]==0){
+                fast++;
+            }
+        }
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Move Zeroes.
+Memory Usage: 36.5 MB, less than 100.00% of Java online submissions for Move Zeroes.

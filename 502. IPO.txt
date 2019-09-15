@@ -1,0 +1,30 @@
+My solution is not accepted because of TLE.
+
+class Solution {
+    public int findMaximizedCapital(int k, int W, int[] Profits, int[] Capital) {
+        boolean[] taken=new boolean[Profits.length];
+        while(k>0){
+            int max=-1;
+            int idx=-1;
+            for(int i=0;i<Profits.length;i++){
+                if(!taken[i] && Capital[i]<=W){
+                    if(Profits[i]>max){
+                        max=Profits[i];
+                        idx=i;
+                    }
+                }
+            }
+            if(idx==-1){
+                break;
+            }
+            taken[idx]=true;
+            W+=max;
+            k--;
+        }
+        
+        return W;
+    }
+}
+
+Other's solution using 2 priorityqueue.
+https://leetcode.com/problems/ipo/discuss/98210/Very-Simple-(Greedy)-Java-Solution-using-two-PriorityQueues
