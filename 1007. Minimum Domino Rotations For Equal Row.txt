@@ -1,0 +1,7 @@
+Didn't work it out.
+The key is that the possible nubmer can only be A[0] and B[0], and there is no minimum number of rotations as if A[0]
+and B[0] are both possible, then either A[0] = B[0] or the numbers of rotations are the same. So we only need to test 
+the numbers of rotations based on A[0] and B[0], when there is a solution.
+
+Other's solution.
+https://leetcode.com/problems/minimum-domino-rotations-for-equal-row/discuss/252242/JavaC%2B%2BPython-Different-Ideas
