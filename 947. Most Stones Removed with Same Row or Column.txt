@@ -1,6 +1,40 @@
 Didn't work it out.
+This is the solution based on other's, with a little modification for better understanding.
+class Solution {
+    Map<Integer, Integer> id= new HashMap<>();
+    int islands = 0;
 
-
+    public int removeStones(int[][] stones) {
+        for(int[] st:stones){
+            union(st[0],~st[1]);
+        }
+        return stones.length-islands;
+    }
+    
+    //union row and col
+    private void union(int x, int y){
+        int px=find(x);
+        int py=find(y);
+        //not connected before
+        if(px!=py){
+            id.put(px,py);
+            islands--;
+        }
+    }
+    
+    //return x's parent
+    private int find(int x){
+        //this line hasn't appeared
+        if(id.putIfAbsent(x,x)==null){
+            islands++;
+        }
+        //find the deepest root(parent)
+        if(x!=id.get(x)){
+            id.put(x,find(id.get(x)));
+        }
+        return id.get(x);
+    }
+}
 
 Other's solution. When stones are connected, they can always be removed until there is only one left 
 (like going a path through these stones). So the most stones to be removed will be the number of stones minus 
