@@ -1,0 +1,11 @@
+Didn't work it out.
+
+
+
+Other's solution. When stones are connected, they can always be removed until there is only one left 
+(like going a path through these stones). So the most stones to be removed will be the number of stones minus 
+number of connected stone groups (islands).
+Also he unified indexs through giving unique indexs to rows and cols, then union them. So when a new stone 
+comes up, it unions the row and col, and when another stone connected to this comes up, another row or col is 
+unioned with former one. Clearly, the islands we found is actually connected rows and cols rather than points. 
+https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/discuss/197668/Count-the-Number-of-Islands-O(N)
