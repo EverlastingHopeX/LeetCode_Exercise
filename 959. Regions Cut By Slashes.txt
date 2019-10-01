@@ -2,3 +2,60 @@ Didn't solve it.
 
 Other's solution.
 https://leetcode.com/problems/regions-cut-by-slashes/discuss/205680/JavaC%2B%2BPython-Split-4-parts-and-Union-Find
+
+Solve it in the second time.
+
+class Solution {
+    int[] idx;
+    int islands;
+    public int regionsBySlashes(String[] grid) {
+        int n=grid.length;
+        idx=new int[n*n*4];
+        islands=idx.length;
+        for(int i=0;i<idx.length;i++){
+            idx[i]=i;
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                // grid[i].charAt(j);
+                union(n,i,j,0,i,j-1,2);
+                union(n,i,j,1,i-1,j,3);
+                union(n,i,j,2,i,j+1,0);
+                union(n,i,j,3,i+1,j,1);
+                if(grid[i].charAt(j)!='\\'){
+                    union(n,i,j,0,i,j,1);
+                    union(n,i,j,2,i,j,3);
+                }
+                if(grid[i].charAt(j)!='/'){
+                    union(n,i,j,0,i,j,3);
+                    union(n,i,j,1,i,j,2);
+                }
+            }
+        }
+        return islands;
+    }
+    
+    private void union(int n,int r1,int c1,int k1,int r2,int c2,int k2){
+        if(r1<0 || r1>=n || c1<0 || c1>=n || r2<0 || r2>=n || c2<0 || c2>=n){
+            return;
+        }
+        int i1=4*(r1*n+c1)+k1;
+        int i2=4*(r2*n+c2)+k2;
+        int p1=i1;
+        while(idx[p1]!=p1){
+            p1=idx[p1];
+        }
+        int p2=i2;
+        while(idx[p2]!=p2){
+            p2=idx[p2];
+        }
+        if(idx[p1]!=idx[p2]){
+            idx[p2]=p1;
+            islands--;
+        }
+    }
+    
+}
+
+Runtime: 4 ms, faster than 92.64% of Java online submissions for Regions Cut By Slashes.
+Memory Usage: 36.1 MB, less than 100.00% of Java online submissions for Regions Cut By Slashes.
