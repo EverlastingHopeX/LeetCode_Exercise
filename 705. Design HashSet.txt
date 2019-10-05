@@ -1,0 +1,55 @@
+class MyHashSet {
+    int buckets=1000;
+    int itemPerBucket=1001;
+    boolean[][] table;
+    /** Initialize your data structure here. */
+    public MyHashSet() {
+        table=new boolean[buckets][];
+    }
+    
+    public void add(int key) {
+        int hashkey=hash(key);
+        if(table[hashkey]==null){
+            table[hashkey]=new boolean[itemPerBucket];
+        }
+        table[hashkey][pos(key)]=true;
+    }
+    
+    public void remove(int key) {
+        int hashkey=hash(key);
+        if(table[hashkey]!=null){
+            table[hashkey][pos(key)]=false;
+        }
+    }
+    
+    /** Returns true if this set contains the specified element */
+    public boolean contains(int key) {
+        int hashkey=hash(key);
+        if(table[hashkey]!=null && table[hashkey][pos(key)]){
+            return true;
+        }
+        return false;
+    }
+    
+    private int hash(int key){
+        return key%buckets;
+    }
+    
+    private int pos(int key){
+        return key/buckets;
+    }
+}
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet obj = new MyHashSet();
+ * obj.add(key);
+ * obj.remove(key);
+ * boolean param_3 = obj.contains(key);
+ */
+
+Runtime: 62 ms, faster than 38.10% of Java online submissions for Design HashSet.
+Memory Usage: 55.2 MB, less than 55.56% of Java online submissions for Design HashSet.
+
+learned from other's.
+https://leetcode.com/problems/design-hashset/discuss/143434/Beats-100-Real-Java-Solution-(Not-boolean-array)

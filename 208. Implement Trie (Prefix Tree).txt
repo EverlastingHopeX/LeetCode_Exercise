@@ -1,0 +1,69 @@
+class Trie {
+    class trieNode{
+        // char val;
+        trieNode[] next;
+        boolean isEnd;
+        
+        trieNode(){
+            // val='';
+            next=new trieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    trieNode root;
+    /** Initialize your data structure here. */
+    public Trie() {
+        root=new trieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        trieNode cur=root;
+        for(char c:word.toCharArray()){
+            if(cur.next[c-'a']==null){
+                cur.next[c-'a']=new trieNode();
+            }
+            cur=cur.next[c-'a'];
+        }
+        cur.isEnd=true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        trieNode cur=root;
+        for(char c:word.toCharArray()){
+            if(cur.next[c-'a']==null){
+                return false;
+            }
+            cur=cur.next[c-'a'];
+        }
+        if(cur.isEnd){
+            return true;
+        }
+        return false;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        trieNode cur=root;
+        for(char c:prefix.toCharArray()){
+            if(cur.next[c-'a']==null){
+                return false;
+            }
+            cur=cur.next[c-'a'];
+        }
+        return true;
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+
+Runtime: 74 ms, faster than 87.70% of Java online submissions for Implement Trie (Prefix Tree).
+Memory Usage: 50.5 MB, less than 100.00% of Java online submissions for Implement Trie (Prefix Tree).
