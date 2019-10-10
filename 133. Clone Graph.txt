@@ -1,0 +1,36 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {}
+
+    public Node(int _val,List<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+class Solution {
+    public Node cloneGraph(Node node) {
+        Map<Integer,Node> visited=new HashMap<Integer,Node>();
+        return traverse(visited,node);
+    }
+    
+    private Node traverse(Map<Integer,Node> visited, Node cur){
+        if(visited.containsKey(cur.val)){
+            return visited.get(cur.val);
+        }
+        List<Node> newN=new ArrayList<Node>();
+        Node copy=new Node(cur.val,newN);
+        visited.put(cur.val,copy);
+        for(Node n:cur.neighbors){
+            newN.add(traverse(visited,n));
+        }
+        return copy;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Clone Graph.
+Memory Usage: 32.5 MB, less than 97.65% of Java online submissions for Clone Graph.

@@ -1,0 +1,56 @@
+class Solution {
+    List<String> ans;
+    public List<String> findStrobogrammatic(int n) {
+        ans=new ArrayList<String>();
+        int mid=n/2;
+        String s=new String("");
+        addNum(s,0,mid,mid*2==n);
+        return ans;
+    }
+    
+    private void addNum(String s, int idx, int mid, boolean isEven){
+        // System.out.println(idx+":"+s);
+        StringBuilder sb=new StringBuilder(s);
+        if(idx==mid){
+            if(!isEven){
+                sb.insert(idx,'0');
+                ans.add(sb.toString());
+                sb.delete(idx,idx+1);
+                sb.insert(idx,'1');
+                ans.add(sb.toString());
+                sb.delete(idx,idx+1);
+                sb.insert(idx,'8');
+                ans.add(sb.toString());
+            }
+            else{
+                ans.add(sb.toString());
+            }
+            return;
+        }
+        if(idx!=0){
+            sb.insert(idx,"00");
+            addNum(sb.toString(),idx+1,mid, isEven);
+            sb.delete(idx,idx+2);
+        }
+        sb.insert(idx,"11");
+        addNum(sb.toString(),idx+1,mid, isEven);
+        sb.delete(idx,idx+2);
+        sb.insert(idx,"69");
+        addNum(sb.toString(),idx+1,mid, isEven);
+        sb.delete(idx,idx+2);
+        // System.out.println("after delete:"+sb.toString());
+        sb.insert(idx,"88");
+        addNum(sb.toString(),idx+1,mid, isEven);
+        sb.delete(idx,idx+2);
+        sb.insert(idx,"96");
+        addNum(sb.toString(),idx+1,mid, isEven);
+        sb.delete(idx,idx+2);
+    }
+}
+
+Runtime: 6 ms, faster than 82.53% of Java online submissions for Strobogrammatic Number II.
+Memory Usage: 58.5 MB, less than 9.52% of Java online submissions for Strobogrammatic Number II.
+
+Other's more concise solution.
+use more time but less space.
+https://leetcode.com/problems/strobogrammatic-number-ii/discuss/67280/AC-clean-Java-solution

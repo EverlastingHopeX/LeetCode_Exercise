@@ -1,0 +1,35 @@
+Didn't work it out.
+This is based on other's solution with some note.
+class Solution {
+    public double new21Game(int N, int K, int W) {
+        //when K==0, Alice cann't draw number
+        //when K>N+W, the number will not reach K
+        if(K==0 || K>=N+W){
+           return 1;
+        }
+        double[] prob=new double[N+1];
+        double sum=1, ans=0;
+        prob[0]=1;
+        for(int i=1;i<=N;i++){
+            //probability to reach i is prob[i-W]*1/W+...+prob[i-1]*1/W
+            prob[i]=sum/W;
+            //moving the window
+            if(i>=W){
+                sum-=prob[i-W];
+            }
+            //moving the window
+            //and if i>=K, probability to reach i is prob[i-W]*1/W+...+prob[K-1]*1/W
+            if(i<K){
+                sum+=prob[i];
+            }
+            //answer would be probability to reach K to N
+            else{
+                ans+=prob[i];
+            }
+        }
+        return ans;
+    }
+}
+
+Other's solution.
+https://leetcode.com/problems/new-21-game/discuss/132334/One-Pass-DP-O(N)

@@ -1,0 +1,80 @@
+class Solution {
+    public int minAreaRect(int[][] points) {
+        Map<Integer, List<Integer>> mapX=new HashMap<Integer, List<Integer>>();
+        Map<Integer, List<Integer>> mapY=new HashMap<Integer, List<Integer>>();
+        for(int[] point:points){
+            // System.out.println("x:"+point[0]);
+            if(mapX.containsKey(point[0])){
+                List<Integer> listY=mapX.get(point[0]);
+                listY.add(point[1]);
+                // System.out.println("add");
+                // System.out.println(listY.size());
+            }
+            else{
+                List<Integer> listY=new ArrayList<Integer>();
+                listY.add(point[1]);
+                mapX.put(point[0],listY);
+                // System.out.println("new");
+            }
+            // System.out.println("y:"+point[1]);
+            if(mapY.containsKey(point[1])){
+                List<Integer> listX=mapY.get(point[1]);
+                listX.add(point[0]);
+                // System.out.println("add");
+                // System.out.println(listX.size());
+            }
+            else{
+                List<Integer> listX=new ArrayList<Integer>();
+                listX.add(point[0]);
+                mapY.put(point[1],listX);
+                // System.out.println("new");
+            }
+        }
+        int min=Integer.MAX_VALUE;
+        for(Map.Entry<Integer,List<Integer>> entry:mapX.entrySet()){
+            Integer x=entry.getKey();
+            List<Integer> listX=entry.getValue();
+            // System.out.println("x:"+x);
+            if(listX.size()<2){
+                // System.out.println(listX.size()+" too short");
+                continue;
+            }
+            for(int i=0;i<listX.size()-1;i++){
+                for(int j=i+1;j<listX.size();j++){
+                    min=Math.min(min,findMin(x,listX.get(i),listX.get(j),mapY));
+                }
+            }
+        }
+        
+        return min==Integer.MAX_VALUE?0:min;
+    }
+    
+    private int findMin(int x1,int y1, int y2, Map<Integer, List<Integer>> mapY){
+        // System.out.println("findMin:"+x1);
+        // System.out.println("y1,y2: "+y1+","+y2);
+        List<Integer> list1=mapY.get(y1);
+        List<Integer> list2=mapY.get(y2);
+        int min=Integer.MAX_VALUE;
+        if(list1.size()<2 || list2.size()<2){
+            return min;
+        }
+        for(int t1:list1){
+            for(int t2:list2){
+                // if(x1==22367){
+                //     System.out.println(t1+","+t2);
+                //     System.out.println(t1==t2);
+                // }
+                if(t1==t2 && t1!=x1){
+                    // System.out.println("x2:"+t2);
+                    min=Math.min(min,Math.abs(t1-x1)*Math.abs(y2-y1));
+                }
+            }
+        }
+        return min;
+    }
+}
+
+Runtime: 228 ms, faster than 67.00% of Java online submissions for Minimum Area Rectangle.
+Memory Usage: 54.5 MB, less than 60.00% of Java online submissions for Minimum Area Rectangle.
+
+When Integer is bigger than 128, should not use ==, should use equals()
