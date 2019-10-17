@@ -1,0 +1,21 @@
+class Solution {
+    public String reverseWords(String s) {
+        Stack<Character> stack=new Stack<Character>();
+        StringBuilder sb=new StringBuilder("");
+        int offset=0;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)==' '){
+                // System.out.println(sb.toString());
+                // System.out.println(sb.length());
+                offset=sb.length()+1;
+                sb.insert(offset-1,s.charAt(i));
+            }
+            else
+                sb.insert(offset,s.charAt(i));
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 12 ms, faster than 31.98% of Java online submissions for Reverse Words in a String III.
+Memory Usage: 38 MB, less than 100.00% of Java online submissions for Reverse Words in a String III.

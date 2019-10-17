@@ -1,0 +1,78 @@
+class TimeMap {
+
+    class Vt{
+        String val;
+        int ts;
+        Vt(String v, int t){
+            val=v;
+            ts=t;
+        }
+    }
+    /** Initialize your data structure here. */
+    private Map<String,List<Vt>> map;
+    
+    public TimeMap() {
+        map=new HashMap<String, List<Vt>>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        // System.out.println("set "+key+" "+timestamp);
+        List<Vt> values;
+        if(map.containsKey(key)){
+            values=map.get(key);
+            values.add(new Vt(value,timestamp));
+        }
+        else{
+            values=new ArrayList<Vt>();
+            values.add(new Vt(value,timestamp));
+            map.put(key,values);
+        }
+    }
+    
+    public String get(String key, int timestamp) {
+        // System.out.println("get "+key+" "+timestamp);
+        String value="";
+        if(map.containsKey(key)){
+            List<Vt> values=map.get(key);
+            value=biSearch(values,timestamp);
+        }
+        // System.out.println(value);
+        return value;
+    }
+    
+    private String biSearch(List<Vt> values, int timestamp){
+        int low=0;
+        int high=values.size()-1;
+        if(timestamp<values.get(low).ts){
+            return "";
+        }
+        if(timestamp>values.get(high).ts){
+            return values.get(high).val;
+        }
+        while(low<high){
+            // System.out.println(low+","+high);
+            int mid=(low+high)/2;
+            if(values.get(mid).ts<timestamp){
+                low=mid+1;
+            }
+            else if(values.get(mid).ts>timestamp){
+                high=mid-1;
+            }
+            else{
+                return values.get(mid).val;
+            }
+        }
+        // System.out.println(low+","+high);
+        return values.get(high).ts>timestamp?values.get(high-1).val:values.get(high).val;
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
+
+Runtime: 173 ms, faster than 98.86% of Java online submissions for Time Based Key-Value Store.
+Memory Usage: 134 MB, less than 97.30% of Java online submissions for Time Based Key-Value Store.
