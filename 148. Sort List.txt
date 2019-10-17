@@ -1,0 +1,58 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        // System.out.println("sort "+head.val);
+        if(head==null || head.next==null){
+            // System.out.println("null");
+            return head;
+        }
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode prev=head;
+        while(fast!=null && fast.next!=null){
+            prev=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        prev.next=null;
+        // System.out.println("prev:"+prev.val);
+        // System.out.println("former:"+head.val);
+        // System.out.println("latter:"+slow.val);
+        fast=sortList(slow);
+        slow=sortList(head);
+        // System.out.println("slow:"+slow.val);
+        // System.out.println("fast:"+fast.val);
+        return merge(slow,fast);
+    }
+    
+    private ListNode merge(ListNode form, ListNode latt){
+        // System.out.println("merge:"+form.val+":"+latt.val);
+        ListNode dummy=new ListNode(0);
+        ListNode cur=dummy;
+        while(form!=null && latt!=null){
+            // System.out.println("cur:"+cur.val);
+            if(form.val<latt.val){
+                cur.next=form;
+                form=form.next;
+            }
+            else{
+                cur.next=latt;
+                latt=latt.next;
+            }
+            cur=cur.next;
+        }
+        cur.next=form==null?latt:form;
+        // System.out.println("merge end");
+        return dummy.next;
+    }
+}
+
+Runtime: 3 ms, faster than 97.48% of Java online submissions for Sort List.
+Memory Usage: 40.3 MB, less than 82.46% of Java online submissions for Sort List.
