@@ -1,0 +1,43 @@
+Didn't work it out.
+Based on other's idea.
+https://leetcode.com/problems/encode-and-decode-strings/discuss/70412/AC-Java-Solution
+
+public class Codec {
+
+    // Encodes a list of strings to a single string.
+    public String encode(List<String> strs) {
+        StringBuilder sb=new StringBuilder("");
+        for(String s:strs){
+            sb.append(s.length()+"/"+s);
+        }
+        // System.out.println(sb.toString());
+        return sb.toString();
+    }
+
+    // Decodes a single string to a list of strings.
+    public List<String> decode(String s) {
+        List<String> list=new ArrayList<String>();
+        for(int i=0;i<s.length();i++){
+            // System.out.println(i+": "+s.charAt(i));
+            int l=0;
+            while(Character.isDigit(s.charAt(i))){
+                l=l*10+s.charAt(i)-'0';
+                i++;
+            }
+            StringBuilder sb=new StringBuilder("");
+            for(int j=0;j<l;j++){
+                sb.append(s.charAt(i+1+j));
+            }
+            list.add(sb.toString());
+            i+=l;
+        }
+        return list;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(strs));
+
+Runtime: 14 ms, faster than 21.33% of Java online submissions for Encode and Decode Strings.
+Memory Usage: 40.5 MB, less than 76.47% of Java online submissions for Encode and Decode Strings.
