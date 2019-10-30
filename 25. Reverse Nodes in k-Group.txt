@@ -1,0 +1,43 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode prev=dummy;
+        ListNode left=head;
+        ListNode right=head;
+        while(right!=null){
+            for(int i=1;i<k;i++){
+                right=right.next;
+                if(right==null){
+                    return dummy.next;
+                }
+            }
+            ListNode tprev=prev;
+            prev=tprev.next;
+            tprev.next=right;
+            tprev=right.next;
+            while(tprev!=right){
+                ListNode t=left.next;
+                left.next=tprev;
+                tprev=left;
+                left=t;
+            }
+            right=left;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 1 ms, faster than 35.68% of Java online submissions for Reverse Nodes in k-Group.
+Memory Usage: 37 MB, less than 100.00% of Java online submissions for Reverse Nodes in k-Group.
+
+worse than first round.
+Should cut the current window and reverse, then connect to latter part.
