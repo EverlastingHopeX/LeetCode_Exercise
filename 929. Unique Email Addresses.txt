@@ -1,0 +1,48 @@
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        int ans=0;
+        Map<String, Set<String>> map=new HashMap<String, Set<String>>();
+        for(String e:emails){
+            String[] s=e.split("@");
+            String local=helper(s[0]);
+            String domain=s[1];
+            // System.out.println(local+"@"+domain);
+            if(map.containsKey(local)){
+                // System.out.println("local exists");
+                Set<String> set=map.get(local);
+                if(!set.contains(domain)){
+                    // System.out.println("domain not exists");
+                    set.add(domain);
+                    ans++;
+                }
+            }
+            else{
+                // System.out.println("local not exists");
+                Set<String> set=new HashSet<String>();
+                set.add(domain);
+                map.put(local,set);
+                ans++;
+            }
+        }
+        return ans;
+    }
+    
+    private String helper(String raw){
+        StringBuilder sb=new StringBuilder("");
+        for(char ch:raw.toCharArray()){
+            if(ch=='.'){
+                continue;
+            }
+            else if(ch=='+'){
+                break;
+            }
+            else{
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 8 ms, faster than 90.46% of Java online submissions for Unique Email Addresses.
+Memory Usage: 36.9 MB, less than 99.37% of Java online submissions for Unique Email Addresses.

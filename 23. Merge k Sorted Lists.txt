@@ -1,0 +1,44 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length==0){
+            return null;
+        }
+        ListNode cur=lists[0];
+        for(int i=1;i<lists.length;i++){
+            cur=merge(cur,lists[i]);
+        }
+        return cur;
+    }
+    
+    private ListNode merge(ListNode fst, ListNode snd){
+        ListNode dummy=new ListNode(0);
+        ListNode cur=dummy;
+        while(fst!=null && snd!=null){
+            if(fst.val<=snd.val){
+                cur.next=fst;
+                fst=fst.next;
+            }
+            else{
+                cur.next=snd;
+                snd=snd.next;
+            }
+            cur=cur.next;
+        }
+        cur.next=fst==null?snd:fst;
+        return dummy.next;
+    }
+}
+
+Runtime: 123 ms, faster than 14.45% of Java online submissions for Merge k Sorted Lists.
+Memory Usage: 57.1 MB, less than 5.47% of Java online submissions for Merge k Sorted Lists.
+
+My solution is quite brute, priorityqueue is one way to reduce time complexity to O(nlogk), 
+where k is size of lists.
