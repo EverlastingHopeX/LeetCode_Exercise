@@ -1,0 +1,37 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+        if(pre.length==0){
+            return null;
+        }
+        TreeNode root=new TreeNode(pre[0]);
+        if(pre.length==1){
+            return root;
+        }
+        // System.out.println(root.val);
+        int j=0;
+        for(j=0;j<post.length-1;j++){
+            if(post[j]==pre[1]){
+                break;
+            }
+        }
+        // System.out.println("j:"+j);
+        
+        root.left=constructFromPrePost(Arrays.copyOfRange(pre,1,j+2),Arrays.copyOfRange(post,0,j+1));
+        if(j<post.length-2){
+            root.right=constructFromPrePost(Arrays.copyOfRange(pre,j+2,pre.length),Arrays.copyOfRange(post,j+1,post.length-1));
+        }
+        return root;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Construct Binary Tree from Preorder and Postorder Traversal.
+Memory Usage: 40.8 MB, less than 9.09% of Java online submissions for Construct Binary Tree from Preorder and Postorder Traversal.
