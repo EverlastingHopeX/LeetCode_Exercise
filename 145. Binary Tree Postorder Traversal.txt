@@ -1,0 +1,83 @@
+recursive
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    List<Integer> ans;
+    public List<Integer> postorderTraversal(TreeNode root) {
+        ans=new ArrayList<Integer>();
+        if(root==null){
+            return ans;
+        }
+        traversal(root.left);
+        traversal(root.right);
+        ans.add(root.val);
+        return ans;
+    }
+    
+    private void traversal(TreeNode root){
+        if(root==null){
+            return;
+        }
+        traversal(root.left);
+        traversal(root.right);
+        ans.add(root.val);
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Postorder Traversal.
+Memory Usage: 35 MB, less than 100.00% of Java online submissions for Binary Tree Postorder Traversal.
+
+iterative
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans=new ArrayList<Integer>();
+        Stack<TreeNode> stack=new Stack<TreeNode>();
+        TreeNode cur=root;
+        while(cur!=null){
+            stack.push(cur);
+            cur=cur.left;
+        }
+        TreeNode prev=null;
+        while(!stack.empty()){
+            cur=stack.pop();
+            // System.out.println("pop: "+cur.val);
+            if(cur.right==prev || cur.right==null){
+                // System.out.println("add: "+cur.val);
+                prev=cur;
+                ans.add(cur.val);
+            }
+            else{
+                stack.push(cur);
+                cur=cur.right;
+                while(cur!=null){
+                    stack.push(cur);
+                    cur=cur.left;
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 1 ms, faster than 64.53% of Java online submissions for Binary Tree Postorder Traversal.
+Memory Usage: 35.1 MB, less than 100.00% of Java online submissions for Binary Tree Postorder Traversal.
+
+Other's summary. The postorder is a little tricky and may not be able to generalize to graph.
+https://leetcode.com/problems/binary-tree-postorder-traversal/discuss/45551/Preorder-Inorder-and-Postorder-Iteratively-Summarization

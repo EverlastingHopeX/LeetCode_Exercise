@@ -1,0 +1,59 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        List<Integer> list=new ArrayList<Integer>();
+        int count=0;
+        Queue<TreeNode> q=new LinkedList<TreeNode>();
+        if(root.left!=null){
+            count++;
+            q.offer(root.left);
+        }
+        if(root.right!=null){
+            count++;
+            q.offer(root.right);
+        }
+        list.add(root.val);
+        ans.add(list);
+        BFS(q,count,ans);
+        return ans;
+    }
+    
+    private void BFS(Queue<TreeNode> q, int c, List<List<Integer>> ans){
+        if(c==0){
+            return;
+        }
+        int count=0;
+        List<Integer> list=new ArrayList<Integer>();
+        for(int i=0;i<c;i++){
+            TreeNode cur=q.poll();
+            list.add(cur.val);
+            if(cur.left!=null){
+                count++;
+                q.offer(cur.left);
+            }
+            if(cur.right!=null){
+                count++;
+                q.offer(cur.right);
+            }
+        }
+        ans.add(list);
+        BFS(q,count,ans);
+    }
+}
+
+Runtime: 1 ms, faster than 92.70% of Java online submissions for Binary Tree Level Order Traversal.
+Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for Binary Tree Level Order Traversal.
+
+Better than my first round.
