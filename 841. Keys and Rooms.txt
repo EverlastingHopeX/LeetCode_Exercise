@@ -35,3 +35,32 @@ Memory Usage: 44.9 MB, less than 6.73% of Java online submissions for Keys and R
 This solution is brute, and the perfomance is not satisfying.
 Here is link to a solution based on DFS.
 https://leetcode.com/problems/keys-and-rooms/discuss/133855/Straight-Forward
+
+much easier to come up with BFS in the second round
+
+class Solution {
+    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+        boolean[] visited=new boolean[rooms.size()];
+        Queue<Integer> keys=new LinkedList<Integer>();
+        keys.offer(0);
+        while(keys.size()>0){
+            int next=keys.poll();
+            List<Integer> ks=rooms.get(next);
+            visited[next]=true;
+            for(int k:ks){
+                if(!visited[k]){
+                    keys.offer(k);
+                }
+            }
+        }
+        for(boolean v:visited){
+            if(!v){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 2 ms, faster than 55.10% of Java online submissions for Keys and Rooms.
+Memory Usage: 43 MB, less than 75.86% of Java online submissions for Keys and Rooms.
