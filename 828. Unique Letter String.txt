@@ -1,0 +1,7 @@
+Didn't work it out.
+My solution will cause O(n!) time which is not acceptable.
+
+Other's solution.
+https://leetcode.com/problems/unique-letter-string/discuss/128952/One-pass-O(N)-Straight-Forward
+Although this question seems should be solved by divide and conquer, thinking with respect to each
+character rather than substring is a better direction. 

@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        int ans=0;
+        Queue<TreeNode> q=new LinkedList<TreeNode>();
+        q.offer(root);
+        ans=BFS(q,0);
+        return ans;
+    }
+    
+    private int BFS(Queue<TreeNode> q,int num){
+        int size=q.size();
+        if(size==0){
+            return num;
+        }
+        for(int i=0;i<size;i++){
+            TreeNode cur=q.poll();
+            if(cur.left!=null){
+                q.offer(cur.left);
+            }
+            if(cur.right!=null){
+                q.offer(cur.right);
+            }
+        }
+        return BFS(q,num+size);
+    }
+}
+
+Runtime: 2 ms, faster than 10.74% of Java online submissions for Count Complete Tree Nodes.
+Memory Usage: 39.7 MB, less than 63.42% of Java online submissions for Count Complete Tree Nodes.
+
+much better than the first round, but still awful performance.
+Other's solution: https://leetcode.com/problems/count-complete-tree-nodes/discuss/61950/My-JAVA-solution-with-explanation-which-beats-99
