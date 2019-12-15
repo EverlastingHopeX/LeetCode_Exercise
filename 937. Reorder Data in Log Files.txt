@@ -1,0 +1,8 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/reorder-data-in-log-files/discuss/212748/Jave-solution
+
+It can be easily done by overriding comparator.
+I tried to sort it in a more brute force way, but it 
+becomes so complex that makes me frustrated.

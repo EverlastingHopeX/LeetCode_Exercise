@@ -1,0 +1,11 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/longest-palindromic-substring/discuss/2928/Very-simple-clean-java-solution
+
+different from sliding window, this is extending from a point (or two points).
+This solution seems quite straightforward and has good performance.
+
+Another solution using DP.
+https://leetcode.com/problems/longest-palindromic-substring/discuss/2921/Share-my-Java-solution-using-dynamic-programming
+But this solution actually has worse performance.

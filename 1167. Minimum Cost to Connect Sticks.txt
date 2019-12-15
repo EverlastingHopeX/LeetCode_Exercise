@@ -1,0 +1,21 @@
+class Solution {
+    public int connectSticks(int[] sticks) {
+        Queue<Integer> sq=new PriorityQueue<Integer>();
+        for(int st:sticks){
+            sq.offer(st);
+        }
+        int cost=0;
+        while(sq.size()>1){
+            int fi=sq.poll();
+            int se=sq.poll();
+            cost+=fi+se;
+            sq.offer(fi+se);
+        }
+        return cost;
+    }
+}
+
+Runtime: 43 ms, faster than 43.41% of Java online submissions for Minimum Cost to Connect Sticks.
+Memory Usage: 39.2 MB, less than 100.00% of Java online submissions for Minimum Cost to Connect Sticks.
+
+It is easy using priority queue, but could be optimized.
