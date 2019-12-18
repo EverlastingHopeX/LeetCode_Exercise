@@ -1,0 +1,28 @@
+class Solution {
+    public int twoSumLessThanK(int[] A, int K) {
+        Arrays.sort(A);
+        // for(int a:A){
+        //     System.out.println(a);
+        // }
+        int max=-1;
+        int left=0;
+        int right=A.length-1;
+        while(left<right){
+            int sum=A[left]+A[right];
+            if(sum>=K){
+                right--;
+            }
+            else{
+                max=Math.max(sum,max);
+                left++;
+            }
+        }
+        return max;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Two Sum Less Than K.
+Memory Usage: 36.8 MB, less than 100.00% of Java online submissions for Two Sum Less Than K.
+
+I tried to use binary search, but it didn't work. Maybe it could work, but the code becomes too
+complicated.
