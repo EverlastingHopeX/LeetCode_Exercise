@@ -1,0 +1,65 @@
+class Solution {
+    class Path{
+        String name;
+        int level;
+        boolean isFile;
+        int dist;
+        Path(String n, int l, boolean i, int d){
+            name=n;
+            level=l;
+            isFile=i;
+            dist=d;
+        }
+    }
+    public int lengthLongestPath(String input) {
+        int start=0;
+        int end=-1;
+        List<Path> list=new ArrayList<>();
+        Path root=new Path("",-1,false,-1);
+        Stack<Path> prev=new Stack<Path>();
+        prev.push(root);
+        int len=0;
+        for(String line:input.split("\\n")){
+            Path cur=makePath(line);
+            // System.out.println(cur.name+" : "+cur.level);
+            while(cur.level<=prev.peek().level){
+                prev.pop();
+            }
+            cur.dist=prev.peek().dist+cur.name.length()+1;
+            // System.out.println("dist: "+cur.dist);
+            prev.push(cur);
+            if(cur.isFile && cur.dist>len){
+                len=cur.dist;
+            }
+        }
+        return len;
+    }
+    
+    private Path makePath(String line){
+        int tabCnt=0;
+        int i=0;
+        for(;i<line.length();i++){
+            // System.out.println(line.charAt(i));
+            if(line.charAt(i)=='\t'){
+                tabCnt++;
+            }
+            else{
+                break;
+            }
+        }
+        boolean isFile=false;
+        int size=line.length();
+        if(line.contains(".")){
+            isFile=true;
+        }
+        Path p=new Path(line.substring(i),tabCnt,isFile,-1);
+        // System.out.println(p.getKey()+" : "+p.getValue());
+        return p;
+    }
+}
+
+Runtime: 3 ms, faster than 18.47% of Java online submissions for Longest Absolute File Path.
+Memory Usage: 34.6 MB, less than 100.00% of Java online submissions for Longest Absolute File Path.
+
+Could be better if I don't create the Path class and use makePath to generate Path object.
+But it is more readable, I think.

@@ -1,0 +1,27 @@
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        for(int right=nums.length-1;right>1;right--){
+            int left=right-1;
+            while(left>=1 && nums[left]<=nums[right]){
+                left--;
+            }
+            int p=left-1;
+            while(p>=0 && nums[p]>=nums[right]){
+                p--;
+            }
+            // System.out.println(p+" : "+left+" : "+right);
+            if(p>=0){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 83 ms, faster than 36.47% of Java online submissions for 132 Pattern.
+Memory Usage: 38.5 MB, less than 100.00% of Java online submissions for 132 Pattern.
+
+Acceptable performance. O(n^2).
+
+Other's O(n) solution.
+https://leetcode.com/problems/132-pattern/discuss/94089/Java-solutions-from-O(n3)-to-O(n)-for-%22132%22-pattern-(updated-with-one-pass-slution)

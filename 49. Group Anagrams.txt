@@ -1,0 +1,10 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
+
+It is brilliant to use Arrays.sort().
+I tried to sort the words in map or code them into integer, both become too complicated.
+This solution is very concise and has acceptable performance.
+
+Also, using String.valueOf() will greatly improve the performance than using Arrays.toString()
