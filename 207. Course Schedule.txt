@@ -1,0 +1,48 @@
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        boolean[] visited=new boolean [numCourses];
+        boolean[] notCircle=new boolean [numCourses];
+        List<Integer>[] conn=new ArrayList[numCourses];
+        for(int[] p:prerequisites){
+            int crs=p[0];
+            int pre=p[1];
+            if(conn[crs]==null){
+                conn[crs]=new ArrayList<Integer>();
+            }
+            conn[crs].add(pre);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(visited[i]){
+                continue;
+            }
+            if(!DFS(conn,visited,notCircle,i)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean DFS(List<Integer>[] conn, boolean[] visited, boolean[] notCircle, int idx){
+        // System.out.println(idx);
+        List<Integer> pres=conn[idx];
+        if(pres==null){
+            return true;
+        }
+        boolean found=false;
+        visited[idx]=true;
+        for(int pre:pres){
+            if(notCircle[pre]){
+                continue;
+            }
+            if(visited[pre] || !DFS(conn,visited, notCircle,pre)){
+                // visited[idx]=false;
+                return false;
+            }
+        }
+        notCircle[idx]=true;
+        return true;
+    }
+}
+
+Runtime: 2 ms, faster than 99.82% of Java online submissions for Course Schedule.
+Memory Usage: 43.9 MB, less than 96.92% of Java online submissions for Course Schedule.

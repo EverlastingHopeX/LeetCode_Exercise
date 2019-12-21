@@ -4,3 +4,38 @@ This question can not be solved by DFS.
 Here is one solution using BFS.
 
 https://leetcode.com/problems/shortest-path-in-binary-matrix/discuss/312706/JAVA-BFS
+
+
+class Solution {
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        int R=grid.length;
+        int C=grid[0].length;
+        boolean[][] visited=new boolean[R][C];
+        Queue<int[]> pq=new PriorityQueue<int[]>((o1,o2)->(o1[2]-o2[2]));
+        //row, col, path
+        pq.offer(new int[]{0,0,1});
+        int[][] nbs={{-1,-1},{-1,0},{-1,1},{0,-1},{0,0},{0,1},{1,-1},{1,0},{1,1}};
+        
+        while(pq.size()>0){
+            int[] cur=pq.poll();
+            if(cur[0]<0 || cur[0]>=R || cur[1]<0 || cur[1] >=C || grid[cur[0]][cur[1]]!=0){
+                continue;
+            }
+            if(cur[0] == R-1 && cur[1] == C-1){
+                return cur[2];
+            }
+            for(int[] nb:nbs){
+                int r=cur[0]+nb[0];
+                int c=cur[1]+nb[1];
+                pq.offer(new int[]{r,c,cur[2]+1});
+            }
+            grid[cur[0]][cur[1]]=1;
+        }
+        return -1;
+    }
+}
+
+Runtime: 144 ms, faster than 5.08% of Java online submissions for Shortest Path in Binary Matrix.
+Memory Usage: 53.9 MB, less than 100.00% of Java online submissions for Shortest Path in Binary Matrix.
+
+Using BFS, however, the performance is not good enough.

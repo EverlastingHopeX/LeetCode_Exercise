@@ -1,0 +1,47 @@
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> st=new Stack<Character>();
+        for(char ch:s.toCharArray()){
+            // System.out.println(ch);
+            if(ch=='(' || ch=='[' || ch=='{'){
+                st.push(ch);
+                // System.out.println("push");
+            }
+            else{
+                char prev=st.isEmpty()?' ':st.peek();
+                // System.out.println("prev: "+prev);
+                if(ch==')'){
+                    if(prev=='('){
+                        // System.out.println("pop");
+                        st.pop();
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else if(ch==']'){
+                    if(prev=='['){
+                        // System.out.println("pop");
+                        st.pop();
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else if(ch=='}'){
+                    if(prev=='{'){
+                        // System.out.println("pop");
+                        st.pop();
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+        }
+        return st.isEmpty()?true:false;
+    }
+}
+
+Runtime: 1 ms, faster than 98.78% of Java online submissions for Valid Parentheses.
+Memory Usage: 34 MB, less than 100.00% of Java online submissions for Valid Parentheses.
