@@ -1,0 +1,82 @@
+class SnakeGame {
+    int width;
+    int height;
+    Queue<int[]> foods;
+    int eaten;
+    LinkedList<int[]> snake;
+    Map<String,int[]> moves;
+    /** Initialize your data structure here.
+        @param width - screen width
+        @param height - screen height 
+        @param food - A list of food positions
+        E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0]. */
+    public SnakeGame(int width, int height, int[][] food) {
+        this.width=width;
+        this.height=height;
+        
+        foods=new LinkedList<int[]>();
+        eaten=0;
+        for(int[] f:food){
+            foods.offer(f);
+        }
+        
+        snake=new LinkedList<int[]>();
+        snake.add(new int[]{0,0});
+        
+        moves=new HashMap<String, int[]>();
+        moves.put("L",new int[]{0,-1});
+        moves.put("R",new int[]{0,1});
+        moves.put("D",new int[]{1,0});
+        moves.put("U",new int[]{-1,0});
+    }
+    
+    /** Moves the snake.
+        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down 
+        @return The game's score after the move. Return -1 if game over. 
+        Game over when snake crosses the screen boundary or bites its body. */
+    public int move(String direction) {
+        int[] head=snake.peekFirst();
+        int[] mv=moves.get(direction);
+        int[] next=new int[2];
+        next[0]=head[0]+mv[0];
+        next[1]=head[1]+mv[1];
+        // System.out.println(direction);
+        // System.out.println("move to "+next[0]+", "+next[1]);
+        //hit border
+        if(next[0] <0 || next[0]>=height || next[1]<0 || next[1] >=width){
+            // System.out.println("hit border");
+            return -1;
+        }
+        //bite itself
+        for(int i=0;i<snake.size()-1;i++){
+            if(snake.get(i)[0]==next[0] && snake.get(i)[1]==next[1]){
+                // System.out.println("bit itself");
+                return -1;
+            }
+        }
+        
+        int[] nextFood=foods.peek();
+        // System.out.println("next food: "+nextFood[0]+", "+nextFood[1]);
+        if(Arrays.equals(foods.peek(),next)){
+            // System.out.println("eat food");
+            eaten++;
+            foods.poll();
+        }
+        else{
+            // System.out.println("safe move");
+            snake.removeLast();
+        }
+        snake.addFirst(next);
+        // System.out.println("reture "+eaten);
+        return eaten;
+    }
+}
+
+/**
+ * Your SnakeGame object will be instantiated and called as such:
+ * SnakeGame obj = new SnakeGame(width, height, food);
+ * int param_1 = obj.move(direction);
+ */
+
+Runtime: 59 ms, faster than 87.16% of Java online submissions for Design Snake Game.
+Memory Usage: 59.9 MB, less than 93.75% of Java online submissions for Design Snake Game.
