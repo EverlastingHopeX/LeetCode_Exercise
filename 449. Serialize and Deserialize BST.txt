@@ -1,0 +1,80 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root==null){
+            return null;
+        }
+        List<Integer> preorder=new ArrayList<Integer>();
+        TreeNode cur=root;
+        Stack<TreeNode> st=new Stack<TreeNode>();
+        st.push(root);
+        StringBuilder sb=new StringBuilder("");
+        while(!st.isEmpty()){
+            cur=st.pop();
+            // System.out.println("cur: "+cur.val);
+            sb.append(cur.val);
+            sb.append(",");
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+        }
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        // System.out.println(data);
+        if(data==null || data.length()==0){
+            return null;
+        }
+        String[] arr=data.split(",");
+        List<Integer> list=new ArrayList<>();
+        for(String a:arr){
+            list.add(Integer.parseInt(a));
+        }
+        // System.out.println(list.size());
+        return construct(list);
+    }
+    
+    private TreeNode construct(List<Integer> data){
+        if(data.size()<1){
+            return null;
+        }
+        TreeNode root=new TreeNode(data.get(0));
+        // System.out.println("cur: "+root.val);
+        int p=0;
+        while(p<data.size() && data.get(p)<=root.val){
+            p++;
+        }
+        // System.out.println("p: "+p);
+        if(p>1){
+            root.left=construct(data.subList(1,p));
+        }
+        if(p<data.size()){
+            root.right=construct(data.subList(p,data.size()));
+        }
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
+
+Runtime: 9 ms, faster than 43.75% of Java online submissions for Serialize and Deserialize BST.
+Memory Usage: 38.4 MB, less than 100.00% of Java online submissions for Serialize and Deserialize BST.、
+
+Easier than 297, as the node and its children can be determined by their values.

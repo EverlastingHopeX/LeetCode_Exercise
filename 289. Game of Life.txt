@@ -1,0 +1,52 @@
+class Solution {
+    int[][] dir;
+    public void gameOfLife(int[][] board) {
+        dir=new int[][]{{-1,-1},{0,-1},{1,-1},{-1,0},{1,0},{-1,1},{0,1},{1,1}};
+        int R=board.length;
+        int C=board[0].length;
+        int[][] next=new int[R][C];
+        for(int i=0;i<R;i++){
+            for(int j=0;j<C;j++){
+                next[i][j]=getNext(board,i,j);
+                // System.out.println("return "+next[i][j]);
+            }
+        }
+        for(int i=0;i<R;i++){
+            for(int j=0;j<C;j++){
+                board[i][j]=next[i][j];
+            }
+        }
+    }
+    
+    private int getNext(int[][] board, int r, int c){
+        // System.out.println(r+", "+c);
+        int cnt=0;
+        for(int[] d:dir){
+            int rr=r+d[0];
+            int cc=c+d[1];
+            if(rr<0 || rr>=board.length || cc<0 || cc>=board[0].length){
+                continue;
+            }
+            if(board[rr][cc]==1){
+                cnt++;
+            }
+        }
+        // System.out.println(cnt);
+        if(board[r][c]==1){
+            if(cnt<2 || cnt>3){
+                return 0;
+            }
+            return 1;
+        }
+        if(cnt==3){
+            return 1;
+        }
+        return 0;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Game of Life.
+Memory Usage: 35 MB, less than 100.00% of Java online submissions for Game of Life.
+
+This solution doesn't solve the follow-up.
+The in place solution is not hard. 
