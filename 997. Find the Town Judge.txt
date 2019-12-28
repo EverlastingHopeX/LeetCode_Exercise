@@ -1,0 +1,50 @@
+class Solution {
+    public int findJudge(int N, int[][] trust) {
+        //0: trust
+        //1: trusted
+        int[][] tstCnt=new int[N][2];
+        for(int[] tr:trust){
+            tstCnt[tr[0]-1][0]++;
+            tstCnt[tr[1]-1][1]++;
+        }
+        for(int i=0;i<N;i++){
+            if(tstCnt[i][0]==0 && tstCnt[i][1]==N-1){
+                return i+1;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 4 ms, faster than 39.33% of Java online submissions for Find the Town Judge.
+Memory Usage: 57.8 MB, less than 100.00% of Java online submissions for Find the Town Judge.
+
+Brute force solution.
+Can be improved easily.
+
+class Solution {
+    public int findJudge(int N, int[][] trust) {
+        //0: trust
+        //1: trusted
+        // int[][] tstCnt=new int[N][2];
+        int[] tstCnt=new int[N];
+        for(int[] tr:trust){
+            // tstCnt[tr[0]-1][0]++;
+            // tstCnt[tr[1]-1][1]++;
+            tstCnt[tr[0]-1]--;
+            tstCnt[tr[1]-1]++;
+        }
+        for(int i=0;i<N;i++){
+            // if(tstCnt[i][0]==0 && tstCnt[i][1]==N-1){
+            //     return i+1;
+            // }
+            if(tstCnt[i]==N-1){
+                return i+1;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 3 ms, faster than 95.21% of Java online submissions for Find the Town Judge.
+Memory Usage: 57.7 MB, less than 100.00% of Java online submissions for Find the Town Judge.

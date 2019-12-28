@@ -1,0 +1,5 @@
+Didn't work it out. Not even tried.
+I wonder why programmers need to do this kind of math.
+
+Other's solution based on math equations on wiki.
+https://leetcode.com/problems/find-the-derangement-of-an-array/discuss/104982/Java-5-lines-O(1)-space-solution
