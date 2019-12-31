@@ -1,0 +1,30 @@
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<String>();
+        StringBuilder sb=new StringBuilder("");
+        sb.append("(");
+        generate(ans, sb, n-1, n);
+        return ans;
+    }
+    
+    private void generate(List<String> ans, StringBuilder sb, int lCnt, int rCnt){
+        // System.out.println(lCnt+", "+rCnt+": "+sb.toString());
+        if(lCnt==0 && rCnt==0){
+            ans.add(sb.toString());
+            return;
+        }
+        if(lCnt!=0){
+            sb.append("(");
+            generate(ans, sb, lCnt-1, rCnt);
+            sb.setLength(sb.length()-1);
+        }
+        if(lCnt<rCnt){
+            sb.append(")");
+            generate(ans, sb, lCnt, rCnt-1);
+            sb.setLength(sb.length()-1);
+        }
+    }
+}
+
+Runtime: 1 ms, faster than 95.20% of Java online submissions for Generate Parentheses.
+Memory Usage: 40.1 MB, less than 16.13% of Java online submissions for Generate Parentheses.

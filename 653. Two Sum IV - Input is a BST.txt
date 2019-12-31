@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean findTarget(TreeNode root, int k) {
+        Deque<TreeNode> st=new ArrayDeque<TreeNode>();
+        st.push(root);
+        List<Integer> nums=new ArrayList<Integer>();
+        DFS(root,nums);
+        
+        int left=0;
+        int right=nums.size()-1;
+        // if(k<nums.get(left) || k>=2*nums.get(right)){
+        //     return false;
+        // }
+        while(left<right){
+            // System.out.println(nums.get(left)+", "+nums.get(right));
+            int sum=nums.get(left)+nums.get(right);
+            if(sum<k){
+                left++;
+            }
+            else if(sum>k){
+                right--;
+            }
+            else{
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private void DFS(TreeNode root, List<Integer> nums){
+        if(root==null){
+            return;
+        }
+        DFS(root.left,nums);
+        nums.add(root.val);
+        DFS(root.right,nums);
+    }
+}
+
+Runtime: 3 ms, faster than 85.94% of Java online submissions for Two Sum IV - Input is a BST.
+Memory Usage: 38.3 MB, less than 100.00% of Java online submissions for Two Sum IV - Input is a BST.
+
+Quite easy if don't use the tree structure.
+
+Other's summary about solutions.
+https://leetcode.com/problems/two-sum-iv-input-is-a-bst/discuss/106059/JavaC%2B%2B-Three-simple-methods-choose-one-you-like

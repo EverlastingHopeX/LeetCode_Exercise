@@ -65,3 +65,81 @@ Defining other functions makes it more readable, but also costs more time and sp
 
 The link below provides a more concise solution.
 https://leetcode.com/problems/find-in-mountain-array/discuss/317607/JavaC%2B%2BPython-Triple-Binary-Search
+
+/**
+ * // This is MountainArray's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface MountainArray {
+ *     public int get(int index) {}
+ *     public int length() {}
+ * }
+ */
+ 
+class Solution {
+    public int findInMountainArray(int target, MountainArray mountainArr) {
+        int peak=findPeak(mountainArr);
+        // System.out.println("peak "+peak);
+        int left=bisearch(mountainArr,0,peak,target);
+        if(left==-1){
+            return bisearch(mountainArr,peak,mountainArr.length()-1,target);
+        }
+        return left;
+    }
+    
+    private int findPeak(MountainArray mountainArr){
+        int left=0;
+        int right=mountainArr.length()-1;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(mountainArr.get(mid)<mountainArr.get(mid+1)){
+                left=mid+1;
+            }
+            else{
+                right=mid;
+            }
+        }
+        return left;
+    }
+    private int bisearch(MountainArray mountainArr, int left, int right,int target){
+        if(mountainArr.get(left)<mountainArr.get(right)){
+            while(left<right){
+                int mid=left+(right-left)/2;
+                if(target<mountainArr.get(mid)){
+                    right=mid-1;
+                }
+                else if(target>mountainArr.get(mid)){
+                    left=mid+1;
+                }
+                else{
+                    return mid;
+                }
+            }
+            if(mountainArr.get(left)==target){
+                return left;
+            }
+        }
+        else{
+            while(left<right){
+                int mid=left+(right-left)/2;
+                if(target>mountainArr.get(mid)){
+                    right=mid-1;
+                }
+                else if(target<mountainArr.get(mid)){
+                    left=mid+1;
+                }
+                else{
+                    return mid;
+                }
+            }
+            if(mountainArr.get(left)==target){
+                return left;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Find in Mountain Array.
+Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for Find in Mountain Array.
+
+The problem is not defining more functions, but the functions themselves need to be improved.

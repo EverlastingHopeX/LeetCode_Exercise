@@ -76,3 +76,46 @@ class TimeMap {
 
 Runtime: 173 ms, faster than 98.86% of Java online submissions for Time Based Key-Value Store.
 Memory Usage: 134 MB, less than 97.30% of Java online submissions for Time Based Key-Value Store.
+
+import javafx.util.Pair;
+
+class TimeMap {
+    Map<String, List<Pair<Integer,String>>> tMap;
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        tMap=new HashMap<>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        // System.out.println("set "+key+", "+value+", "+timestamp);
+        List<Pair<Integer, String>> li=tMap.getOrDefault(key,new ArrayList<Pair<Integer,String>>());
+        li.add(new Pair<Integer, String>(timestamp,value));
+        tMap.put(key,li);
+    }
+    
+    public String get(String key, int timestamp) {
+        // System.out.println("get "+key+", "+timestamp);
+        if(!tMap.containsKey(key)){
+            return "";
+        }
+        List<Pair<Integer, String>> li=tMap.get(key);
+        for(int i=li.size()-1;i>=0;i--){
+            if(li.get(i).getKey()<=timestamp){
+                return li.get(i).getValue();
+            }
+        }
+        return "";
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
+
+Runtime: 156 ms, faster than 94.37% of Java online submissions for Time Based Key-Value Store.
+Memory Usage: 137.5 MB, less than 54.05% of Java online submissions for Time Based Key-Value Store.
+
+Basically the same solution as first round, but no binary search.

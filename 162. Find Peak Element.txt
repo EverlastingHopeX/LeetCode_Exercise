@@ -24,3 +24,23 @@ case for this solution will take O(N) time.
 
 The link below is a great solution with detailed explanation provided by others.
 https://leetcode.com/problems/find-peak-element/discuss/50239/Java-solution-and-explanation-using-invariants
+
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int idx=1;
+        while(idx<nums.length){
+            if(nums[idx]<nums[idx-1]){
+                break;
+            }
+            idx++;
+        }
+        return idx-1;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Find Peak Element.
+Memory Usage: 38.8 MB, less than 100.00% of Java online submissions for Find Peak Element.
+
+Still O(n) solution.
+It's easy to realize that a binary solution can satisfy the requirement, but not that easy to find a
+one.

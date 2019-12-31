@@ -1,0 +1,24 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int max=0;
+        for(int i=0;i<height.length-1;i++){
+            for(int j=i+1;j<height.length;j++){
+                int vol=(j-i)*Math.min(height[i],height[j]);
+                if(vol>max){
+                    max=vol;
+                }
+            }
+        }
+        return max;
+    }
+}
+
+Runtime: 209 ms, faster than 15.46% of Java online submissions for Container With Most Water.
+Memory Usage: 40.1 MB, less than 93.59% of Java online submissions for Container With Most Water.
+
+This is the brute force solution. I couldn't think up better one.
+
+Other's O(n) solution.
+https://leetcode.com/problems/container-with-most-water/discuss/6100/Simple-and-clear-proofexplanation
+
+This idea of shrinkage seems pretty understandable.

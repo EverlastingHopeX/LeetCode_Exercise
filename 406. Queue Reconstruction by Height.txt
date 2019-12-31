@@ -1,0 +1,30 @@
+class Solution {
+    public int[][] reconstructQueue(int[][] people) {
+        List<int[]> ansList=new LinkedList<int[]>();
+        Queue<int[]> pq=new PriorityQueue<int[]>((o1,o2)->{
+            int comp=o2[0]-o1[0];
+            if(comp==0){
+                return o1[1]-o2[1];
+            }
+            return comp;
+        });
+        for(int[] p:people){
+            pq.add(p);
+        }
+        while(pq.size()>0){
+            int[] cur=pq.poll();
+            // System.out.println(cur[0]+", "+cur[1]);
+            ansList.add(cur[1],cur);
+        }
+        int[][] ans=new int[ansList.size()][2];
+        for(int i=0;i<ansList.size();i++){
+            ans[i]=ansList.get(i);
+        }
+        return ans;
+    }
+}
+
+Runtime: 11 ms, faster than 36.84% of Java online submissions for Queue Reconstruction by Height.
+Memory Usage: 44.6 MB, less than 70.21% of Java online submissions for Queue Reconstruction by Height.
+
+Acceptable performance. Time complexity should be O(nlogn) as priorityqueue is involved.

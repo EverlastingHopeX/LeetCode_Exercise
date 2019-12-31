@@ -46,3 +46,7 @@ Memory Usage: 45.9 MB, less than 96.00% of Java online submissions for 3Sum.
 
 The runtime is not satisfying, however, by changing j and k in the second loop according to the sum rather 
 using bisearch could improve the performance.
+
+Couldn't work it out in the second round.
+Other's O(n^2) solution using 2 pointers.
+https://leetcode.com/problems/3sum/discuss/7380/Concise-O(N2)-Java-solution
