@@ -1,0 +1,25 @@
+class Solution {
+    public int longestRepeatingSubstring(String S) {
+        for(int size=S.length()-1;size>1;size--){
+            // System.out.println("size "+size);
+            for(int i=0;i+size<S.length();i++){
+                String pattern=S.substring(i,i+size);
+                String sub=S.substring(i+1,S.length());
+                if(sub.indexOf(pattern)!=-1){
+                    return size;
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+Runtime: 778 ms, faster than 8.53% of Java online submissions for Longest Repeating Substring.
+Memory Usage: 36.2 MB, less than 100.00% of Java online submissions for Longest Repeating Substring.
+
+Tried to improve this algorithm using function to find potential next repeat. But got TLE.
+It actually use less time than this, I don't know why.
+
+Other's solution.
+Seems pretty hard to understand.
+https://leetcode.com/problems/longest-repeating-substring/discuss/332506/Java-2-O(n3)-greater-2-O(n2-logn)-greater-2*O-(n2)-greater-O-(n-logn)-greater-O(n)

@@ -1,0 +1,48 @@
+class Solution {
+    public int nextGreaterElement(int n) {
+        String t=n+"";
+        char[] cArr=t.toCharArray();
+        Queue<Character> pq=new PriorityQueue<Character>((c1,c2)->(c1-c2));
+        int l=cArr.length;
+        if(!helper(cArr,l-1,pq,cArr[l-1])){
+            return -1;
+        }
+        long ans=Long.parseLong(String.valueOf(cArr));
+        if(ans>Integer.MAX_VALUE){
+            return -1;
+        }
+        return (int) ans;
+    }
+    
+    private boolean helper(char[] cArr, int idx, Queue<Character> pq, char max){
+        if(idx<0){
+            return false;
+        }
+        pq.offer(cArr[idx]);
+        if(pq.size()>0 && max>cArr[idx]){
+            int i=idx+1;
+            while(pq.peek()<=cArr[idx]){
+                cArr[i]=pq.poll();
+                i++;
+            }
+            cArr[idx]=pq.poll();
+            while(!pq.isEmpty()){
+                cArr[i]=pq.poll();
+                i++;
+            }
+            return true;
+        }
+        if(cArr[idx]>max){
+            max=cArr[idx];
+        }
+        return helper(cArr,idx-1,pq,max);
+    }
+}
+
+Runtime: 2 ms, faster than 6.62% of Java online submissions for Next Greater Element III.
+Memory Usage: 33.3 MB, less than 10.00% of Java online submissions for Next Greater Element III.
+
+Not hard, but my solution is at worst O(NlogN).
+
+Other's O(N) solution.
+https://leetcode.com/problems/next-greater-element-iii/discuss/101843/Java-Solution-like-Next-Permutation-Problem-O(n)

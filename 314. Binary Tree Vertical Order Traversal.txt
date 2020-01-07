@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+import javafx.util.Pair; 
+
+class Solution {
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        Map<Integer,List<Integer>> cols=new HashMap<>();
+        Queue<Pair<Integer,TreeNode>> queue=new ArrayDeque<>();
+        queue.offer(new Pair<Integer,TreeNode>(0,root));
+        int left=0;
+        int right=0;
+        while(!queue.isEmpty()){
+            int size=queue.size();
+            for(int i=0;i<size;i++){
+                Pair<Integer,TreeNode> cur=queue.poll();
+                int idx=cur.getKey();
+                if(idx<left){
+                    left=idx;
+                }
+                if(idx>right){
+                    right=idx;
+                }
+                TreeNode tn=cur.getValue();
+                List<Integer> li=cols.getOrDefault(idx,new ArrayList<Integer>());
+                li.add(tn.val);
+                cols.put(idx,li);
+                if(tn.left!=null){
+                    queue.offer(new Pair<Integer,TreeNode>(idx-1,tn.left));
+                }
+                if(tn.right!=null){
+                    queue.offer(new Pair<Integer,TreeNode>(idx+1,tn.right));
+                }
+            }
+        }
+        for(int i=left;i<=right;i++){
+            ans.add(cols.get(i));
+        }
+        return ans;
+    }
+}
+
+Runtime: 3 ms, faster than 40.46% of Java online submissions for Binary Tree Vertical Order Traversal.
+Memory Usage: 36.3 MB, less than 100.00% of Java online submissions for Binary Tree Vertical Order Traversal.

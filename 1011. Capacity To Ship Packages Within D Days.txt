@@ -34,5 +34,45 @@ class Solution {
 Runtime: 9 ms, faster than 53.77% of Java online submissions for Capacity To Ship Packages Within D Days.
 Memory Usage: 43 MB, less than 84.01% of Java online submissions for Capacity To Ship Packages Within D Days.
 
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int lo=weights[0];
+        int hi=0;
+        for(int w:weights){
+            if(w>lo){
+                lo=w;
+            }
+            hi+=w;
+        }
+        while(lo<hi){
+            int mid=lo+(hi-lo)/2;
+            // System.out.println(lo+", "+hi+" "+mid);
+            int d=1;
+            int sum=0;
+            for(int w:weights){
+                // System.out.println("sum: "+sum);
+                if(sum+w<=mid){
+                    sum+=w;
+                }
+                else{
+                    d++;
+                    sum=w;
+                }
+            }
+            // System.out.println("d "+d);
+            if(d>D){
+                lo=mid+1;
+            }
+            else{
+                hi=mid;
+            }
+        }
+        return lo;
+    }
+}
 
+Runtime: 16 ms, faster than 27.96% of Java online submissions for Capacity To Ship Packages Within D Days.
+Memory Usage: 43.9 MB, less than 42.31% of Java online submissions for Capacity To Ship Packages Within D Days.	
+
+Don't know why the first solution can save some time.
 
