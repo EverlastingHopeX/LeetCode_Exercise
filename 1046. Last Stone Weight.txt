@@ -43,3 +43,31 @@ Runtime: 1 ms, faster than 97.51% of Java online submissions for Last Stone Weig
 Memory Usage: 34 MB, less than 100.00% of Java online submissions for Last Stone Weight.
 
 The performance seems to be the same, however, priority queue may achieve better performance when complex problems involved
+
+class Solution {
+    public int lastStoneWeight(int[] stones) {
+        Queue<Integer> pq=new PriorityQueue<Integer>((o1,o2)->o2-o1);
+        for(int s:stones){
+            pq.offer(s);
+        }
+        while(pq.size()>1){
+            int x=pq.poll();
+            int y=pq.poll();
+            int t=x-y;
+            if(t!=0){
+                pq.offer(t);
+            }
+        }
+        if(pq.size()==0){
+            return 0;
+        }
+        return pq.poll();
+    }
+}
+
+Runtime: 2 ms, faster than 44.31% of Java online submissions for Last Stone Weight.
+Memory Usage: 34.6 MB, less than 100.00% of Java online submissions for Last Stone Weight.
+
+
+The priority queue solution in the first round would add a lot of 0 if there is a lot of same rocks, but that's not 
+common, so it actually provides better performance.
