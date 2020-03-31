@@ -1,0 +1,42 @@
+class Solution {
+    public List<String> findItinerary(List<List<String>> tickets) {
+        Map<String,List<String>> adjMap=new HashMap<>();
+        int edges=tickets.size();
+        for(List<String> t:tickets){
+            List<String> li=adjMap.getOrDefault(t.get(0),new LinkedList<String>());
+            li.add(t.get(1));
+            adjMap.put(t.get(0), li);
+        }
+        Stack<String> st=new Stack<>();
+        st.push("JFK");
+        DFS(adjMap,st,edges);
+        List<String> ans=new ArrayList<String>();
+        ans.addAll(st);
+        return ans;
+    }
+    
+    private boolean DFS(Map<String, List<String>> adjMap, Stack<String> st, int edges){
+        if(edges==0){
+            return true;
+        }
+        String cur=st.peek();
+        // System.out.println("cur "+cur);
+        List<String> dst=adjMap.getOrDefault(cur, new LinkedList<String>());
+        Collections.sort(dst);
+        for(int i=0;i<dst.size();i++){
+            String d=dst.get(i);
+            st.push(d);
+            dst.remove(i);
+            adjMap.put(cur,dst);
+            if(DFS(adjMap,st,edges-1)){
+                return true;
+            }
+            dst.add(i,d);
+            st.pop();
+        }
+        return false;
+    }
+}
+
+Runtime: 8 ms, faster than 30.44% of Java online submissions for Reconstruct Itinerary.
+Memory Usage: 42.5 MB, less than 73.13% of Java online submissions for Reconstruct Itinerary.

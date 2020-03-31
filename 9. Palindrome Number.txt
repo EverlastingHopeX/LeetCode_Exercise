@@ -1,0 +1,25 @@
+class Solution {
+    public boolean isPalindrome(int x) {
+        String s=x+"";
+        char[] sArr=s.toCharArray();
+        int left=0;
+        int right=s.length()-1;
+        while(left<right){
+            if(sArr[left]!=sArr[right]){
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
+
+Runtime: 12 ms, faster than 17.22% of Java online submissions for Palindrome Number.
+Memory Usage: 40.8 MB, less than 5.02% of Java online submissions for Palindrome Number.
+
+The idea is pretty simple.
+O(n) time, O(n) space.
+Could save some space using reverse operation.
+Other's solution.
+https://leetcode.com/problems/palindrome-number/discuss/5127/9-line-accepted-Java-code-without-the-need-of-handling-overflow

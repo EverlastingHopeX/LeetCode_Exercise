@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        Stack<TreeNode> lTree=new Stack<>();
+        Stack<TreeNode> rTree=new Stack<>();
+        if(root.left!=null && root.right!=null){
+            lTree.push(root.left);
+            rTree.push(root.right);
+        }
+        else if(root.left==null && root.right==null){
+            return true;
+        }
+        else{
+            return false;
+        }
+        while(lTree.size()>0 && rTree.size()>0){
+            TreeNode l=lTree.pop();
+            TreeNode r=rTree.pop();
+            if(l.val!=r.val){
+                return false;
+            }
+            if(l.left!=null && r.right!=null){
+                lTree.push(l.left);
+                rTree.push(r.right);
+            }
+            else if(l.left!=null || r.right!=null){
+                return false;
+            }
+            if(l.right!=null && r.left!=null){
+                lTree.push(l.right);
+                rTree.push(r.left);
+            }
+            else if(l.right!=null || r.left!=null){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 1 ms, faster than 27.23% of Java online submissions for Symmetric Tree.
+Memory Usage: 37.8 MB, less than 72.11% of Java online submissions for Symmetric Tree
+
+DFS comparison.
+Stack can hold null, so it can be improved using this.

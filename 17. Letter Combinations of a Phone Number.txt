@@ -1,0 +1,50 @@
+class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> ans=new ArrayList<>();
+        if(digits.length()==0){
+            return ans;
+        }
+        Queue<String> queue=new ArrayDeque<String>();
+        queue.offer("");
+        Map<Integer,List<Character>> dMap=new HashMap<>();
+        init(dMap);
+        BFS(dMap,queue,digits,0);
+        ans.addAll(queue);
+        return ans;
+    }
+    
+    private void init(Map<Integer, List<Character>> dMap){
+        dMap.put(2,Arrays.asList('a','b','c'));
+        dMap.put(3,Arrays.asList('d','e','f'));
+        dMap.put(4,Arrays.asList('g','h','i'));
+        dMap.put(5,Arrays.asList('j','k','l'));
+        dMap.put(6,Arrays.asList('m','n','o'));
+        dMap.put(7,Arrays.asList('p','q','r','s'));
+        dMap.put(8,Arrays.asList('t','u','v'));
+        dMap.put(9,Arrays.asList('w','x','y','z'));
+    }
+    
+    private void BFS(Map<Integer,List<Character>> dMap, Queue<String> queue,String digits, int idx){
+        // System.out.println("idx: "+idx);
+        if(idx>=digits.length()){
+            return;
+        }
+        int num=digits.charAt(idx)-'0';
+        List<Character> next=dMap.getOrDefault(num,null);
+        if(next==null){
+            queue.clear();
+            return;
+        }
+        int n=queue.size();
+        for(int i=0;i<n;i++){
+            String str=queue.poll();
+            for(char ch:next){
+                queue.offer(str+ch);
+            }
+        }
+        BFS(dMap,queue,digits,idx+1);
+    }
+}
+
+Runtime: 5 ms, faster than 30.02% of Java online submissions for Letter Combinations of a Phone Number.
+Memory Usage: 38.3 MB, less than 6.16% of Java online submissions for Letter Combinations of a Phone Number.

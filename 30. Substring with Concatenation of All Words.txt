@@ -1,0 +1,48 @@
+class Solution {
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans=new ArrayList<>();
+        if(s==null || s.length() ==0 || words.length==0 || words[0]==null || words[0].length() ==0 ){
+            return ans;
+        }
+        Map<String, Integer> freq=new HashMap<>();
+        for(String w:words){
+            int cnt=freq.getOrDefault(w,0);
+            freq.put(w,cnt+1);
+        }
+        int size=words[0].length();
+        for(int i=0;i<s.length();i++){
+            if(match(s,i,size,freq,words.length)){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+    
+    private boolean match(String s, int idx, int size, Map<String, Integer> freq, int res){
+        // System.out.println("idx "+idx+" res "+res);
+        if(res==0){
+            return true;
+        }
+        if(idx+size>s.length()){
+            return false;
+        }
+        String str=s.substring(idx,idx+size);
+        if(freq.containsKey(str) && freq.get(str)>0){
+            int cnt=freq.get(str);
+            freq.put(str,cnt-1);
+            if(match(s,idx+size,size,freq,res-1)){
+                freq.put(str,cnt);
+                return true;
+            }
+            freq.put(str,cnt);
+        }
+        return false;
+    }
+}
+
+Runtime: 1472 ms, faster than 5.02% of Java online submissions for Substring with Concatenation of All Words.
+Memory Usage: 44.1 MB, less than 21.43% of Java online submissions for Substring with Concatenation of All Words.
+
+Functional but terrible performance.
+A much better algorithm, however, I can't understand it.
+https://leetcode.com/problems/substring-with-concatenation-of-all-words/discuss/13673/Accepted-Java-solution-12ms-with-explanation

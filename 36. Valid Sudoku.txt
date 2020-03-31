@@ -1,0 +1,5 @@
+Didn't work it out.
+I thought we have to valid the Sudoku by filling them, but it seems that we only need to check the three rules.
+
+Other's solution.
+https://leetcode.com/problems/valid-sudoku/discuss/15450/Shared-my-concise-Java-code

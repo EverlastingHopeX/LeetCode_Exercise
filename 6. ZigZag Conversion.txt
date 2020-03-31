@@ -1,0 +1,83 @@
+class Solution {
+    public String convert(String s, int numRows) {
+        if(numRows<=1){
+            return s;
+        }
+        StringBuilder[] sbArr=new StringBuilder[numRows];
+        for(int i=0;i<numRows;i++){
+            sbArr[i]=new StringBuilder("");
+        }
+        helper(s,sbArr,0,0,true,numRows);
+        StringBuilder ans=new StringBuilder("");
+        for(StringBuilder sb:sbArr){
+            ans.append(sb.toString());
+        }
+        
+        return ans.toString();
+    }
+    
+    private void helper(String s, StringBuilder[] sbArr, int idx, int r, boolean down, int numRows){
+        System.out.println("idx "+idx+" r "+r);
+        if(idx>=s.length()){
+            return;
+        }
+        sbArr[r].append(s.charAt(idx));
+        if(down){
+            if(r==numRows-1){
+                helper(s,sbArr,idx+1,r-1,false,numRows);  
+            }
+            else{
+                helper(s,sbArr,idx+1,r+1,true,numRows);  
+            }          
+        }
+        else{
+            if(r==0){
+                helper(s,sbArr,idx+1,r+1,true,numRows);  
+            }
+            else{
+                helper(s,sbArr,idx+1,r-1,false,numRows);  
+            }
+        }
+    }
+}
+
+Runtime: 168 ms, faster than 5.01% of Java online submissions for ZigZag Conversion.
+Memory Usage: 42.6 MB, less than 14.90% of Java online submissions for ZigZag Conversion.
+
+Brute force is quite easy.
+
+class Solution {
+    public String convert(String s, int numRows) {
+        if(numRows<=1){
+            return s;
+        }
+        int interval=2*(numRows-1);
+        StringBuilder sb=new StringBuilder("");
+        for(int i=0;i<numRows;i++){
+            sb.append(helper(s,i,interval));
+        }
+        return sb.toString();
+    }
+    
+    private String helper(String s, int start, int interval){
+        // System.out.println("start "+start);
+        int idx=start;
+        int next=start*2;
+        StringBuilder sb=new StringBuilder("");
+        while(idx<s.length()){
+            // System.out.println("idx "+idx);
+            sb.append(s.charAt(idx));
+            next=interval-next;
+            if(next==0){
+                next=interval;
+            }
+            idx+=next;
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 5 ms, faster than 75.83% of Java online submissions for ZigZag Conversion.
+Memory Usage: 42.3 MB, less than 17.02% of Java online submissions for ZigZag Conversion.
+
+The pattern is not hard to discover, which can improve the performance greatly.

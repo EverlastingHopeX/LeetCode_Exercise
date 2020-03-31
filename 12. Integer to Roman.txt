@@ -1,0 +1,45 @@
+class Solution {
+    int[] roms=new int[]{1,5,10,50,100,500,1000};
+    int[] pres=new int[]{-1,0,0,2,2,4,4};
+    char[] syms=new char[]{'I','V','X','L','C','D','M'};
+    
+    public String intToRoman(int num) {
+        StringBuilder sb=new StringBuilder("");
+        helper(num,roms.length-1,sb);
+        return sb.toString();
+    }
+    
+    private void helper(int num, int idx, StringBuilder sb){
+        // System.out.println(num+": "+sb.toString());
+        // System.out.println("idx "+idx);
+        if(num<=0 || idx < 0){
+            return;
+        }
+        while(roms[idx]>num){
+            idx--;
+        }
+        // System.out.println("idx "+idx);
+        if(idx < roms.length-1 && num+roms[pres[idx+1]]>=roms[idx+1]){
+            // System.out.println("has prefix");
+            sb.append(syms[pres[idx+1]]);
+            sb.append(syms[idx+1]);
+            num=num+roms[pres[idx+1]]-roms[idx+1];
+            helper(num,idx-1,sb);
+        }
+        else{
+            // System.out.println("no prefix");
+            int n=num/roms[idx];
+            for(int i=0;i<n;i++){
+                sb.append(syms[idx]);
+            }
+            num-=roms[idx]*n;
+            helper(num,idx-1,sb);
+        }
+    }
+}
+
+Runtime: 11 ms, faster than 10.87% of Java online submissions for Integer to Roman.
+Memory Usage: 47.4 MB, less than 5.00% of Java online submissions for Integer to Roman.
+
+Some other tricky solutions.
+https://leetcode.com/problems/integer-to-roman/discuss/6274/Simple-Solution

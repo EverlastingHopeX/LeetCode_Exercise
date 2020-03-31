@@ -1,0 +1,33 @@
+class Solution {
+    List<List<Integer>> ans;
+    public List<List<Integer>> permute(int[] nums) {
+        ans=new ArrayList<>();
+        boolean[] taken=new boolean[nums.length];
+        List<Integer> li=new LinkedList<>();
+        DFS(nums,taken,li);
+        return ans;
+    }
+    
+    private void DFS(int[] nums, boolean[] taken, List<Integer> li){
+        if(li.size()==nums.length){
+            ans.add(new ArrayList<Integer>(li));
+            return;
+        }
+        for(int i=0;i<nums.length;i++){
+            if(taken[i]){
+                continue;
+            }
+            taken[i]=true;
+            li.add(nums[i]);
+            DFS(nums,taken,li);
+            li.remove(li.size()-1);
+            taken[i]=false;
+        }
+    }
+}
+
+Runtime: 2 ms, faster than 24.58% of Java online submissions for Permutations.
+Memory Usage: 47.2 MB, less than 5.68% of Java online submissions for Permutations.
+
+Pretty simple. Although the performance is not satisfying, 
+it is hard to figure out how to improve the performance.

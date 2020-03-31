@@ -1,0 +1,44 @@
+class Solution {
+    int[] nums;
+    
+    public Solution(int[] nums) {
+        this.nums=nums;    
+    }
+    
+    /** Resets the array to its original configuration and return it. */
+    public int[] reset() {
+        return nums;
+    }
+    
+    /** Returns a random shuffling of the array. */
+    public int[] shuffle() {
+        int n=nums.length;
+        List<Integer> li=new LinkedList<>();
+        for(int num:nums){
+            li.add(num);
+        }
+        int[] sNum=new int[n];
+        int idx=0;
+        while(idx<n){
+            // System.out.println("idx "+idx);
+            int k=(int)(Math.random()*(n-idx));
+            // System.out.println("k "+k);
+            sNum[idx]=li.get(k);
+            li.remove(k);
+            idx++;
+        }
+        return sNum;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int[] param_1 = obj.reset();
+ * int[] param_2 = obj.shuffle();
+ */
+
+Runtime: 111 ms, faster than 5.72% of Java online submissions for Shuffle an Array.
+Memory Usage: 64.4 MB, less than 54.84% of Java online submissions for Shuffle an Array.
+
+Not hard but could be improved.

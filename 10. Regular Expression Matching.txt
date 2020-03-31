@@ -1,0 +1,5 @@
+Tried to use greedy, but it didn't work.
+Regular expression should be greedy tho.
+
+Other's dp solution.
+https://leetcode.com/problems/regular-expression-matching/discuss/5651/Easy-DP-Java-Solution-with-detailed-Explanation
