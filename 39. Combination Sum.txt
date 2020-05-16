@@ -1,0 +1,38 @@
+class Solution {
+    // Map<Integer, Set<String>> sums=new HashMap<>();
+    List<List<Integer>> ans=new ArrayList<>();
+    
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        func(candidates,0,target, 0, new ArrayList<Integer>());
+        
+        return ans;
+    }
+    
+    private void func(int[] candidates, int idx, int target, int sum, List<Integer> li){
+        // System.out.println("sum "+sum);
+        // System.out.println(li.size());
+        // System.out.println("add "+candidates[idx]);
+        if(sum==target){
+            List<Integer> temp=new ArrayList<>();
+            temp.addAll(li);
+            ans.add(temp);
+        }
+        else if(sum<target){
+            for(int next=idx;next<candidates.length;next++){
+                li.add(candidates[next]);
+                func(candidates, next, target, sum+candidates[next],li);
+                li.remove(li.size()-1);
+            }
+        }
+    }
+}
+
+Runtime: 5 ms, faster than 39.07% of Java online submissions for Combination Sum.
+Memory Usage: 39.8 MB, less than 13.34% of Java online submissions for Combination Sum
+
+Brute force solution. Using stack instead of list won't bring much improvement, and it can actually cost more time.
+
+Other's dp solution. I knew there can be a DP solution, but didn't work it out. However, I start to know which kinds of problems can be solved by DP, it is a big progress for me.
+
+https://leetcode.com/problems/combination-sum/discuss/16509/Iterative-Java-DP-solution

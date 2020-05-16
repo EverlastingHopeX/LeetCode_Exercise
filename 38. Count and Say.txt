@@ -1,0 +1,41 @@
+class Solution {
+    public String countAndSay(int n) {
+        String str="1";
+        for(int i=1;i<n;i++){
+            str=count(str);
+        }
+        return str;
+    }
+    
+    private String count(String str){
+        // System.out.println(str);
+        StringBuilder sb=new StringBuilder("");
+        int cnt=0;
+        char prev='.';
+        for(char ch:str.toCharArray()){
+            if(ch!=prev){
+                addPrev(sb,prev,cnt);
+                cnt=1;
+                prev=ch;
+            }
+            else{
+                cnt++;
+            }
+        }
+        addPrev(sb,prev,cnt);
+        return sb.toString();
+    }
+    
+    private void addPrev(StringBuilder sb, char prev, int cnt){
+        if(prev=='.'){
+            return;
+        }
+        sb.append(cnt);
+        sb.append(prev);
+    }
+}
+
+Runtime: 1 ms, faster than 89.14% of Java online submissions for Count and Say.
+Memory Usage: 36.7 MB, less than 49.12% of Java online submissions for Count and Say.
+
+The problem is easy but the description is not.
