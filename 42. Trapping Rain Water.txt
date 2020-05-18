@@ -1,0 +1,51 @@
+class Solution {
+    public int trap(int[] height) {
+        Stack<int[]> st=new Stack<>();
+        int[] nextBd=new int[height.length];
+        for(int i=0;i<height.length;i++){
+            nextBd[i]=i;
+            int[] cur=new int[]{i,height[i]};
+            if(st.empty()){
+                st.push(cur);
+                continue;
+            }
+            int[] prev=st.peek();
+            while(prev[1]<=cur[1]){
+                nextBd[prev[0]]=cur[0];
+                st.pop();
+                if(!st.empty()){
+                    prev=st.peek();
+                }
+                else{
+                    prev[1]=cur[1]+1;
+                }
+            }
+            st.push(cur);
+        }
+        if(st.size()>1){
+            int[] prev=st.peek();
+            while(!st.empty()){
+                int[] cur=st.pop();
+                nextBd[cur[0]]=prev[0];
+                prev=cur;
+            }
+        }
+        int p=0;
+        int sum=0;
+        while(p<height.length){
+            int level=Math.min(height[p],height[nextBd[p]]);
+            for(int i=p+1;i<nextBd[p];i++){
+                sum+=level-height[i];
+            }
+            p=nextBd[p]==p?p+1:nextBd[p];
+        }
+        return sum;
+    }
+}
+
+Runtime: 2 ms, faster than 25.34% of Java online submissions for Trapping Rain Water.
+Memory Usage: 38.7 MB, less than 58.22% of Java online submissions for Trapping Rain Water.
+
+Other's solution with similar idea but more concise. The performance is actually slightly worse (use more space)
+
+https://leetcode.com/problems/trapping-rain-water/discuss/17414/A-stack-based-solution-for-reference-inspired-by-Histogram

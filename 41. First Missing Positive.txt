@@ -1,0 +1,32 @@
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        if(nums.length==0){
+            return 1;
+        }
+        Arrays.sort(nums);
+        int prev=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]<0){
+                continue;
+            }
+            if(nums[i]>prev+1){
+                return prev+1;
+            }
+            prev=nums[i];
+        }
+        return Math.max(nums[nums.length-1]+1,1);
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for First Missing Positive.
+Memory Usage: 37.1 MB, less than 6.85% of Java online submissions for First Missing Positive.
+
+Didn't obey the rules to be O(n), this is O(nlogn).
+
+Other's O(n) solution.
+
+Very impressive solution. Since the ans must be in [1,n], so he mark those elements not in this range to n+1, 
+and mark those elements in this range to negative (for example, k is found and within the range, so mark the element 
+in arr[k-1] to negative). So in the last traverse, the first index that we found with positive element is the answer.
+
+https://leetcode.com/problems/first-missing-positive/discuss/17214/Java-simple-solution-with-documentation
