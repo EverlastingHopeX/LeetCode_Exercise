@@ -1,0 +1,5 @@
+Didn't work it out.
+
+Other's dp solution, the top comment's solution is more intuitive.
+
+https://leetcode.com/problems/wildcard-matching/discuss/17812/My-java-DP-solution-using-2D-table
