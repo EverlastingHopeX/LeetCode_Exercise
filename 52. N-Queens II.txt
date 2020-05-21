@@ -1,0 +1,45 @@
+class Solution {
+    int ans=0;
+    
+    public int totalNQueens(int n) {
+        Set<String> taken=new HashSet<>();
+        DFS(taken,n,0);
+        return ans;
+    }
+    
+    private void DFS(Set<String> taken, int n, int curRow){
+        if(curRow>=n){
+            ans++;
+            return;
+        }
+        for(int i=0;i<n;i++){
+            String C="c"+i;
+            if(taken.contains(C)){
+                continue;
+            }
+            String LR="lr"+(curRow-i);
+            if(taken.contains(LR)){
+                continue;
+            }
+            String RL="rl"+(curRow+i);
+            if(taken.contains(RL)){
+                continue;
+            }
+            taken.add(C);
+            taken.add(LR);
+            taken.add(RL);
+            DFS(taken, n, curRow+1);
+            taken.remove(C);
+            taken.remove(LR);
+            taken.remove(RL);
+        }
+    }
+}
+
+Runtime: 14 ms, faster than 7.31% of Java online submissions for N-Queens II.
+Memory Usage: 39 MB, less than 8.70% of Java online submissions for N-Queens II.
+
+Not satisfying solution, using boolean instead of hashset can improve the performance a lot. However, the idea is the same.
+
+Other's solution.
+https://leetcode.com/problems/n-queens-ii/discuss/20048/Easiest-Java-Solution-(1ms-98.22)

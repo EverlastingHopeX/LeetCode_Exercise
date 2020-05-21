@@ -1,0 +1,68 @@
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] ans=new int[n][n];
+        Traverse(ans,0,0,1,'r');
+        return ans;
+    }
+    
+    private void Traverse(int[][] ans, int r, int c, int cur, char dir){
+        ans[r][c]=cur;
+        int nr=-1, nc=-1;
+        switch(dir){
+            case 'u':
+                nr=r-1;
+                nc=c;
+                if( outOfRange(ans.length,nr,nc) || ans[nr][nc]!=0){
+                    nr=r;
+                    nc=c+1;
+                    dir='r';
+                }
+                break;
+            case 'd':
+                nr=r+1;
+                nc=c;
+                if(outOfRange(ans.length,nr,nc) || ans[nr][nc]!=0){
+                    nr=r;
+                    nc=c-1;
+                    dir='l';
+                }
+                break;
+            case 'l':
+                nr=r;
+                nc=c-1;
+                if(outOfRange(ans.length,nr,nc) || ans[nr][nc]!=0){
+                    nr=r-1;
+                    nc=c;
+                    dir='u';
+                }
+                break;
+            case 'r':
+                nr=r;
+                nc=c+1;
+                if(outOfRange(ans.length,nr,nc) || ans[nr][nc]!=0){
+                    nr=r+1;
+                    nc=c;
+                    dir='d';
+                }
+                break;
+            default:
+                System.out.println("error");
+        }
+        // System.out.println(nr+" "+nc);
+        if(outOfRange(ans.length, nr,nc) || ans[nr][nc]!=0){
+            return;
+        }
+        Traverse(ans,nr,nc,cur+1,dir);
+    }
+    
+    private boolean outOfRange(int n, int r, int c){
+        if(r>=0 && r<n && c>=0 && c<n){
+            return false;
+        }
+        return true;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Spiral Matrix II.
+Memory Usage: 37.4 MB, less than 8.33% of Java online submissions for Spiral Matrix II.
+

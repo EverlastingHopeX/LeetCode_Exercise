@@ -1,0 +1,55 @@
+class Solution {
+    public String addBinary(String a, String b) {
+        //s1 is longer
+        String s1=a, s2=b;
+        if(a.length()<b.length()){
+            s1=b;
+            s2=a;
+        }
+        StringBuilder sb=new StringBuilder(s2);
+        for(int i=0;i<s1.length()-s2.length();i++){
+            sb.insert(0,"0");
+        }
+        s2=sb.toString();
+        int carry=0;
+        sb=new StringBuilder("");
+        final int Zero='0'+'0';
+        for(int i=s1.length()-1;i>=0;i--){
+            int sum=s1.charAt(i)+s2.charAt(i)+carry;
+            String ch="-";
+            switch(sum){
+                case Zero:
+                    ch="0";
+                    break;
+                case Zero+1:
+                    ch="1";
+                    carry=0;
+                    break;
+                case Zero+2:
+                    ch="0";
+                    carry=1;
+                    break;
+                case Zero+3:
+                    ch="1";
+                    carry=1;
+                    break;
+                default:
+                    System.out.println("error");
+            }
+            sb.insert(0,ch);
+        }
+        if(carry==1){
+            sb.insert(0,"1");
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 4 ms, faster than 25.49% of Java online submissions for Add Binary.
+Memory Usage: 40.1 MB, less than 5.62% of Java online submissions for Add Binary.
+
+Can be improved.
+StringBuilder.reverse() can be helpful, if I only use insert(0,xx). Also set proper initCapcity can improve the performance. Using them both can improve the performance to 2 ms which beats 77.04%.
+
+Other's solution.
+https://leetcode.com/problems/add-binary/discuss/24488/Short-AC-solution-in-Java-with-explanation

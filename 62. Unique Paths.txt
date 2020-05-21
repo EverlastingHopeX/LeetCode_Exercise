@@ -1,0 +1,19 @@
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int k=m>n?n-1:m-1;
+        int N=m+n-2;
+        long nume=1, deno=1;
+        for(int i=1;i<=k;i++){
+            nume*=N-i+1;
+            deno*=i;
+        }
+        return (int)(nume/deno);
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Unique Paths.
+Memory Usage: 36.2 MB, less than 5.10% of Java online submissions for Unique Paths.
+
+A math problem.
+My only worry is that it may cause overflow,
+ and it will cause overflow if I use (17, 17) as input. I contribute it to leetcode. However, using double instead of long and use Math.round() to convert it to int.
