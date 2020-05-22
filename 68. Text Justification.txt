@@ -1,0 +1,64 @@
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> ans=new ArrayList<>();
+        int start=0;
+        int res=maxWidth;
+        for(int i=0;i<words.length;i++){
+            if(words[i].length()>res-i+start){
+                ans.add(formString(words,start,i-1,maxWidth));
+                start=i;
+                res=maxWidth-words[i].length();
+            }
+            else{
+                res-=words[i].length();
+            }
+        }
+        StringBuilder sb=new StringBuilder(maxWidth);
+        for(int i=start;i<words.length-1;i++){
+            sb.append(words[i]+" ");
+        }
+        sb.append(words[words.length-1]);
+        while(sb.length()<maxWidth){
+            sb.append(" ");
+        }
+        ans.add(sb.toString());
+        return ans;
+    }
+    
+    private String formString(String[] words, int start, int end, int maxWidth){
+        StringBuilder sb=new StringBuilder(maxWidth);
+        int sp=maxWidth;
+        for(int i=start;i<=end;i++){
+            sp-=words[i].length();
+        }
+        int slots=end-start;
+        if(slots==0){
+            sb.append(words[start]);
+            while(sb.length()<maxWidth){
+                sb.append(" ");
+            }
+            return sb.toString();
+        }
+        int extra=sp%slots;
+        int n=sp/slots;
+        String space="";
+        for(int i=0;i<n;i++){
+            space+=" ";
+        }
+        for(int i=start;i<end;i++){
+            sb.append(words[i]);
+            sb.append(space);
+            if(extra>0){
+                sb.append(" ");
+                extra--;
+            }
+        }
+        sb.append(words[end]);
+        return sb.toString();
+    }
+}
+
+Runtime: 1 ms, faster than 53.55% of Java online submissions for Text Justification.
+Memory Usage: 39.8 MB, less than 5.55% of Java online submissions for Text Justification.
+
+Relatively easy. 1 ms doesn't seem to worth more time to improve.

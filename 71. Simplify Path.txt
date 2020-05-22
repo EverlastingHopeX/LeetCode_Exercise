@@ -1,0 +1,36 @@
+class Solution {
+    public String simplifyPath(String path) {
+        Stack<String> st=new Stack<>();
+        String[] segs=path.split("/");
+        for(String seg:segs){
+            // System.out.println("seg "+seg);
+            if(seg.length()==0 || seg.equals(".")){
+                continue;
+            }
+            else if(seg.equals("..")){
+                if(!st.isEmpty()){
+                    st.pop();
+                }
+            }
+            else{
+                st.push(seg);
+                // System.out.println("push "+seg);
+            }
+        }
+        // System.out.println(st.size());
+        StringBuilder sb=new StringBuilder("");
+        if(st.isEmpty()){
+            sb.append("/");
+        }
+        while(!st.isEmpty()){
+            sb.insert(0,"/"+st.pop());
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 5 ms, faster than 54.65% of Java online submissions for Simplify Path.
+Memory Usage: 39.1 MB, less than 20.00% of Java online submissions for Simplify Path.
+
+Using LinkedList or ArrayDeque will let me to use StringBuilder.append() instead of StringBuilder.insert(), which should improve the performance. But actually the performance is getting worse. The performance improved by using append() is less than that is decreased by using LinkedList or ArrayDeque.
+But the problem is actually the instability of online judgement, the second time I submit the arraydeque version, it's 4ms now.
