@@ -1,0 +1,40 @@
+class Solution {
+    List<List<Integer>> ans=new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        boolean[] taken=new boolean[n];
+        DFS(n,k,taken, new ArrayDeque<Integer>());
+        
+        return ans;
+    }
+    
+class Solution {
+    List<List<Integer>> ans=new ArrayList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        DFS(n,k, new ArrayDeque<Integer>());
+        return ans;
+    }
+    
+    private void DFS(int n, int k, Deque<Integer> cur){
+        if(k==0){
+            List<Integer> temp=new ArrayList<>();
+            temp.addAll(cur);
+            ans.add(temp);
+            return;
+        }
+        int next=0;
+        if(!cur.isEmpty()){
+            next=cur.peekLast();
+        }
+        while(next<n){
+            cur.addLast(next+1);
+            DFS(n,k-1,cur);
+            cur.removeLast();
+            next++;
+        }
+    }
+}
+
+Runtime: 30 ms, faster than 24.73% of Java online submissions for Combinations.
+Memory Usage: 40.9 MB, less than 36.96% of Java online submissions for Combinations.
+
+The recursive DFS is pretty easy.
