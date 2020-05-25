@@ -1,0 +1,59 @@
+Didn't work it out.
+It remind me of largest rectangle in histogram but I couldn't find the way to apply it to this problem.
+
+Here is other's solution using the solution to find max rectangle with stack.
+By find the max area of previous i rows, it will eventually find the maximal rectangle of the whole matrix.
+It can be more concise, see the comments.
+https://leetcode.com/problems/maximal-rectangle/discuss/29055/My-java-solution-based-on-Maximum-Rectangle-in-Histogram-with-explanation
+
+my solution based on the solution above.
+class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix.length==0 || matrix[0].length==0){
+            return 0;
+        }
+        int[] heights=new int[matrix[0].length];
+        int max=0;
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]=='1'){
+                    heights[j]++;
+                }
+                else{
+                    heights[j]=0;
+                }
+            }
+            // System.out.println("find max in row "+i);
+            max=Math.max(max,findMaxRect(heights));
+        }
+        
+        return max;
+    }
+    
+    private int findMaxRect(int[] heights){
+        Stack<Integer> st=new Stack<>();
+        st.push(-1);
+        int max=0;
+        for(int i=0;i<heights.length;i++){
+            // System.out.println("height "+i+" "+heights[i]);
+            while(st.peek()!=-1 && heights[st.peek()]>=heights[i]){
+                int p=st.pop();
+                int area=(i-st.peek()-1)*heights[p];
+                // System.out.println((st.peek()+1)+" "+i+": "+area);
+                max=Math.max(area,max);
+            }
+            st.push(i);
+        }
+        //deal with ascending
+        while(st.peek()!=-1){
+            int p=st.pop();
+            int area=(heights.length-st.peek()-1)*heights[p];
+            // System.out.println((st.peek()+1)+" to end"+": "+area);
+            max=Math.max(max,area);
+        }
+        return max;
+    }
+}
+
+Runtime: 8 ms, faster than 52.61% of Java online submissions for Maximal Rectangle.
+Memory Usage: 42.9 MB, less than 86.96% of Java online submissions for Maximal Rectangle.

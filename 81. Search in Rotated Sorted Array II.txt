@@ -1,0 +1,5 @@
+Didn't figure it out.
+I tried to find the pivot, but it is really hard to determine where we are if the nums[mid]==nums[0], since we can be anywhere in the array.
+
+Other's solution.
+https://leetcode.com/problems/search-in-rotated-sorted-array-ii/discuss/28216/Java-1ms-binary-search-solution-with-comments
