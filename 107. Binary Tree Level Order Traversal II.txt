@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int size=queue.size();
+            List<Integer> li=new ArrayList<>();
+            for(int i=0;i<size;i++){
+                TreeNode cur=queue.poll();
+                li.add(cur.val);
+                if(cur.left!=null){
+                    queue.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    queue.offer(cur.right);
+                }
+            }
+            ans.add(li);
+        }
+        Collections.reverse(ans);
+        return ans;
+    }
+}
+
+Runtime: 1 ms, faster than 80.93% of Java online submissions for Binary Tree Level Order Traversal II.
+Memory Usage: 39.4 MB, less than 5.00% of Java online submissions for Binary Tree Level Order Traversal II.
+
+BFS and reverse the list.

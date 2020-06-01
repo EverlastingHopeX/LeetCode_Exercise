@@ -1,0 +1,60 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    public Node connect(Node root) {
+        if(root==null){
+            return root;
+        }
+        Queue<Node> queue=new LinkedList<>();
+        queue.offer(root);
+        Node dummy=new Node();
+        while(!queue.isEmpty()){
+            // System.out.println("level");
+            Node Prev=dummy;
+            for(int i=queue.size();i>0;i--){
+                Node cur=queue.poll();
+                // System.out.println(cur.val);
+                Prev.next=cur;
+                Prev=cur;
+                if(cur.left!=null){
+                    queue.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    queue.offer(cur.right);
+                }
+            }
+        }
+        
+        return root;
+    }
+}
+
+Runtime: 1 ms, faster than 52.60% of Java online submissions for Populating Next Right Pointers in Each Node.
+Memory Usage: 39.3 MB, less than 6.35% of Java online submissions for Populating Next Right Pointers in Each Node.
+
+It is easy to come up with a BFS with queue solution, but it won't satisfy the follow up's requirement.
+
+Other's O(1) space solution.
+It's still BFS but the queue is not necessary since we know the next node in this level.
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/37461/Java-solution-with-O(1)-memory%2B-O(n)-time

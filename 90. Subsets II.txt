@@ -1,0 +1,39 @@
+class Solution {
+    List<List<Integer>> ans;
+    
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        ans=new ArrayList<>();
+        Arrays.sort(nums);
+        Deque<Integer> deque=new ArrayDeque<>();
+        DFS(nums,deque,-1);
+        return ans;
+    }
+    
+    private void DFS(int[] nums, Deque<Integer> deque, int idx){
+        // System.out.println("idx "+idx+" "+deque.size());
+        if(idx>=nums.length){
+            List<Integer> li=new ArrayList<>();
+            li.addAll(deque);
+            ans.add(li);
+            return;
+        }
+        for(int i=idx+1;i<nums.length;i++){
+            if(i>idx+1 && nums[i]==nums[i-1]){
+                continue;
+            }
+            // System.out.println("add "+nums[i]);
+            deque.addLast(nums[i]);
+            DFS(nums,deque,i);
+            deque.removeLast();
+        }
+        DFS(nums,deque,nums.length);
+    }
+}
+
+Runtime: 2 ms, faster than 38.97% of Java online submissions for Subsets II.
+Memory Usage: 40 MB, less than 5.88% of Java online submissions for Subsets II.
+
+Relatively easy since I've done 78. Subset.
+It can be more concise by removing first if and last DFS() of the DFS() function, the performance will not change.
+The time complexity is O(n!)
+2 ms is hard to improve, and the performance measurement of online judgement is not very precise, so I will not try to improve it.

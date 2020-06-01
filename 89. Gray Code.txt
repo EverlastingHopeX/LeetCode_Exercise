@@ -1,0 +1,49 @@
+class Solution {
+    
+    List<Integer> ans;
+    int[] num=new int[]{0,1,3,2};
+    public List<Integer> grayCode(int n) {
+        ans=new ArrayList<>();
+        if(n==0){
+            ans.add(0);
+            return ans;
+        }
+        int k=((n-1)/2)*2;
+        int base=(int)Math.pow(2,k);
+        // System.out.println("k "+k+" base "+base);
+        DFS(num[0]*base,k,true);
+        DFS(num[1]*base,k,false);
+        if(n==k+2){
+            DFS(num[2]*base,k,true);
+            DFS(num[3]*base,k,false);
+        }
+        return ans;
+    }
+    
+    private void DFS(int sum, int n, boolean dir){
+        // System.out.println("n "+n+" sum "+sum);
+        if(n<=0){
+            ans.add(sum);
+            return;
+        }
+        int k=((n-1)/2)*2;
+        int base=(int)Math.pow(2,k);
+        if(dir){
+            for(int i=0;i<num.length;i++){
+                DFS(sum+num[i]*base,k,dir);
+                dir=!dir;
+            }
+        }
+        else{
+            for(int i=num.length-1;i>=0;i--){
+                dir=!dir;
+                DFS(sum+num[i]*base,k,dir);
+            }
+        }
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Gray Code.
+Memory Usage: 37.5 MB, less than 8.00% of Java online submissions for Gray Code.
+
+The key point is to translate the high level rule into low level implementation.
