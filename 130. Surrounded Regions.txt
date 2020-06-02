@@ -1,0 +1,7 @@
+Didn't work it out, although this is a typical union find problem, I didn't realize it until I read the discussion.
+
+Other's union find solution.
+https://leetcode.com/problems/surrounded-regions/discuss/41617/Solve-it-using-Union-Find
+
+DFS solution.
+https://leetcode.com/problems/surrounded-regions/discuss/41633/Java-DFS-%2B-boundary-cell-turning-solution-simple-and-clean-code-commented.

@@ -1,0 +1,35 @@
+class Solution {
+    public boolean isPalindrome(String s) {
+        String str=s.toLowerCase();
+        char[] chArr=str.toCharArray();
+        int left=0;
+        int right=chArr.length-1;
+        while(left<chArr.length && !Character.isLetterOrDigit(chArr[left])){
+            left++;
+        }
+        while(right>=0 && !Character.isLetterOrDigit(chArr[right])){
+            right--;
+        }
+        while(left<right){
+            // System.out.println(chArr[left]+" "+chArr[right]);
+            if(chArr[left]==chArr[right]){
+                left++;
+                right--;
+            }
+            else{
+                return false;
+            }
+            while(left<chArr.length && !Character.isLetterOrDigit(chArr[left])){
+                left++;
+            }
+            while(right>=0 && !Character.isLetterOrDigit(chArr[right])){
+                right--;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 3 ms, faster than 67.57% of Java online submissions for Valid Palindrome.
+Memory Usage: 39.4 MB, less than 25.89% of Java online submissions for Valid Palindrome.
+Next challenges:
