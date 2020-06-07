@@ -1,0 +1,52 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode tHead=head;
+        ListNode cur=head;
+        while(cur.next!=null){
+            // System.out.println("cur "+cur.val);
+            if(cur.next.val<cur.val){
+                tHead=insert(tHead,cur,cur.next);
+            }
+            else{
+                cur=cur.next;
+            }
+        }
+        return tHead;
+    }
+    
+    private ListNode insert(ListNode tHead, ListNode cur, ListNode tNext){
+        // System.out.println("insert "+tNext.val);
+        cur.next=tNext.next;
+        ListNode p=tHead;
+        ListNode dummy=new ListNode(0);
+        dummy.next=tHead;
+        ListNode prev=dummy;
+        while(p!=cur.next){
+            if(p.val>=tNext.val){
+                // System.out.println("insert before "+p.val+" after "+prev.val);
+                tNext.next=p;
+                prev.next=tNext;
+                break;
+            }
+            prev=p;
+            p=p.next;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 2 ms, faster than 98.28% of Java online submissions for Insertion Sort List.
+Memory Usage: 39 MB, less than 69.72% of Java online submissions for Insertion Sort List.

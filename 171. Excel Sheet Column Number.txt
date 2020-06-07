@@ -1,0 +1,16 @@
+class Solution {
+    public int titleToNumber(String s) {
+        int sum=0;
+        for(char ch:s.toCharArray()){
+            int n=ch-'A'+1;
+            sum=sum*26+n;
+        }
+        return sum;
+    }
+}
+
+Runtime: 2 ms, faster than 20.66% of Java online submissions for Excel Sheet Column Number.
+Memory Usage: 38.4 MB, less than 59.32% of Java online submissions for Excel Sheet Column Number.
+
+Much easier than 168.
+Although the performance only beats 20.66%, most of them are 1 ms, and it is probably because of the instable performance of online judgement.

@@ -1,0 +1,45 @@
+class Solution {
+    public boolean verifyPreorder(int[] preorder) {
+        if(preorder.length==0){
+            return true;
+        }
+        int mid=preorder[0];
+        int p=0;
+        while(p<preorder.length && preorder[p]<=mid){
+            p++;
+        }
+        // System.out.println("p "+p);
+        return verifyPreorder(preorder,1,p-1,null,mid) && verifyPreorder(preorder,p,preorder.length-1,mid,null);
+    }
+    
+    private boolean verifyPreorder(int[] preorder, int start, int end, Integer min, Integer max){
+        // System.out.println(start+" "+end+", "+min+" "+max);
+        if(start>end){
+            // System.out.println("true");
+            return true;
+        }
+        int mid=preorder[start];
+        int p=start;
+        while(p<=end && preorder[p]<=mid){
+            if(min!=null && preorder[p]<min){
+                return false;
+            }
+            p++;
+        }
+        // System.out.println("p "+p);
+        return verifyPreorder(preorder,start+1,p-1,min,mid) && verifyPreorder(preorder,p,end,mid,max);
+    }
+}
+
+Runtime: 223 ms, faster than 19.67% of Java online submissions for Verify Preorder Sequence in Binary Search Tree.
+Memory Usage: 41.6 MB, less than 5.55% of Java online submissions for Verify Preorder Sequence in Binary Search Tree.
+
+The time complexity is O(n^2). The equation for time complexity analysis is T(n)=T(k)+T(n-k-1)+O(k).
+Some solutions declares to be O(nlogn) but the worst case is actually O(n^2), since fore desending order, it would read n-i elements for level i (start from 1 to n-1). And the space should be O(n). 
+
+O(n) and O(1) space solution.
+O(n) is like finding a peak and then store the maximum value ("low") before the peak. Thenk check if there is a value smaller than the "low" after the peak. If there is, then it contradicts with preorder.
+O(1) is similar to O(n) but use the former part of array to simulate stack. 
+The time complexity for both of them are O(n), since we only  have to push and pop each element for exactly once.
+
+https://leetcode.com/problems/verify-preorder-sequence-in-binary-search-tree/discuss/68142/Java-O(n)-and-O(1)-extra-space
