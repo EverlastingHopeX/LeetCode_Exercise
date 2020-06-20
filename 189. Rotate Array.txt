@@ -1,0 +1,55 @@
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n=nums.length;
+        k=k%n;
+        if(k==0){
+            return;
+        }
+        int[] latter=new int[k];
+        for(int i=0;i<k;i++){
+            latter[i]=nums[i+n-k];
+        }
+        for(int i=0;i<n-k;i++){
+            nums[n-1-i]=nums[n-k-1-i];
+        }
+        for(int i=0;i<k;i++){
+            nums[i]=latter[i];
+        }
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Rotate Array.
+Memory Usage: 39.7 MB, less than 94.16% of Java online submissions for Rotate Array.
+
+The solution with extra O(k) memory is easy.
+
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n=nums.length;
+        k=k%n;
+        for(int i=0;i<k;i++){
+            // System.out.println("i "+i);
+            for(int j=n-k-1+i;j>=i;j--){
+                // System.out.println("j "+j);
+                swap(nums,j,j+1);
+            }
+        }
+    }
+    
+    private void swap(int[] nums, int i, int j){
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+}
+
+Runtime: 138 ms, faster than 24.09% of Java online submissions for Rotate Array.
+Memory Usage: 39.5 MB, less than 99.25% of Java online submissions for Rotate Array.
+
+This solution is O(1) but performance is terrible.
+
+The O(1) solution with good performance. It requires three steps of reverse. Reverse the former part and the latter part (k elements) individuals, then reverse the whole array.
+
+Divide the array into three parts: [A0, A1, B]. The length of A0 and B are both k. Then the first two reverse make the array become [rA1, rA0, rB]. Finally, the third reverse makes the array become [B, A0, A1], which is the desired result.
+
+https://leetcode.com/problems/rotate-array/discuss/54252/Java-O(1)-space-solution-of-Rotate-Array.

@@ -1,0 +1,17 @@
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int cnt=0;
+        while(n!=0){
+            // System.out.println(cnt);
+            cnt+=n&1;
+            n=n>>>1;
+        }
+        return cnt;
+    }
+}
+
+Runtime: 1 ms, faster than 30.92% of Java online submissions for Number of 1 Bits.
+Memory Usage: 36.4 MB, less than 63.29% of Java online submissions for Number of 1 Bits.
+
+When I got the TLE, I thought there should be better ways to solve this, but it is actually because I forgot to use >>>.

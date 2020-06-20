@@ -1,0 +1,27 @@
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        StringBuilder sb=new StringBuilder("");
+        while(n!=0){
+            int p=n&1;
+            // System.out.println(n+" "+p);
+            sb.append(p);
+            n=n>>>1;
+        }
+        while(sb.length()<32){
+            sb.append("0");
+        }
+        // System.out.println(sb.toString());
+        String str=sb.toString();
+        int ans=0;
+        for(char ch:str.toCharArray()){
+            ans=2*ans+ch-'0';
+        }
+        return ans;
+    }
+}
+
+Runtime: 2 ms, faster than 18.38% of Java online submissions for Reverse Bits.
+Memory Usage: 39.5 MB, less than 17.81% of Java online submissions for Reverse Bits.
+
+>>> is unsigned right shift.

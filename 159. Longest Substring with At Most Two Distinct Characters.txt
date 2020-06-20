@@ -1,0 +1,42 @@
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        if(s.length()<=2){
+            return s.length();
+        }
+        int[] prev=new int[s.length()];
+        char[] chArr=s.toCharArray();
+        for(int i=1;i<chArr.length;i++){
+            prev[i]=i;
+            if(chArr[i-1]==chArr[i]){
+                prev[i]=prev[i-1];
+            }
+        }
+        char[] Two=new char[2];
+        Two[0]=chArr[0];
+        Two[1]=chArr[1];
+        int k=2;
+        int len=2;
+        int max=0;
+        while(k<chArr.length){
+            if(chArr[k]==Two[0] || chArr[k]==Two[1]){
+                len++;
+            }
+            else{
+                max=Math.max(max,len);
+                len=k-1-prev[k-1]+2;
+                Two[0]=chArr[k];
+                Two[1]=chArr[k-1];
+            }
+            k++;
+        }
+        max=Math.max(max,len);
+        return max;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Longest Substring with At Most Two Distinct Characters.
+Memory Usage: 39.2 MB, less than 74.18% of Java online submissions for Longest Substring with At Most Two Distinct Characters.
+
+Typical dp. Once we meet the char chArr[k] that is not one of the two chars, we can start a new counting process. I use prev to memorize the length of consecutive chArr[k-1], so that I don't have to start counting one char for multiple times.
+
+Time complexity should be O(n)

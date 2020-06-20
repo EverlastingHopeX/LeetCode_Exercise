@@ -1,0 +1,68 @@
+class Solution {
+    enum State{
+        //not match, match, match with modification
+        NOTMAT,MATCH,MODMAT
+    }
+    public boolean isOneEditDistance(String s, String t) {
+        if(s.length()==0 || t.length()==0){
+            int n=Math.max(s.length(),t.length());
+            if(n==1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        State[][] match=new State[s.length()+1][t.length()+1];
+        for(State[] m:match){
+            Arrays.fill(m,State.NOTMAT);
+        }
+        match[0][0]=State.MATCH;
+        match[0][1]=State.MODMAT;
+        match[1][0]=State.MODMAT;
+        for(int i=1;i<=s.length();i++){
+            for(int j=1;j<=t.length();j++){
+                if(s.charAt(i-1)==t.charAt(j-1)){
+                    match[i][j]=match[i-1][j-1];
+                }
+                else{
+                    if(match[i][j-1]==State.MATCH || match[i-1][j]==State.MATCH || match[i-1][j-1]==State.MATCH){
+                        match[i][j]=State.MODMAT;
+                    }
+                    else{
+                        match[i][j]=State.NOTMAT;
+                    }
+                }
+                // System.out.println(i+" "+j+": "+match[i][j]);
+            }
+        }
+        
+        return match[s.length()][t.length()]==State.MODMAT;
+    }
+}
+
+Runtime: 1530 ms, faster than 5.01% of Java online submissions for One Edit Distance.
+Memory Usage: 207.1 MB, less than 5.05% of Java online submissions for One Edit Distance.
+
+It would be easy to come up with the dp solution. The only problem is that I don't have to iterate j from 0 to t.length(), since when j is smaller than i-1 or larger than i+1, match[i][j] would apparently be not match. And also, using match of size M*N also waste a lot of spaces because only the diagonal elements are used.
+Apart from that, as long as we make sure s is smaller than t, we don't need to consider delete char in s.
+
+Other's solution.
+https://leetcode.com/problems/one-edit-distance/discuss/50098/My-CLEAR-JAVA-solution-with-explanation
+
+There is a very concise solution in the comments.
+class Solution {
+    public boolean isOneEditDistance(String s, String t) {
+        for (int i = 0, j = 0; i < s.length() && j < t.length(); i++, j++) {
+            if (s.charAt(i) != t.charAt(j)) {
+               return s.substring(i).equals(t.substring(j + 1)) ||
+                   s.substring(i + 1).equals(t.substring(j)) ||
+                   s.substring(i + 1).equals(t.substring(j + 1));
+            }
+        }
+        return Math.abs(s.length() - t.length()) == 1;
+    }
+}
+
+By each step, it will check whether the remaining sub strings of s and t are equal when there is an mismatch. When there is a mismatch, we can fix it by delete one character in one string or delete both of them (replace). So if the remaining part will be equal after the fix, then s and t are one edit distance apart.
+If they are exactly same, or the smaller one is substring of the larger one, then we need to check their lengths. If their lengths are only one char away, then we can fix this by delete one char, otherwise they are competely same or need to be fixed by deleting multiple chars.

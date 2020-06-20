@@ -1,0 +1,94 @@
+class Solution {
+    class UnionFind{
+        int[] idx;
+        int size;
+        int group;
+        UnionFind(int size){
+            idx=new int[size];
+            for(int i=0;i<size;i++){
+                idx[i]=i;
+            }
+            this.size=size;
+            this.group=size;
+        }
+        
+        public void union(int id1, int id2){
+            // System.out.println("union "+id1+" "+id2);
+            int p1=find(id1), p2=find(id2);
+            if(p1!=p2){
+                idx[p2]=p1;
+                group--;
+            }
+        }
+        
+        public int find(int id){
+            // System.out.println("find "+id);
+            int p=idx[id];
+            while(p!=idx[p]){
+                p=idx[p];
+            }
+            return p;
+        }
+    }
+    public boolean canConvert(String str1, String str2) {
+        if(str1.equals(str2)){
+            return true;
+        }
+        int size=str1.length();
+        UnionFind uf1=new UnionFind(size);
+        init(str1,uf1);
+        UnionFind uf2=new UnionFind(size);
+        init(str2,uf2);
+        return check(uf1,uf2);
+    }
+    
+    private void init(String str, UnionFind uf){
+        int[] voc=new int[26];
+        Arrays.fill(voc,-1);
+        for(int i=0;i<str.length();i++){
+            int id=str.charAt(i)-'a';
+            if(voc[id]==-1){
+                voc[id]=i;
+            }
+            else{
+                uf.union(voc[id],i);
+            }
+        }
+        // for(int i=0;i<uf.size;i++){
+        //     System.out.print(uf.idx[i]+" ");
+        // }
+        // System.out.println();
+    }
+    
+    private boolean check(UnionFind uf1, UnionFind uf2){
+        for(int i=0;i<uf1.size;i++){
+            int p1=uf1.find(i);
+            int p2=uf2.find(i);
+            if(p1!=p2){
+                if(p1==i){
+                    uf1.union(i,p2);
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        // System.out.println(uf1.group+" "+uf2.group);
+        if(uf1.group==26){
+            return false;
+        }
+        return true;
+    }
+}
+
+Runtime: 5 ms, faster than 7.16% of Java online submissions for String Transforms Into Another String.
+Memory Usage: 39.4 MB, less than 80.93% of Java online submissions for String Transforms Into Another String.
+
+Typical union find. If we can transfer str1 into str2, then the unions of str1 are the same with str2 (However, if there are 26 groups, then we may not be able to transfer str1 into str2).
+
+The time complexity is O(n).
+
+However, since the groups of str2 is fixed, we only need to check if we can make groups of str1 into str2, this algorithm can be greatly improved (Still O(n) though).
+
+Other's solution.
+https://leetcode.com/problems/string-transforms-into-another-string/discuss/355382/JavaC%2B%2BPython-Need-One-Unused-Character

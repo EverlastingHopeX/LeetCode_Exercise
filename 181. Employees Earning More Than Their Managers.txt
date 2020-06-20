@@ -1,0 +1,4 @@
+select t2.Name as Employee from Employee as t1 left join Employee as t2 on t1.Id=t2.ManagerId where t1.Salary<t2.Salary
+
+Runtime: 679 ms, faster than 32.28% of MySQL online submissions for Employees Earning More Than Their Managers.
+Memory Usage: 0B, less than 100.00% of MySQL online submissions for Employees Earning More Than Their Managers.
