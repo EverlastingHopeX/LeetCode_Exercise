@@ -1,0 +1,79 @@
+class WordDictionary {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEnd;
+        TrieNode(){
+            children=new TrieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    TrieNode root;
+    
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        root=new TrieNode();
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        TrieNode cur=root;
+        for(char ch:word.toCharArray()){
+            int idx=ch-'a';
+            if(cur.children[idx]==null){
+                cur.children[idx]=new TrieNode();
+            }
+            cur=cur.children[idx];
+        }
+        cur.isEnd=true;
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        TrieNode cur=root;
+        return DFS(word,0,root);
+    }
+    
+    private boolean DFS(String word, int i, TrieNode cur){
+        // System.out.println("dfs "+i);
+        if(i==word.length()){
+            // System.out.println(word+" reach end "+cur.isEnd);
+            if(cur.isEnd){
+                return true;
+            }
+            return false;
+        }
+        char ch=word.charAt(i);
+        if(ch!='.'){
+            int idx=ch-'a';
+            if(cur.children[idx]==null){
+                return false;
+            }
+            return DFS(word,i+1,cur.children[idx]);
+        }
+        else{
+            
+            for(int j=0;j<26;j++){
+                if(cur.children[j]==null){
+                    continue;
+                }
+                if(DFS(word,i+1,cur.children[j])){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
+
+Runtime: 36 ms, faster than 96.49% of Java online submissions for Add and Search Word - Data structure design.
+Memory Usage: 50.5 MB, less than 52.50% of Java online submissions for Add and Search Word - Data structure design.
+
+Typical Trie problem.
