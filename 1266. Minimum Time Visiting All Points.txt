@@ -1,0 +1,20 @@
+class Solution {
+    public int minTimeToVisitAllPoints(int[][] points) {
+        int sum=0;
+        for(int i=1;i<points.length;i++){
+            sum+=compute(points[i-1],points[i]);
+        }
+        return sum;
+    }
+    
+    private int compute(int[] p1, int[] p2){
+        int dx=Math.abs(p1[0]-p2[0]);
+        int dy=Math.abs(p1[1]-p2[1]);
+        return Math.max(dx,dy);
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Minimum Time Visiting All Points.
+Memory Usage: 39.1 MB, less than 60.68% of Java online submissions for Minimum Time Visiting All Points.
+
+At first I thought there is predefined order, which makes me feel terrible cause I can't figure out an easy problem. But there is a predefined order, which makes this problem really easy.

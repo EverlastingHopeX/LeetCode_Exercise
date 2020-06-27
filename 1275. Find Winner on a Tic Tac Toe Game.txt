@@ -1,0 +1,72 @@
+class Solution {
+    public String tictactoe(int[][] moves) {
+        Map<Integer,Integer> aCnt=new HashMap<>();
+        Map<Integer,Integer> bCnt=new HashMap<>();
+        boolean isA=true;
+        for(int i=0;i<moves.length;i++){
+            // System.out.println("move "+i);
+            int r=moves[i][0];
+            int c=moves[i][1];
+            if(isA){
+                int cnt=aCnt.getOrDefault(r,0);
+                if(cnt==2){
+                    return "A";
+                }
+                aCnt.put(r,cnt+1);
+                cnt=aCnt.getOrDefault(3+c,0);
+                if(cnt==2){
+                    return "A";
+                }
+                aCnt.put(3+c,cnt+1);
+                if(r==c){
+                    cnt=aCnt.getOrDefault(6,0);
+                    if(cnt==2){
+                        return "A";
+                    }
+                    aCnt.put(6,cnt+1);
+                }
+                if(r+c==2){
+                    cnt=aCnt.getOrDefault(7,0);
+                    if(cnt==2){
+                        return "A";
+                    }
+                    aCnt.put(7,cnt+1);
+                }
+            }
+            else{
+                int cnt=bCnt.getOrDefault(r,0);
+                if(cnt==2){
+                    return "B";
+                }
+                bCnt.put(r,cnt+1);
+                cnt=bCnt.getOrDefault(3+c,0);
+                if(cnt==2){
+                    return "B";
+                }
+                bCnt.put(3+c,cnt+1);
+                if(r==c){
+                    cnt=bCnt.getOrDefault(6,0);
+                    if(cnt==2){
+                        return "B";
+                    }
+                    bCnt.put(6,cnt+1);
+                }
+                if(r+c==2){
+                    cnt=bCnt.getOrDefault(7,0);
+                    if(cnt==2){
+                        return "B";
+                    }
+                    bCnt.put(7,cnt+1);
+                }
+            }
+            isA=!isA;
+        }
+        return moves.length==9?"Draw":"Pending";
+    }
+}
+
+Runtime: 1 ms, faster than 18.04% of Java online submissions for Find Winner on a Tic Tac Toe Game.
+Memory Usage: 37.3 MB, less than 50.08% of Java online submissions for Find Winner on a Tic Tac Toe Game.
+
+Pretty easy.
+O(N)

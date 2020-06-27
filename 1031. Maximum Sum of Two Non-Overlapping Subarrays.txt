@@ -1,0 +1,60 @@
+class Solution {
+    public int maxSumTwoNoOverlap(int[] A, int L, int M) {
+        if(L<M){
+            int temp=L;
+            L=M;
+            M=temp;
+        }
+        int p=0,p1=M,p2=L;
+        int sum1=0,sum2=0;
+        List<int[]> li1=new LinkedList<>();
+        List<int[]> li2=new LinkedList<>();
+        for(int i=0;i<L;i++){
+            if(i<p1){
+                sum1+=A[i];
+            }
+            sum2+=A[i];
+        }
+        li1.add(new int[]{sum1,p});
+        li2.add(new int[]{sum2,p});
+        while(p1<A.length){
+            if(p2<A.length){
+                sum2=sum2+A[p2]-A[p];
+                // System.out.println("L add "+sum2);
+                li2.add(new int[]{sum2,p+1});
+            }
+            sum1=sum1+A[p1]-A[p];
+            li1.add(new int[]{sum1,p+1});
+            p++;
+            p1++;
+            p2++;
+        }
+        Collections.sort(li1,(i1,i2)->(i2[0]-i1[0]));
+        Collections.sort(li2,(i1,i2)->(i2[0]-i1[0]));
+        // System.out.println(li1.size()+" "+li2.size());
+        int max=-1;
+        for(int i=0;i<li1.size();i++){
+            for(int j=0;j<li2.size();j++){
+                int[] cur1=li1.get(i);
+                int[] cur2=li2.get(j);
+                // System.out.println("M "+cur1[1]+" "+cur1[0]);
+                // System.out.println("L "+cur2[1]+" "+cur2[0]);
+                if(cur1[1]+M<=cur2[1] || cur2[1]+L<=cur1[1]){
+                    // System.out.println("combination found "+(cur1[0]+cur2[0]));
+                    max=Math.max(max,cur1[0]+cur2[0]);
+                }
+            }
+        }
+        return max;
+    }
+}
+
+Runtime: 1145 ms, faster than 5.03% of Java online submissions for Maximum Sum of Two Non-Overlapping Subarrays.
+Memory Usage: 39.4 MB, less than 23.53% of Java online submissions for Maximum Sum of Two Non-Overlapping Subarrays.
+
+This is no better than try every combination out. It is O(M*N).
+
+Other's solution.
+There are two possibilities, L before M and M before L. So in each loop, it add current L to the maximum M before L, and add current M to the maximum L before M, then compare them. In this way there will not be a overlap.
+
+https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/discuss/278251/JavaC%2B%2BPython-O(N)Time-O(1)-Space

@@ -1,0 +1,29 @@
+class Solution {
+    public int[] smallerNumbersThanCurrent(int[] nums) {
+        PriorityQueue<int[]> pq=new PriorityQueue<>(nums.length,(o1,o2)->(o1[1]-o2[1]));
+        for(int i=0;i<nums.length;i++){
+            pq.add(new int[]{i,nums[i]});
+        }
+        int[] ans=new int[nums.length];
+        int cnt=0;
+        int offset=0;
+        int prev=pq.peek()[1]-1;
+        while(!pq.isEmpty()){
+            // System.out.println("cnt "+cnt);
+            int[] cur=pq.poll();
+            if(cur[1]==prev){
+                offset++;
+            }
+            else{
+                offset=0;
+            }
+            ans[cur[0]]=cnt-offset;
+            prev=cur[1];
+            cnt++;
+        }
+        return ans;
+    }
+}
+
+Runtime: 5 ms, faster than 62.02% of Java online submissions for How Many Numbers Are Smaller Than the Current Number.
+Memory Usage: 39.7 MB, less than 46.46% of Java online submissions for How Many Numbers Are Smaller Than the Current Number.

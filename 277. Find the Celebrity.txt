@@ -1,0 +1,60 @@
+/* The knows API is defined in the parent class Relation.
+      boolean knows(int a, int b); */
+
+public class Solution extends Relation {
+    public int findCelebrity(int n) {
+        boolean[] notCele=new boolean[n];
+        for(int i=0;i<n;i++){
+            if(notCele[i]){
+                continue;
+            }
+            for(int j=0;j<n;j++){
+                if(j==i){
+                    continue;
+                }
+                // System.out.println("ask "+j+" -> "+i);
+                //j is not cele if he knows others
+                if(knows(j,i)){
+                    // System.out.println(j+" not");
+                    notCele[j]=true;
+                }
+                //i is not cele if someone doesn't know him
+                else{
+                    // System.out.println(i+" not");
+                    notCele[i]=true;
+                    break;
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(!notCele[i]){
+                for(int j=0;j<n;j++){
+                    if(j==i){
+                        continue;
+                    }
+                    if(knows(i,j)){
+                        notCele[i]=true;
+                        break;
+                    }
+                }
+            }
+            if(!notCele[i]){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 21 ms, faster than 49.03% of Java online submissions for Find the Celebrity.
+Memory Usage: 40.1 MB, less than 25.11% of Java online submissions for Find the Celebrity.
+
+O(N^2) if no one knows each other.
+Not very satisfying.
+
+Here is the O(n) solution.
+Really brilliant solution. The first comment offers a great explanation for this solution.
+
+"In detail, suppose the candidate after the first for loop is person k, it means 0 to k-1 cannot be the celebrity, because they know a previous or current candidate. Also, since k knows no one between k+1 and n-1, k+1 to n-1 can not be the celebrity either. Therefore, k is the only possible celebrity, if there exists one. The remaining job is to check if k indeed does not know any other persons and all other persons know k."
+
+https://leetcode.com/problems/find-the-celebrity/discuss/71227/Java-Solution.-Two-Pass

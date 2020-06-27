@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int num=1;
+    
+    public int largestBSTSubtree(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        helper(root);
+        return num;
+    }
+    
+    private Integer[] helper(TreeNode cur){
+        if(cur==null){
+            return new Integer[]{0,null,null};
+        }
+        Integer[] l=helper(cur.left);
+        Integer[] r=helper(cur.right);
+        Integer min=l[1]==null?cur.val:l[1];
+        Integer max=r[2]==null?cur.val:r[2];
+        Integer[] ans=new Integer[]{l[0]+r[0]+1,min,max};
+        // System.out.println("cur "+cur.val+" "+l[0]+" "+r[0]);
+        // System.out.println(l[2]+" "+r[1]);
+        if((l[2]!=null && cur.val<=l[2])||(r[1]!=null && cur.val>=r[1])){
+            // System.out.println("conflict");
+            ans[0]=-1;
+        }
+        if(l[0]==-1 || r[0]==-1){
+            ans[0]=-1;
+        }
+        else{
+            num=Math.max(num,ans[0]);
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Largest BST Subtree.
+Memory Usage: 39.8 MB, less than 28.50% of Java online submissions for Largest BST Subtree.
+
+For each node, I check if its left is valid, its right is valid and itself is valid. If all above is valid, then I will pass the number of nodes, min and max border of this subtree to its parent. Also the num is updated if current node is valid.
