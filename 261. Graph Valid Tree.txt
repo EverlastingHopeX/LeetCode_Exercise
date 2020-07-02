@@ -1,0 +1,31 @@
+class Solution {
+    public boolean validTree(int n, int[][] edges) {
+        int[] idx=new int[n];
+        for(int i=0;i<n;i++){
+            idx[i]=i;
+        }
+        int cnt=n;
+        for(int[] e:edges){
+            int p1=find(idx, e[0]);
+            int p2=find(idx, e[1]);
+            if(p1==p2){
+                return false;
+            }
+            idx[p2]=p1;
+            cnt--;
+        }
+        return cnt==1;
+    }
+    
+    private int find(int[] idx, int n){
+        while(n!=idx[n]){
+            n=idx[n];
+        }
+        return n;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Graph Valid Tree.
+Memory Usage: 39.6 MB, less than 81.72% of Java online submissions for Graph Valid Tree.
+
+A valid tree will have two characteristics: 1. all nodes are connected. 2. No circle. This can be done by using union find.

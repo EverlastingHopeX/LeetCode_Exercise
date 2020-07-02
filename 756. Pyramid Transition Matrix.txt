@@ -1,0 +1,60 @@
+class Solution {
+    
+    Map<String,List<Character>> alMap;
+    
+    public boolean pyramidTransition(String bottom, List<String> allowed) {
+        alMap=new HashMap<>();
+        for(String al:allowed){
+            char b1=al.charAt(0);
+            char b2=al.charAt(1);
+            char top=al.charAt(2);
+            String str=""+b1+b2;
+            List<Character> li=alMap.getOrDefault(str,new ArrayList<>());
+            li.add(top);
+            alMap.put(str,li);
+        }
+        return helper(bottom);
+    }
+    
+    private boolean helper(String level){
+        // System.out.println("helper "+level);
+        if(level.length()==1){
+            return true;
+        }
+        List<String> nextLevel=new ArrayList<>();
+        buildNextLevel(level,1,"",nextLevel);
+        // System.out.println("next level "+nextLevel.size());
+        boolean flag=false;
+        for(String nLv:nextLevel){
+            flag=helper(nLv);
+            if(flag==true){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private void buildNextLevel(String level, int idx, String next, List<String> nextLevel){
+        // System.out.println(next);
+        if(idx==level.length()){
+            nextLevel.add(next);
+            return;
+        }
+        char b1=level.charAt(idx-1);
+        char b2=level.charAt(idx);
+        String str=""+b1+b2;
+        // System.out.println(str);
+        List<Character> topList=alMap.getOrDefault(str,new ArrayList<>());
+        for(char ch:topList){
+            // System.out.println(ch);
+            buildNextLevel(level,idx+1,next+ch,nextLevel);
+        }
+    }
+}
+
+Runtime: 14 ms, faster than 21.57% of Java online submissions for Pyramid Transition Matrix.
+Memory Usage: 40.4 MB, less than 26.80% of Java online submissions for Pyramid Transition Matrix.
+
+DFS. Hard to describe the time complexity of this problem.
+The description of this problem is not clear. I thought the order of the bottom chars are not important at first.
+The performance can be slightly improved by replacing String next with StringBuilder.

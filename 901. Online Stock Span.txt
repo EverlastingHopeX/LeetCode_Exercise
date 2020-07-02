@@ -1,0 +1,44 @@
+class StockSpanner {
+    //(price, idx)
+    Stack<int[]> st;
+    int day;
+    public StockSpanner() {
+        st=new Stack<>();
+        day=0;
+    }
+    
+    public int next(int price) {
+        day++;
+        // System.out.println("day "+day+" "+price);
+        int[] top=new int[]{0,0};
+        while(!st.isEmpty()){
+            top=st.peek();
+            // System.out.println("top: day "+top[1]+" "+top[0]);
+            if(top[0]<=price){
+                st.pop();
+            }
+            else{
+                break;
+            }
+        }
+        if(st.isEmpty()){
+            top[1]=0;
+        }
+        st.push(new int[]{price,day});
+        return day-top[1];
+    }
+}
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner obj = new StockSpanner();
+ * int param_1 = obj.next(price);
+ */
+
+Runtime: 27 ms, faster than 88.34% of Java online submissions for Online Stock Span.
+Memory Usage: 49.1 MB, less than 70.98% of Java online submissions for Online Stock Span.
+
+O(N) (O(1)), every price and day pair will be pushed and poped for at most once.
+Similar idea, but saved span of each price instead of day. In that case, the memory used is slightly smaller.
+
+https://leetcode.com/problems/online-stock-span/discuss/168311/C%2B%2BJavaPython-O(1)

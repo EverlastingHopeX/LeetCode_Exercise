@@ -1,0 +1,44 @@
+class Solution {
+    public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+        Arrays.sort(slots1,(o1,o2)->(o1[0]-o2[0]));
+        Arrays.sort(slots2,(o1,o2)->(o1[0]-o2[0]));
+        int p1=0, p2=0;
+        List<Integer> ans=new ArrayList<>();
+        while(p1<slots1.length && p2<slots2.length){
+            // System.out.println(p1+" "+p2);
+            int[] s1=slots1[p1];
+            int[] s2=slots2[p2];
+            if(s1[0]>=s2[1]){
+                p2++;
+            }
+            else if(s2[0]>=s1[1]){
+                p1++;
+            }
+            else{
+                int[] period=new int[]{Math.max(s1[0],s2[0]),Math.min(s1[1],s2[1])};
+                // System.out.println("period "+period[0]+" "+period[1]);
+                if(period[1]-period[0]>=duration){
+                    // System.out.println("found");
+                    ans.add(period[0]);
+                    ans.add(period[0]+duration);
+                    break;
+                }
+                if(s1[1]<s2[1]){
+                    p1++;
+                }
+                else{
+                    p2++;
+                }
+            }
+        }
+        // System.out.println(p1+" "+p2);
+        return ans;
+    }
+}
+
+Runtime: 28 ms, faster than 41.03% of Java online submissions for Meeting Scheduler.
+Memory Usage: 48.2 MB, less than 82.88% of Java online submissions for Meeting Scheduler.
+
+I used list to store and use Collections.sort, but it cause a lot of overhead (1127ms).
+
+Time complexity O(NlogN). The sorting is O(NlogN), finding slot is O(N).

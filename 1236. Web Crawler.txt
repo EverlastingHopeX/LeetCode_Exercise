@@ -1,0 +1,53 @@
+/**
+ * // This is the HtmlParser's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface HtmlParser {
+ *     public List<String> getUrls(String url) {}
+ * }
+ */
+
+class Solution {
+    public List<String> crawl(String startUrl, HtmlParser htmlParser) {
+        String HOST=getHost(startUrl);
+        // System.out.println("HOSt "+HOST);
+        Queue<String> queue=new LinkedList<>();
+        Set<String> visited=new HashSet<>();
+        queue.offer(startUrl);
+        visited.add(startUrl);
+        List<String> ans=new ArrayList<>();
+        while(!queue.isEmpty()){
+            String url=queue.poll();
+            String host=getHost(url);
+            if(host.equals(HOST)){
+                ans.add(url);
+            }
+            else{
+                continue;
+            }
+            List<String> links=htmlParser.getUrls(url);
+            for(String link:links){
+                if(visited.contains(link)){
+                    continue;
+                }
+                queue.offer(link);
+                visited.add(link);
+            }
+        }
+        
+        return ans;
+    }
+    
+    private String getHost(String url){
+        String[] strs=url.split("/");
+        // for(String s:strs){
+        //     System.out.println(s);
+        // }
+        // System.out.println("host "+strs[2]);
+        return strs[2];
+    }
+}
+
+Runtime: 4 ms, faster than 89.10% of Java online submissions for Web Crawler.
+Memory Usage: 46.5 MB, less than 87.46% of Java online submissions for Web Crawler.
+
+Easy BFS question.
