@@ -1,0 +1,35 @@
+import java.util.concurrent.*;
+
+class H2O {
+    
+    Semaphore hyd, oxy;
+    
+    public H2O() {
+        hyd=new Semaphore(2,true);
+        oxy=new Semaphore(2,true);
+    }
+
+    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
+        oxy.acquire();
+        // releaseHydrogen.run() outputs "H". Do not change or remove this line.
+        releaseHydrogen.run();
+        hyd.release();
+    }
+
+    public void oxygen(Runnable releaseOxygen) throws InterruptedException {
+        hyd.acquire(2);
+        
+        // releaseOxygen.run() outputs "O". Do not change or remove this line.
+		releaseOxygen.run();
+        
+        oxy.release(2);
+    }
+}
+
+Runtime: 14 ms, faster than 66.88% of Java online submissions for Building H2O.
+Memory Usage: 40.9 MB, less than 59.20% of Java online submissions for Building H2O.
+
+Never used semaphore before.
+It seems that mutex is just a semaphore but can only count to 1.
+In this problem, hyd and oxy are initially 2. Each hydrogen() will acquire one oxy and release one hyd, so if there is no oxygen left, it will be blocked. While each oxygen() will acquire two hyd and release 2 oxy, it will also be blocked if there is no hyd left.
+Oxy should be initially set to 2 so that the output can be at most 2 consecutive "H" without a release. If it is set to be larger than 2, then there will be more than 2 consecutive "H" without a release (without calling oxygen()), and if it is set to be smaller than 2, then there can not be 2 consecutive "H" without release. As for the hyd, there cannot be consective "O" without release, so it should not be more than 2. So it can be 0, 1 or 2.

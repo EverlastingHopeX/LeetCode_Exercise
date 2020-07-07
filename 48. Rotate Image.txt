@@ -32,4 +32,6 @@ class Solution {
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Rotate Image.
 Memory Usage: 39.8 MB, less than 5.77% of Java online submissions for Rotate Image.
 
-Kind of inpired by the onion model of OSS community I've be reading recently, which is interesting.
+Kind of inpired by the onion model of OSS community I've be reading recently, interesting.
+
+Still the same idea in the second round.

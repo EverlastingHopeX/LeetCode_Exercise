@@ -70,3 +70,5 @@ Runtime: 6 ms, faster than 44.41% of Java online submissions for 3Sum Closest.
 Memory Usage: 36.7 MB, less than 100.00% of Java online submissions for 3Sum Closest.
 
 Not much difference between this and the solution in first round.
+
+Similar solution in the third round, but the performance is slightly slower.

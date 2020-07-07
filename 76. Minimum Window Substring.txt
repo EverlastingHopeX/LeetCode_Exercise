@@ -118,3 +118,65 @@ Other's more concise solution.
 https://leetcode.com/problems/minimum-window-substring/discuss/26810/Java-solution.-using-two-pointers-%2B-HashMap
 
 I made several stupid mistakes, especially in simple function like toInt(). I guess it is true that no details no success.
+
+class Solution {
+    public String minWindow(String s, String t) {
+        int start=0;
+        int minL=s.length()+1;
+        Map<Character,Integer> freq=new HashMap<>();
+        for(char ch:t.toCharArray()){
+            int cnt=freq.getOrDefault(ch,0);
+            freq.put(ch,cnt+1);
+        }
+        int left=0,right=0;
+        int res=t.length();
+        while(right<s.length()){
+            // System.out.println(left+" "+right+" before expand");
+            //expand
+            while(right<s.length() && res>0){
+                char ch=s.charAt(right);
+                // System.out.println(ch);
+                if(freq.containsKey(ch)){
+                    int cnt=freq.get(ch);
+                    // System.out.println("cnt "+cnt);
+                    if(cnt>0){
+                        // System.out.println("--");
+                        res--;
+                    }
+                    freq.put(ch,cnt-1);
+                }
+                right++;
+            }
+            
+            // System.out.println(left+" "+right+" before shrink");
+            //shrink
+            while(left<right && res==0){
+                char ch=s.charAt(left);
+                // System.out.println(ch);
+                if(freq.containsKey(ch)){
+                    int cnt=freq.get(ch);
+                    // System.out.println("cnt "+cnt);
+                    if(cnt>=0){
+                        // System.out.println("++");
+                        res++;
+                    }
+                    freq.put(ch,cnt+1);
+                }
+                left++;
+            }
+            if(right-left+1<minL){
+                minL=right-left+1;
+                start=left-1;
+            }
+            minL=Math.min(minL,right-left+1);
+        }
+        // System.out.println("start "+start+" length "+minL);
+        if(minL>s.length()){
+            return "";
+        }
+        return s.substring(start,start+minL);
+    }
+}
+
+The performance is slightly slower than the first round. And I use hashmap instead of Integer array this time.
+It is more concise and not really less readable. My former solution is actually harder to understand to me now.

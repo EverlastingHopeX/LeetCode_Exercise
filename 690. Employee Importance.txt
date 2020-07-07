@@ -1,0 +1,35 @@
+/*
+// Definition for Employee.
+class Employee {
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
+};
+*/
+
+class Solution {
+    public int getImportance(List<Employee> employees, int id) {
+        Map<Integer,Employee> empMap=new HashMap<>();
+        for(Employee e:employees){
+            int idx=e.id;
+            empMap.put(idx,e);
+        }
+        DFS(empMap,id);
+        return empMap.get(id).importance;
+    }
+    
+    private void DFS(Map<Integer,Employee> empMap, int id){
+        Employee cur=empMap.get(id);
+        for(int sub:cur.subordinates){
+            Employee e=empMap.get(sub);
+            DFS(empMap,e.id);
+            cur.importance+=e.importance;
+        }
+    }
+}
+
+
+Runtime: 9 ms, faster than 21.31% of Java online submissions for Employee Importance.
+Memory Usage: 54.8 MB, less than 8.15% of Java online submissions for Employee Importance.
+
+DFS. Not much space for improvement.

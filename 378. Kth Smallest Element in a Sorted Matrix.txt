@@ -1,0 +1,89 @@
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+        int cnt=1;
+        int n=matrix.length;
+        int[] row=new int[n];
+        int[] col=new int[n];
+        for(int i=0;i<n;i++){
+            row[i]=i;
+            col[i]=i;
+        }
+        for(int i=1;i<n;i++){
+            List<Integer> li=new ArrayList<>();
+            int t=cnt;
+            cnt+=expandRow(matrix, row,i,li);
+            cnt+=expandCol(matrix, col,i,li);
+            cnt--;
+            // System.out.println(matrix[i][i]+" is the "+cnt+" smallest element");
+            if(cnt==k){
+                return matrix[i][i];
+            }
+            else if(cnt>k){
+                // System.out.println("in list");
+                Collections.sort(li);
+                return li.get(k-t+1);
+            }
+        }
+        return matrix[0][0];
+    }
+    
+    private int expandRow(int[][] matrix, int[] row, int r, List<Integer> li){
+        // System.out.println("expandRow " + r);
+        // System.out.println("pivot "+matrix[r][r]);
+        int cnt=0;
+        for(int i=0;i<r;i++){
+            while(row[i]<matrix[0].length){
+                // System.out.println(i+","+row[i]);
+                if(matrix[i][row[i]]<=matrix[r][r]){
+                    li.add(matrix[i][row[i]]);
+                    cnt++;
+                }
+                else{
+                    break;
+                }
+                row[i]++;
+            }
+            // System.out.println("cnt for row "+i+" "+cnt);
+        }
+        // System.out.println(cnt);
+        return cnt;
+    }
+    
+    private int expandCol(int[][] matrix, int[] col, int c, List<Integer> li){
+        // System.out.println("expandCol " + c);
+        int cnt=0;
+        for(int i=0;i<c;i++){
+            while(col[i]<matrix[0].length){
+                // System.out.println(i+","+col[i]);
+                if(matrix[col[i]][i]<=matrix[c][c]){
+                    li.add(matrix[col[i]][i]);
+                    cnt++;
+                }
+                else{
+                    break;
+                }
+                col[i]++;
+            }
+            // System.out.println("cnt for col "+i+" "+cnt);
+        }
+        // System.out.println(cnt);
+        return cnt;
+    }
+}
+
+Runtime: 8 ms, faster than 63.28% of Java online submissions for Kth Smallest Element in a Sorted Matrix.
+Memory Usage: 55.7 MB, less than 5.21% of Java online submissions for Kth Smallest Element in a Sorted Matrix.
+
+The brute force solution is obvious, it need to go through all elements and sort them, then pick the needed one. It would be O(NlogN). N is the number of elements.
+
+The idea is that the top left element is the smallest element of the matrix, including the sub matrix. So we can approach to the k smallest element little by little by shrinking the matrix from top left to bottom right.
+
+This solution will be O(K+mlogm), it can be improved by finding the n-k largest element when k is larger than n/2. (m is the length of li)
+
+Other's solution using minHeap and Binary Search.
+We can always poll the kth smallest element from minHeap at kth poll().
+
+https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/301357/Java-0ms-(added-Python-and-C%2B%2B)%3A-Easy-to-understand-solutions-using-Heap-and-Binary-Search
+
+Another O(R) solution. (R is the number of rows)
+Pretty difficult to understand, and I give it up to understand this solution.

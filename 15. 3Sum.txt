@@ -44,9 +44,10 @@ class Solution {
 Runtime: 91 ms, faster than 28.66% of Java online submissions for 3Sum.
 Memory Usage: 45.9 MB, less than 96.00% of Java online submissions for 3Sum.
 
-The runtime is not satisfying, however, by changing j and k in the second loop according to the sum rather 
-using bisearch could improve the performance.
+The runtime is not satisfying, however, by changing j and k in the second loop according to the sum rather than using bisearch could improve the performance.
 
 Couldn't work it out in the second round.
 Other's O(n^2) solution using 2 pointers.
 https://leetcode.com/problems/3sum/discuss/7380/Concise-O(N2)-Java-solution
+
+Solved this by brute force solution. Didn't think up the two pointers solution.
