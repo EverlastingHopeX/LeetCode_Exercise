@@ -49,3 +49,44 @@ Memory Usage: 38.7 MB, less than 58.22% of Java online submissions for Trapping 
 Other's solution with similar idea but more concise. The performance is actually slightly worse (use more space)
 
 https://leetcode.com/problems/trapping-rain-water/discuss/17414/A-stack-based-solution-for-reference-inspired-by-Histogram
+
+class Solution {
+    public int trap(int[] height) {
+        int[] nextBorder=new int[height.length];
+        Stack<Integer> st=new Stack<>();
+        for(int i=0;i<height.length;i++){
+            while(!st.isEmpty()){
+                int j=st.peek();
+                nextBorder[j]=i;
+                if(height[j]<=height[i]){
+                    st.pop();
+                }
+                else{
+                    break;
+                }
+            }
+            nextBorder[i]=height.length;
+            st.push(i);
+        }
+        int p=0;
+        int sum=0;
+        while(p<height.length){
+            int b=nextBorder[p];
+            if(b==height.length){
+                p++;
+                continue;
+            }
+            int h=Math.min(height[p],height[b]);
+            for(int i=p+1;i<b;i++){
+                sum+=h-height[i];
+            }
+            p=b;
+        }
+        return sum;
+    }
+}
+
+Runtime: 6 ms, faster than 9.18% of Java online submissions for Trapping Rain Water.
+Memory Usage: 40.8 MB, less than 6.00% of Java online submissions for Trapping Rain Water.
+
+Solve this in a similar way at the second time.

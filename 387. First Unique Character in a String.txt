@@ -32,3 +32,5 @@ Runtime: 6 ms, faster than 83.88% of Java online submissions for First Unique Ch
 Memory Usage: 40 MB, less than 50.17% of Java online submissions for First Unique Character in a String.
 
 I thought using hashmap would be faster, but it actually increase the cost.
+
+Pretty much the same solution in the second round.

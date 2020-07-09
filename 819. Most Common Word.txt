@@ -34,3 +34,5 @@ Memory Usage: 37.1 MB, less than 72.73% of Java online submissions for Most Comm
 Other's solution with the same idea but more concise and better
 performance.
 https://leetcode.com/problems/most-common-word/discuss/123854/C%2B%2BJavaPython-Easy-Solution-with-Explanation
+
+Similar idea but remove the sort step at the second time. Sorting it would be O(nlogn) while iterate the map and find the word is O(n).
