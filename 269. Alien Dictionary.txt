@@ -1,0 +1,131 @@
+Didn't work it out.
+My thought is that we can do BFS from nodes with zero in-degree, and mark the timestamp of visiting each node. When we meet a node with positive node, then it is visited. In that case, we set its timestamp to current time and remove it from the level it's in and add it to the level of current time. We will also decrease the nodes' in degree by one when we visit it. If there are no zero in degree nodes but still nodes unvisited, then there is a circle.
+We can then construct the order based on the timestamp.
+
+However, I finally work it out. It took me almost half a day to get this algorithm actually work. The corner cases are so frustrating.
+
+class Solution {
+    class Network{
+        
+        Map<Character,Set<Character>> map=new HashMap<>();
+        Map<Character,Integer> degree=new HashMap<>();
+        
+        public void add(char sm, char lg){
+            // System.out.println("add "+sm+"<"+lg);
+            Set<Character> set=map.getOrDefault(sm,new HashSet<>());
+            if(set.contains(lg)){
+                return;
+            }
+            set.add(lg);
+            map.put(sm,set);
+            int d=degree.get(lg);
+            degree.put(lg,d+1);
+        }
+        
+        private void print(){
+            // System.out.println("print network");
+            for(char ch:degree.keySet()){
+                int d=degree.getOrDefault(ch,0);
+                // System.out.println(ch+ " degree "+d);
+            }
+        }
+        
+    }
+    
+    boolean invalid=false;
+    
+    public String alienOrder(String[] words) {
+        Network nw=new Network();
+        init(words,nw);
+        buildNet(words,0,0,words.length,nw);
+        if(invalid){
+            return "";
+        }
+        nw.print();
+        String ans=buildOrder(nw);
+        return ans;
+    }
+    
+    private void init(String[] words, Network nw){
+        for(String word:words){
+            for(char ch:word.toCharArray()){
+                if(!nw.map.containsKey(ch)){
+                    nw.degree.put(ch,0);
+                }
+            }
+        }
+    }
+    
+    private void buildNet(String[] words, int idx, int left, int right, Network nw){
+        // System.out.println("buildNet "+idx+" "+left+","+right);
+        if(left>=right-1){
+            return;
+        }
+        //prefix
+        while(left<right && idx>=words[left].length()){
+            left++;
+        }
+        if(left==right){
+            return;
+        }
+        int nleft=left,nright=nleft;
+        while(nright<right){
+            char ch1=words[nleft].charAt(idx);
+            if(idx>=words[nright].length()){
+                invalid=true;
+                return;
+            }
+            char ch2=words[nright].charAt(idx);
+            if(ch1!=ch2){
+                nw.add(ch1,ch2);
+                // System.out.println("go to "+nleft+" "+nright);
+                buildNet(words,idx+1,nleft,nright,nw);
+                nleft=nright;
+            }
+            nright++;
+        }
+        buildNet(words,idx+1,nleft,right,nw);
+    }
+    
+    private String buildOrder(Network nw){
+        // System.out.println("buildOrder");
+        for(char ch:nw.map.keySet()){
+            if(!nw.degree.containsKey(ch)){
+                nw.degree.put(ch,0);
+            }
+        }
+        StringBuilder sb=new StringBuilder("");
+        int cnt=1;
+        while(cnt>0){
+            cnt=0;
+            for(char ch:nw.degree.keySet()){
+                int d=nw.degree.get(ch);
+                if(d==0){
+                    // System.out.println(ch);
+                    cnt++;
+                    sb.append(ch);
+                    for(char tgt:nw.map.getOrDefault(ch,new HashSet<>())){
+                        // System.out.println(tgt+" -- ");
+                        int td=nw.degree.get(tgt);
+                        nw.degree.put(tgt,td-1);
+                    }
+                    nw.degree.put(ch,-1);
+                }
+            }
+            // System.out.println("cnt "+cnt);
+        }
+        for(char ch:nw.degree.keySet()){
+            int d=nw.degree.get(ch);
+            // System.out.println(ch+" "+d);
+            if(d>0){
+                return "";
+            }
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 5 ms, faster than 40.57% of Java online submissions for Alien Dictionary.
+Memory Usage: 39 MB, less than 67.18% of Java online submissions for Alien Dictionary.
+
+I will never waste so much time on one problem anymore.
