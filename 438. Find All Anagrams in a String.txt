@@ -1,0 +1,67 @@
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ans=new ArrayList<>();
+        if(p.length()>s.length()){
+            return ans;
+        }
+        int[] required=new int[26];
+        for(char ch:p.toCharArray()){
+            required[ch-'a']++;
+        }
+        for(int i=0;i<required.length;i++){
+            if(required[i]==0){
+                required[i]=p.length()+1;
+            }
+        }
+        
+        int missing=p.length();
+        int left=0,right=0;
+        while(right<p.length()){
+            
+            int idx=s.charAt(right)-'a';
+            if(required[idx]<p.length()+1){
+                if(required[idx]>0){
+                    missing--;
+                }
+                required[idx]--;
+            }
+            right++;
+        }
+        while(right<s.length()){
+            if(missing==0){
+                ans.add(left);
+            }
+            int idx=s.charAt(left)-'a';
+            if(required[idx]<p.length()+1){
+                // System.out.println("remove "+s.charAt(left)+" "+required[idx]+" +1 ");
+                if(required[idx]>=0){
+                    missing++;
+                }
+                required[idx]++;
+            }
+            left++;
+            
+            idx=s.charAt(right)-'a';
+            if(required[idx]<p.length()+1){
+                // System.out.println("add "+s.charAt(right)+" "+required[idx]+" -1 ");
+                if(required[idx]>0){
+                    missing--;
+                }
+                required[idx]--;
+            }
+            right++;
+            // System.out.println(left+" "+right+" : "+missing);
+        }
+        if(missing==0){
+            ans.add(left);
+        }
+        return ans;
+    }
+}
+
+Runtime: 21 ms, faster than 40.42% of Java online submissions for Find All Anagrams in a String.
+Memory Usage: 44.9 MB, less than 27.07% of Java online submissions for Find All Anagrams in a String.
+
+Used hashmap at first. Using array instead can slightly improve the performance.
+
+It's O(n) time and O(1) space.

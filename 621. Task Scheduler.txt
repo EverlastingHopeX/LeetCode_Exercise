@@ -1,0 +1,5 @@
+Didn't work it out.
+
+Other's solution. 
+The code is pretty easy to understand before the return. I commented my understanding in this post.
+https://leetcode.com/problems/task-scheduler/discuss/176214/Java-Solution.-Without-re-modify-any-existing-variables-in-magic-if-branch
