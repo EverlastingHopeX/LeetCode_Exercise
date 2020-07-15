@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int closestValue(TreeNode root, double target) {
+        TreeNode cur=root;
+        double offset=root.val-target;
+        while(cur!=null){
+            // System.out.println(cur.val);
+            if(Math.abs(cur.val-target)<Math.abs(offset)){
+                offset=cur.val-target;
+            }
+            if(cur.val<target){
+                cur=cur.right;
+            }
+            else if(cur.val>target){
+                cur=cur.left;
+            }
+            else{
+                return (int)target;
+            }
+        }
+        return (int)(target+offset);
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Closest Binary Search Tree Value.
+Memory Usage: 40.9 MB, less than 10.27% of Java online submissions for Closest Binary Search Tree Value.

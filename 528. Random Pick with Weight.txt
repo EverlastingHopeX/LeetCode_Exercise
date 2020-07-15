@@ -1,0 +1,7 @@
+I tried to solve this using conditional probability, but not accepted.
+I cannot find out why this solution is not accepted, the post is here.
+
+https://leetcode.com/problems/random-pick-with-weight/discuss/736659/What-is-wrong-with-my-solution-based-on-conditional-probability
+
+The accumlated freq sum solution is not hard to understand. Brilliant solution. And its time for pick is O(logn), better than my O(n)
+https://leetcode.com/problems/random-pick-with-weight/discuss/154044/Java-accumulated-freq-sum-and-binary-search
