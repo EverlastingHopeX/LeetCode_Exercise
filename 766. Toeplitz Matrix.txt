@@ -1,0 +1,58 @@
+The brute force is pretty easy.
+
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        for(int i=0;i<matrix.length;i++){
+            if(!checkDiag(matrix,i,0)){
+                return false;
+            }
+        }
+        for(int i=1;i<matrix[0].length;i++){
+            if(!checkDiag(matrix,0,i)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean checkDiag(int[][] matrix, int r, int c){
+        int t=matrix[r][c];
+        while(r<matrix.length && c<matrix[0].length){
+            if(matrix[r][c]!=t){
+                return false;
+            }
+            r++;
+            c++;
+        }
+        return true;
+    }
+}
+
+Runtime: 1 ms, faster than 92.69% of Java online submissions for Toeplitz Matrix.
+Memory Usage: 43 MB, less than 14.85% of Java online submissions for Toeplitz Matrix.
+
+As for the follow up, we can only check the matrix row by row. So I need to store the diagnonal value.
+
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        int R=matrix.length, C=matrix[0].length;
+        Integer[] diag=new Integer[R+C-1];
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                int key=j-i+R-1;
+                if(diag[key]==null){
+                    diag[key]=matrix[i][j];
+                }
+                else{
+                    if(matrix[i][j]!=diag[key]){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 2 ms, faster than 20.64% of Java online submissions for Toeplitz Matrix.
+Memory Usage: 43.6 MB, less than 5.05% of Java online submissions for Toeplitz Matrix

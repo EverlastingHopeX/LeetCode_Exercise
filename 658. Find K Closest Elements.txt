@@ -1,0 +1,51 @@
+class Solution {
+    public List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int left=0,right=arr.length;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(arr[mid]<x){
+                left=mid+1;
+            }
+            else{
+                right=mid;
+            }
+        }
+        LinkedList<Integer> ans=new LinkedList<>();
+        if(left<0 || left>=arr.length){
+            int offset=left<0?0:arr.length-k;
+            for(int i=0;i<k;i++){
+                ans.add(arr[offset+i]);
+            }
+            return ans;
+        }
+        
+        int p1=left-1,p2=left;
+        while(p1>=0 && p2<arr.length && ans.size()<k){
+            int dist1=x-arr[p1],dist2=arr[p2]-x;
+            if(dist1<=dist2){
+                ans.addFirst(arr[p1]);
+                p1--;
+            }
+            else{
+                ans.addLast(arr[p2]);
+                p2++;
+            }
+        }
+        if(p1<0){
+            while(p2<arr.length && ans.size()<k){
+                ans.addLast(arr[p2++]);
+            }
+        }
+        if(p2>=arr.length){
+            while(p1>=0 && ans.size()<k){
+                ans.addFirst(arr[p1--]);
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 8 ms, faster than 44.67% of Java online submissions for Find K Closest Elements.
+Memory Usage: 59.2 MB, less than 5.31% of Java online submissions for Find K Closest Elements.
+
+Pretty easy, only the corner cases are a little hard to handle.

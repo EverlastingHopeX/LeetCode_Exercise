@@ -1,0 +1,25 @@
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        if(nums.length==0){
+            return 0;
+        }
+        int left=0,right=1;
+        int length=1;
+        while(right<nums.length){
+            // System.out.println(left+" "+right);
+            while(right<nums.length){
+                if(nums[right]<=nums[right-1]){
+                    break;
+                }
+                right++;
+            }
+            length=Math.max(right-left,length);
+            left=right;
+            right++;
+        }
+        return length;
+    }
+}
+
+Runtime: 2 ms, faster than 22.65% of Java online submissions for Longest Continuous Increasing Subsequence.
+Memory Usage: 43.4 MB, less than 5.02% of Java online submissions for Longest Continuous Increasing Subsequence.

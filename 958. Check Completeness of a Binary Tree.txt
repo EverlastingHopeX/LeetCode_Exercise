@@ -1,0 +1,65 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        Queue<TreeNode> que=new LinkedList<>();
+        que.offer(root);
+        int cnt=1;
+        while(!que.isEmpty()){
+            int size=que.size();
+            if(size!=cnt){
+                break;
+            }
+            int p=0;
+            TreeNode cur=null;
+            while(p<size){
+                cur=que.poll();
+                if(cur.left!=null){
+                    que.offer(cur.left);
+                }
+                else{
+                    break;
+                }
+                if(cur.right!=null){
+                    que.offer(cur.right);
+                }
+                else{
+                    break;
+                }
+                p++;
+            }
+            if(p<size){
+                if(cur.right!=null){
+                    return false;
+                }
+                break;
+            }
+            cnt*=2;
+        }
+        while(!que.isEmpty()){
+            TreeNode cur=que.poll();
+            if(cur.left!=null || cur.right!=null){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 2 ms, faster than 22.58% of Java online submissions for Check Completeness of a Binary Tree.
+Memory Usage: 39.5 MB, less than 23.84% of Java online submissions for Check Completeness of a Binary Tree.
+
+BFS to find the break point, and check if there is a violation.

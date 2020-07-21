@@ -1,0 +1,55 @@
+class Solution {
+    public int[] findDiagonalOrder(int[][] matrix) {
+        if(matrix.length==0){
+            return new int[0];
+        }
+        int R=matrix.length, C=matrix[0].length;
+        int[] ans=new int[R*C];
+        helper(matrix,0,0,true,ans,0);
+        return ans;
+    }
+    
+    private void helper(int[][] matrix,int r, int c, boolean isUp, int[] ans, int idx){
+        // System.out.println(r+" "+c+ " "+isUp);
+        if(r>=matrix.length || c>=matrix[0].length){
+            return;
+        }
+        ans[idx]=matrix[r][c];
+        int nr=-1,nc=-1;
+        if(isUp){
+            nr=r-1;
+            nc=c+1;
+            if(nr<0){
+                nr=0;
+            }
+            if(nc>=matrix[0].length){
+                nr=r+1;
+                nc=c;
+            }
+            if(nr!=r-1){
+                isUp=!isUp;
+            }
+        }
+        else{
+            nr=r+1;
+            nc=c-1;
+            if(nc<0){
+                nc=0;
+            }
+            if(nr>=matrix.length){
+                nr=r;
+                nc=c+1;
+            }
+            if(nc!=c-1){
+                isUp=!isUp;
+            }
+        }
+        helper(matrix,nr,nc,isUp,ans,idx+1);
+    }
+}
+
+Runtime: 3 ms, faster than 66.57% of Java online submissions for Diagonal Traverse.
+Memory Usage: 53.3 MB, less than 5.03% of Java online submissions for Diagonal Traverse.
+
+The solution is straightforward.
+However, the test case [] is kind of nonsense for me. Why would someone pass a 1D array when the parameter is denoted to be 2D array.

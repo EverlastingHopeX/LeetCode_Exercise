@@ -1,0 +1,32 @@
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int cnt=0;
+        Arrays.sort(ages);
+        for(int i=ages.length-1;i>=0;i--){
+            // System.out.println(i+" "+ages[i]);
+            int left=0,right=i;
+            int bd=ages[i]/2+7;
+            while(left<right){
+                int mid=left+(right-left)/2;
+                if(ages[mid]>bd){
+                    right=mid;
+                }
+                else{
+                    left=mid+1;
+                }
+            }
+            int t=i;
+            while(t>=0 && ages[t]==ages[i]){
+                t--;
+            }
+            cnt+=(i-t)*(i-right);
+            i=t+1;
+        }
+        return cnt;
+    }
+}
+
+Runtime: 12 ms, faster than 31.52% of Java online submissions for Friends Of Appropriate Ages.
+Memory Usage: 52.4 MB, less than 11.13% of Java online submissions for Friends Of Appropriate Ages.
+
+Use binary search to find the boundary according to the condition.

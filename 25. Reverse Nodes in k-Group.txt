@@ -41,3 +41,55 @@ Memory Usage: 37 MB, less than 100.00% of Java online submissions for Reverse No
 
 worse than first round.
 Should cut the current window and reverse, then connect to latter part.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(k==1){
+            return head;
+        }
+        ListNode dummy=new ListNode();
+        dummy.next=head;
+        ListNode prev=dummy;
+        while(prev!=null){
+            // System.out.println(prev.val);
+            prev=reverse(prev,k);
+        }
+        return dummy.next;
+    }
+    
+    private ListNode reverse(ListNode pNode, int k){
+        ListNode nNode=pNode.next;
+        ListNode end=pNode.next;
+        for(int i=0;i<k;i++){
+            if(nNode==null){
+                return null;
+            }
+            nNode=nNode.next;
+        }
+        ListNode cur=pNode.next;
+        ListNode prev=nNode;
+        for(int i=0;i<k && cur!=null;i++){
+            ListNode t=cur.next;
+            cur.next=prev;
+            prev=cur;
+            cur=t;
+        }
+        pNode.next=prev;
+        return end;
+    }
+}
+
+Basically the same solution as the first time.
+I think it is more readable than my previous solutions, but maybe it is just I've forgot what I was thinking when I came up with those solutions.
+This should be the easiest hard.
+I would think this is O(1), considering this is not recursive and I can make the reverse() in main or just use global variables. I don't remeber whether Java GC will make this O(1), but that is just some low level details.

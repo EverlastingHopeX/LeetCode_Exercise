@@ -1,0 +1,65 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val,Node _left,Node _right) {
+        val = _val;
+        left = _left;
+        right = _right;
+    }
+};
+*/
+
+class Solution {
+    public Node treeToDoublyList(Node root) {
+        if(root==null){
+            return null;
+        }
+        Node[] ps=DFS(root);
+        ps[0].left=ps[1];
+        ps[1].right=ps[0];
+        return ps[0];
+    }
+    
+    private Node[] DFS(Node cur){
+        //left most and right most node of current subtree
+        // System.out.println("cur "+cur.val);
+        Node[] curPS=new Node[]{null,null};
+        if(cur.left==null){
+            curPS[0]=cur;
+        }
+        else{
+            Node[] leftPS=DFS(cur.left);
+            // System.out.println(cur.val+" left "+leftPS[0].val+" "+leftPS[1].val);
+            cur.left=leftPS[1];
+            leftPS[1].right=cur;
+            curPS[0]=leftPS[0];
+        }
+        if(cur.right==null){
+            curPS[1]=cur;
+        }
+        else{
+            Node[] rightPS=DFS(cur.right);
+            // System.out.println(cur.val+" right "+rightPS[0].val+" "+rightPS[1].val);
+            cur.right=rightPS[0];
+            rightPS[0].left=cur;
+            curPS[1]=rightPS[1];
+        }
+        
+        return curPS;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Convert Binary Search Tree to Sorted Doubly Linked List.
+Memory Usage: 40.4 MB, less than 5.01% of Java online submissions for Convert Binary Search Tree to Sorted Doubly Linked List.
+
+The recursive DFS solution is not hard to implement if you have the right idea. This is a typical divide and conquer problem.

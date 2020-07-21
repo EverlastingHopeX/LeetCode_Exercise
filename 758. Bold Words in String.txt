@@ -1,0 +1,77 @@
+class Solution {
+    public String boldWords(String[] words, String S) {
+        Map<Integer, Set<String>> dict=new HashMap<>();
+        for(String w:words){
+            Set<String> set=dict.getOrDefault(w.length(), new HashSet<>());
+            set.add(w);
+            dict.put(w.length(),set);
+        }
+        int[] lens=new int[dict.size()];
+        int i=0;
+        for(int k:dict.keySet()){
+            lens[i++]=k;
+        }
+        Arrays.sort(lens);
+        int p=0;
+        Stack<int[]> st=new Stack<>();
+        while(p<S.length()){
+            for(int len:lens){
+                if(p+len>S.length()){
+                    break;
+                }
+                if(dict.get(len).contains(S.substring(p,p+len))){
+                    addIntrvl(st,p,p+len);
+                }
+            }
+            p++;
+        }
+        List<int[]> wraps=new ArrayList<>();
+        wraps.addAll(st);
+        p=0;
+        StringBuilder sb=new StringBuilder("");
+        for(int[] wrap:wraps){
+            while(p<wrap[0]){
+                sb.append(S.charAt(p++));
+            }
+            sb.append("<b>");
+            while(p<wrap[1]){
+                sb.append(S.charAt(p++));
+            }
+            sb.append("</b>");
+        }
+        while(p<S.length()){
+            sb.append(S.charAt(p++));
+        }
+        return sb.toString();
+    }
+    
+    private void addIntrvl(Stack<int[]> st, int left, int right){
+        // System.out.println("add "+left+" "+right);
+        while(!st.isEmpty()){
+            int[] prev=st.peek();
+            if(prev[1]>=left){
+                left=prev[0];
+                if(prev[1]>right){
+                    right=prev[1];
+                }
+                st.pop();
+            }
+            else{
+                break;
+            }
+        }
+        st.push(new int[]{left,right});
+    }
+}
+
+Runtime: 13 ms, faster than 33.33% of Java online submissions for Bold Words in String.
+Memory Usage: 40.2 MB, less than 11.00% of Java online submissions for Bold Words in String.
+
+Not really that easy.
+I add intervals to stack, and compress it.
+
+Other's idea using boolean array bold is also very good. This idea is actually easier. And they also use indexOf() instead of using hashmap to store the dict, I would say it is a solution from the dict point of view, and mine is from the string point of view. 
+The time complexity does not seem to be different, considering they both need to check if a word matches the substring start from each index of S.
+
+Other's solution.
+https://leetcode.com/problems/bold-words-in-string/discuss/116992/Java-Very-Easy-15-lines-14ms
