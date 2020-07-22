@@ -1,0 +1,5 @@
+Didn't solve this.
+The point is to find the factors of n! that are multiple of 5.
+
+Other's solution.
+https://leetcode.com/problems/factorial-trailing-zeroes/discuss/52371/My-one-line-solutions-in-3-languages

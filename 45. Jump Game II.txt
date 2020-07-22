@@ -1,0 +1,31 @@
+All test cases passed but rejected for taking too much time.
+
+class Solution {
+    int ans=-1;
+    public int jump(int[] nums) {
+        func(nums,nums.length-1,0);
+        return ans;
+    }
+    
+    private boolean func(int[] nums, int idx, int cnt){
+        if(idx==0){
+            ans=cnt;
+            return true;
+        }
+        for(int i=0;i<idx;i++){
+            if(i+nums[i]>=idx){
+                if(func(nums,i,cnt+1)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+I started with a dp solution, then improve it to greedy with priority queue, but still fail one test case for TLE. Then, I improve it with a recursive greedy solution, and still rejected, so I change it to iterative solution and the result is the same.
+
+My solution is still DFS.
+Other's BFS solution.
+
+https://leetcode.com/problems/jump-game-ii/discuss/18014/Concise-O(n)-one-loop-JAVA-solution-based-on-Greedy

@@ -1,0 +1,46 @@
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        // int[] ng=new int[nums2.length];
+        Map<Integer, Integer> ng=new HashMap<Integer, Integer>();
+        for(int i=nums2.length-1;i>=0;i--){
+            // System.out.println("i "+i);
+            int j=i+1;
+            while(j<nums2.length){
+                // System.out.println("j "+j);
+                if(nums2[j]>nums2[i]){
+                    ng.put(nums2[i],j);
+                    break;
+                }
+                else{
+                    if(ng.containsKey(nums2[j])){
+                        j=ng.get(nums2[j]);
+                    }
+                    else{
+                        j++;
+                    }
+                }
+            }
+        }
+        int[] ans=new int[nums1.length];
+        for(int i=0;i<nums1.length;i++){
+            if(ng.containsKey(nums1[i])){
+                ans[i]=nums2[ng.get(nums1[i])];
+            }
+            else{
+                ans[i]=-1;
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 2 ms, faster than 97.35% of Java online submissions for Next Greater Element I.
+Memory Usage: 36.9 MB, less than 100.00% of Java online submissions for Next Greater Element I.
+
+It seems to have acceptable performance, but the time complexity can be O(n^2).
+
+Other's O(n) solution:
+https://leetcode.com/problems/next-greater-element-i/discuss/97595/Java-10-lines-linear-time-complexity-O(n)-with-explanation
+
+One comment is a good explanation about why it is O(n).

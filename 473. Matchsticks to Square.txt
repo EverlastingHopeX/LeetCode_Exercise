@@ -1,0 +1,140 @@
+class Solution {
+    
+    Map<Integer, Integer> cntMap;
+    List<Integer> sticks;
+    
+    public boolean makesquare(int[] nums) {
+        if(nums.length<4){
+            return false;
+        }
+        int max=0;
+        cntMap=new HashMap<>();
+        int total=0;
+        for(int n:nums){
+            total += n;
+            max=Math.max(max,n);
+            int cnt=cntMap.getOrDefault(n,0);
+            cntMap.put(n,cnt+1);
+        }
+        int len=total/4;
+        if(len*4!=total){
+            return false;
+        }
+        sticks=new LinkedList<>(cntMap.keySet());
+        Collections.sort(sticks,(s1,s2)->s2-s1);
+        List<List<Integer>> comb=findComb(len);
+        
+        // for(List<Integer> li:comb){
+        //     System.out.println("comb");
+        //     for(int i:li){
+        //         System.out.print(i+" ");
+        //     }
+        //     System.out.println();
+        // }
+        
+        // for(int key:cntMap.keySet()){
+        //     System.out.println(key+" "+cntMap.get(key));
+        // }
+        
+        return check(comb,0,4);
+    }
+    
+    private List<List<Integer>> findComb(int len){
+        List<List<Integer>> comb=new ArrayList<>();
+        Stack<Integer> path=new Stack<>();
+        DFS(comb,0,len,path);
+        return comb;
+    }
+    
+    //different number of sticks.get(idx)
+    private void DFS(List<List<Integer>> comb, int idx, int res, Stack<Integer> path){
+        // System.out.println("dfs: idx "+idx+" res "+res+" size "+path.size());
+        //find a comb
+        if(res==0){
+            // System.out.println("find comb");
+            List<Integer> li=new ArrayList<>();
+            li.addAll(path);
+            // System.out.println("path");
+            // for(int i:li){
+            //     System.out.println(i);
+            // }
+            comb.add(li);
+            return;
+        }
+        //not valid comb
+        if(idx>=sticks.size()){
+            return;
+        }
+        int st=sticks.get(idx);
+        int available=cntMap.get(st);
+        for(int i=0;i<=available;i++){
+            // System.out.println("stick "+idx+" length"+st+" cnt "+i);
+            path.push(i);
+            DFS(comb,idx+1,res,path);
+            path.pop();
+            res-=st;
+            if(res<0){
+                break;
+            }
+        }
+    }
+    
+    private boolean check(List<List<Integer>> comb, int idx, int edge){
+        // System.out.println("check: idx "+idx+" edge "+edge);
+        if(edge==0){
+            // System.out.println("formation found");
+            return true;
+        }
+        if(idx>=comb.size()){
+            return false;
+        }
+        List<Integer> curComb=comb.get(idx);
+        // System.out.println("comb "+idx+" use 0");
+        if(check(comb,idx+1,edge)){
+            return true;
+        }
+        int used=0;
+        boolean notExceed=true;
+        while(used<edge && notExceed){
+            // System.out.println("comb "+idx+" use "+(used+1));
+            for(int j=0;j<sticks.size() && j<curComb.size();j++){
+                // System.out.println("j "+j);
+                int st=sticks.get(j);
+                int cnt=curComb.get(j);
+                if(cnt==0){
+                    continue;
+                }
+                int left=cntMap.get(st)-cnt;
+                // System.out.println(st+" need "+cnt+ " avaiable "+cntMap.get(st));
+                if(left<0){
+                    notExceed=false;
+                }
+                cntMap.put(st,left);
+            }
+            // System.out.println("notExceed "+notExceed);
+            if(notExceed && check(comb,idx+1,edge-used-1)){
+                return true;
+            }
+            used++;
+        }
+        // System.out.println("reset "+idx+" "+used);
+        //reset cntMap
+        for(int i=0;i<sticks.size() && i<curComb.size();i++){
+            if(curComb.get(i)==0){
+                continue;
+            }
+            int st=sticks.get(i);
+            int left=cntMap.get(sticks.get(i));
+            cntMap.put(st,left+used*curComb.get(i));
+        }
+        return false;
+    }
+}
+
+Runtime: 49 ms, faster than 34.29% of Java online submissions for Matchsticks to Square.
+Memory Usage: 39.5 MB, less than 10.99% of Java online submissions for Matchsticks to Square.
+
+My solution is kind of over complicate the problem which makes it harder to implement.
+
+Other's DFS solution without finding the combinations.
+https://leetcode.com/problems/matchsticks-to-square/discuss/95729/Java-DFS-Solution-with-Explanation

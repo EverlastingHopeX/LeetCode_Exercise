@@ -1,0 +1,67 @@
+class Solution {
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        if(houses.length==0){
+            return 0;
+        }
+        if(heaters.length==0){
+            return Integer.MAX_VALUE;
+        }
+        int p1=0, p2=0;
+        int rad=minRad(houses,-1,heaters,-1);
+        // System.out.println("rad "+rad);
+        while(p1<houses.length && p2<heaters.length){
+            if(houses[p1]>heaters[p2]){
+                while(p2<heaters.length && heaters[p2]<houses[p1]){
+                    p2++;
+                }
+                p2--;
+                rad=Math.max(rad,minRad(houses,p1,heaters,p2));
+                // System.out.println("rad "+rad);
+                p2++;
+            }
+            p1++;
+        }
+        return rad;
+    }
+
+    private int minRad(int[] houses, int ho1, int[] heaters, int he1){
+        // System.out.println("minRad "+ho1+" "+he1);
+        if(ho1==-1){
+            // System.out.println("houses before first heater");
+            if(houses[0]>heaters[0]){
+                return 0;
+            }
+            return heaters[0]-houses[0];
+        }
+        if(he1==heaters.length-1){
+            // System.out.println("houses after last heater");
+            return houses[houses.length-1]-heaters[heaters.length-1];
+        }
+        // System.out.println("houses "+houses[ho1]+" "+houses[ho1+1]);
+        int mid=ho1;
+        int halfRange=heaters[he1]+(heaters[he1+1]-heaters[he1])/2;
+        while(houses[mid]<=halfRange){
+            mid++;
+            if(mid==houses.length){
+                return houses[houses.length-1]-heaters[he1];
+            }
+        }
+        // System.out.println("mid "+mid);
+        int rad=heaters[he1+1]-houses[mid];
+        if(mid>0 && houses[mid-1]>heaters[he1]){
+            rad=Math.max(rad,houses[mid-1]-heaters[he1]);
+        }
+        return rad;
+    }
+}
+
+Runtime: 6 ms, faster than 100.00% of Java online submissions for Heaters.
+Memory Usage: 42.6 MB, less than 62.26% of Java online submissions for Heaters
+
+Relatively easy considering the logic is simple.
+
+However, the description does not mention that whether the houses and heaters are given in order, so I should be careful when I made assumptions like that.
+
+The time complexity is O(N) since I will iterate each houses and heaters for at most twice.

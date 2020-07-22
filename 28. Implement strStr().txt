@@ -1,0 +1,28 @@
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int n=haystack.length(), m=needle.length();
+        if(m==0||n==0){
+            if(m==0){
+                return 0;
+            }
+            else{
+                return -1;
+            }
+        }
+        int ans=-1;
+        for(int i=0;i<=n-m;i++){
+            if(haystack.substring(i,i+m).equals(needle)){
+                return i;
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Implement strStr().
+Memory Usage: 39.4 MB, less than 28.23% of Java online submissions for Implement strStr().
+
+Pretty easy using the substring and equals.
+KMP should be more efficient for this problem, hope they won't ask KMP's mechanism in interview.
+A link about KMP.
+https://www.geeksforgeeks.org/kmp-algorithm-for-pattern-searching/

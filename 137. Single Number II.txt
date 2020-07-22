@@ -1,0 +1,21 @@
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int n:nums){
+            int cnt=map.getOrDefault(n,0);
+            map.put(n,cnt+1);
+        }
+        for(int n:map.keySet()){
+            int cnt=map.get(n);
+            if(cnt==1){
+                return n;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 4 ms, faster than 36.60% of Java online submissions for Single Number II.
+Memory Usage: 38.7 MB, less than 100.00% of Java online submissions for Single Number II.
+
+The bit manipulation solution is my weakness. I will try to learn more about it later.

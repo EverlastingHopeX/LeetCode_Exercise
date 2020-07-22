@@ -1,0 +1,91 @@
+class Solution {
+    public String validIPAddress(String IP) {
+        boolean is4=false;
+        boolean is6=false;
+        for(char ch:IP.toCharArray()){
+            if(!Character.isDigit(ch)){
+                if(ch=='.'){
+                    is4=check4(IP);
+                    break;
+                }
+                else{
+                    is6=check6(IP);
+                    break;
+                }
+            }
+        }
+        // System.out.println("is4:"+is4);
+        // System.out.println("is6:"+is6);
+        return is4?"IPv4":(is6?"IPv6":"Neither");
+    }
+    
+    private boolean check4(String IP){
+        // System.out.println("check4:"+IP);
+        String[] segs=IP.split("\\.",-1);
+        System.out.println(segs.length);
+        if(segs.length!=4){
+            return false;
+        }
+        for(String s:segs){
+            System.out.println(s);
+            if(s.length()==0){
+                return false;    
+            }
+            else if(s.length()>1 && s.charAt(0)=='0'){
+                return false;
+            }
+            int n=0;
+            for(char ch:s.toCharArray()){
+                if(Character.isDigit(ch)){
+                    n=n*10+(ch-'0');
+                }
+                else{
+                    return false;
+                }
+            }
+            if(n<0 || n>255){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean check6(String IP){
+        // System.out.println("check6:"+IP);
+        String[] segs=IP.split(":",-1);
+        // System.out.println(segs.length);
+        if(segs.length!=8){
+            return false;
+        }
+        for(String s:segs){
+            // System.out.println(s);
+            // System.out.println(s.length());
+            if(s.length()> 4 || s.length()==0){
+                // System.out.println("wrong length");
+                return false;
+            }
+            for(char ch:s.toCharArray()){
+                if(Character.isDigit(ch)){
+                    continue;
+                }
+                else if(ch-'a'>=0 && ch-'f'<=0){
+                    continue;
+                }
+                else if(ch-'A'>=0 && ch-'F'<=0){
+                    continue;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 3 ms, faster than 22.10% of Java online submissions for Validate IP Address.
+Memory Usage: 34.8 MB, less than 100.00% of Java online submissions for Validate IP Address.
+
+Not hard, but a lot of details need to consider.
+split(reg) will ignore the last divider if it's the last character.
+Use split(reg, -1).

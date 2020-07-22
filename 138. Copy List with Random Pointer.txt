@@ -1,0 +1,140 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        Map<Node,Integer> oldMap=new HashMap<Node,Integer>();
+        Node cur=head;
+        List<Node> nList=new ArrayList<Node>();
+        int i=0;
+        //fill oldMap
+        while(cur!=null){
+            oldMap.put(cur,i);
+            nList.add(new Node(cur.val,null,null));
+            cur=cur.next;
+            i++;
+        }
+        //find random
+        cur=head;
+        i=0;
+        while(cur!=null){
+            Node r=null;
+            if(cur.random!=null){
+                int idx=oldMap.get(cur.random);
+                r=nList.get(idx);
+                // System.out.println(i+": "+idx);
+            }
+            nList.get(i).random=r;
+            i++;
+            cur=cur.next;
+        }
+        //combine
+        Node dummy=new Node();
+        cur=dummy;
+        for(Node n:nList){
+            cur.next=n;
+            cur=cur.next;
+        }
+        
+        return dummy.next;
+    }
+}
+
+Runtime: 1 ms, faster than 74.60% of Java online submissions for Copy List with Random Pointer.
+Memory Usage: 33.9 MB, less than 99.07% of Java online submissions for Copy List with Random Pointer.
+
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node dummy=new Node(0);
+        Node cur=head;
+        Node nCur=dummy;
+        Map<Node,Integer> map=new HashMap<>();
+        int cnt=0;
+        List<Node> li=new ArrayList<>();
+        while(cur!=null){
+            nCur.next=new Node(cur.val);
+            map.put(cur,cnt);
+            cur=cur.next;
+            nCur=nCur.next;
+            li.add(nCur);
+            cnt++;
+        }
+        li.add(nCur);
+        cur=head;
+        nCur=dummy.next;
+        while(cur!=null){
+            int idx=map.getOrDefault(cur.random,-1);
+            if(idx!=-1){
+                nCur.random=li.get(idx);
+            }
+            cur=cur.next;
+            nCur=nCur.next;
+        }
+        
+        return dummy.next;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Copy List with Random Pointer.
+Memory Usage: 41.2 MB, less than 5.61% of Java online submissions for Copy List with Random Pointer.
+
+This question has been changed a little bit.
+Instead of combining the list, I build the node list from the beginning, which improves the performance 
+but cost more space.
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node cur=head;
+        Map<Node,Integer> idxMap=new HashMap<>();
+        List<Node> li=new ArrayList<>();
+        int idx=0;
+        while(cur!=null){
+            idxMap.put(cur,idx);
+            li.add(new Node(cur.val));
+            cur=cur.next;
+            idx++;
+        }
+        li.add(null);
+        idxMap.put(null,idx);
+        cur=head;
+        idx=0;
+        while(cur!=null){
+            int rand=idxMap.get(cur.random);
+            Node p=li.get(idx);
+            p.next=li.get(idx+1);
+            p.random=li.get(rand);
+            cur=cur.next;
+            idx++;
+        }
+        return li.get(0);
+    }
+}
+
+The solution is pretty much the same solution I used last time, only a bit more concise.

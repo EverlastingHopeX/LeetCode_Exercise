@@ -1,0 +1,14 @@
+import java.util.regex.*;
+
+class Solution {
+    public boolean isNumber(String s) {
+        String regex="\\s*(-|\\+)?(\\d+(\\.\\d*)?|\\.\\d+)(e(-|\\+)?\\d+)?\\s*";
+        Pattern p=Pattern.compile(regex);
+        return p.matcher(s).matches();
+    }
+}
+
+Runtime: 33 ms, faster than 7.01% of Java online submissions for Valid Number.
+Memory Usage: 44.9 MB, less than 6.25% of Java online submissions for Valid Number.
+
+Not a good problem, but can be used to practice regular expression.

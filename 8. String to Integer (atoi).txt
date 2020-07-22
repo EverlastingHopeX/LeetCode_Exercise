@@ -1,0 +1,57 @@
+class Solution {
+    public int myAtoi(String str) {
+        char[] cArr=str.toCharArray();
+        int i=0;
+        // skip whilespace
+        while(i<cArr.length){
+            if(cArr[i]!=' '){
+                break;
+            }
+            i++;
+        }
+        if(i==cArr.length){
+            return 0;
+        }
+        int t=1;
+        if(cArr[i]== '-' || cArr[i] == '+'){
+            t=cArr[i]=='-'?-1:1;
+            i++;
+        }
+        StringBuilder sb=new StringBuilder("");
+        boolean start=false;
+        while(i<cArr.length && Character.isDigit(cArr[i])){
+            if(cArr[i]!='0'){
+                start=true;
+            }
+            if(!start){
+                i++;
+                continue;
+            }
+            sb.append(cArr[i]);
+            i++;
+        }
+        if(sb.length()==0){
+            return 0;
+        }
+        if(sb.length()>10){
+            return t>0?Integer.MAX_VALUE:Integer.MIN_VALUE;
+        }
+        double d=Double.parseDouble(sb.toString());
+        if(t>0){
+            if(d>Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            return (int) d;
+        }
+        if(d>Integer.MAX_VALUE){
+            return Integer.MIN_VALUE;
+        }
+        return (int)(-d);
+    }
+}
+
+Runtime: 3 ms, faster than 26.33% of Java online submissions for String to Integer (atoi).
+Memory Usage: 36.1 MB, less than 100.00% of Java online submissions for String to Integer (atoi).
+
+Although the performance is not good enough, this problem is not a good problem worth time improving my
+solution. This is only a if-else problem.

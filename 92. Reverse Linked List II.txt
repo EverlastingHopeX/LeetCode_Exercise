@@ -1,0 +1,36 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        ListNode dummy=new ListNode(0);
+        dummy.next=head;
+        ListNode prev=dummy;
+        ListNode left=head;
+        for(int i=1;i<m;i++){
+            prev=left;
+            left=left.next;
+        }
+        ListNode right=left;
+        for(int i=0;i<n-m;i++){
+            right=right.next;
+        }
+        prev.next=right;
+        prev=right.next;
+        while(prev!=right){
+            ListNode t=left.next;
+            left.next=prev;
+            prev=left;
+            left=t;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Linked List II.
+Memory Usage: 34.3 MB, less than 100.00% of Java online submissions for Reverse Linked List II.

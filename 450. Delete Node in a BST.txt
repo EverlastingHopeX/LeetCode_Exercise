@@ -1,0 +1,59 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        TreeNode cur=root;
+        TreeNode dummy=new TreeNode(0);
+        dummy.left=root;
+        TreeNode prev=dummy;
+        while(cur!=null){
+            if(cur.val==key){
+                break;
+            }
+            else if(cur.val<key){
+                prev=cur;
+                cur=cur.right;
+            }
+            else{
+                prev=cur;
+                cur=cur.left;
+            }
+        }
+        //found
+        if(cur!=null){
+            if(cur.left==null){
+                if(prev.left==cur)
+                    prev.left=cur.right;
+                else
+                    prev.right=cur.right;
+            }
+            else{
+                TreeNode t=rightMost(cur.left);
+                t.right=cur.right;
+                if(prev.left==cur)
+                    prev.left=cur.left;
+                else
+                    prev.right=cur.left;
+            }
+        }
+        return dummy.left;
+    }
+    
+    private TreeNode rightMost(TreeNode root){
+        TreeNode cur=root;
+        while(cur.right!=null){
+            cur=cur.right;
+        }
+        return cur;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Delete Node in a BST.
+Memory Usage: 40.1 MB, less than 17.24% of Java online submissions for Delete Node in a BST.

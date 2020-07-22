@@ -1,0 +1,7 @@
+select distinct p1.Email from Person as p1 join Person as p2 on p1.Email=p2.Email and p1.Id!=p2.Id
+
+Runtime: 575 ms, faster than 30.33% of MySQL online submissions for Duplicate Emails.
+Memory Usage: 0B, less than 100.00% of MySQL online submissions for Duplicate Emails.
+
+Other solutions like "group by".
+https://leetcode.com/problems/duplicate-emails/discuss/53528/I-have-this-Simple-Approach-anybody-has-some-other-way

@@ -1,0 +1,36 @@
+Didn't work it out.
+I thought we have to valid the Sudoku by filling them, but it seems that we only need to check the three rules.
+
+Other's solution.
+https://leetcode.com/problems/valid-sudoku/discuss/15450/Shared-my-concise-Java-code
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        Set<Integer> cols=new HashSet<>();
+        Set<Integer> rows=new HashSet<>();
+        Set<Integer> sqrs=new HashSet<>();
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+                if(board[i][j]=='.'){
+                    continue;
+                }
+                int r=j*10+board[i][j];
+                int c=i*10+board[i][j];
+                int s=((i/3)*3+j/3)*10+(board[i][j]-'0');
+                // System.out.println(i+", "+j+", "+board[i][j]+" "+s);
+                if(cols.contains(c) || rows.contains(r) || sqrs.contains(s)){
+                    return false;
+                }
+                cols.add(c);
+                rows.add(r);
+                sqrs.add(s);
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 2 ms, faster than 82.20% of Java online submissions for Valid Sudoku.
+Memory Usage: 39.3 MB, less than 100.00% of Java online submissions for Valid Sudoku.
+
+Pretty easy if you know you only have to check the three rules.

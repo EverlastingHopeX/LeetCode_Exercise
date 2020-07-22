@@ -62,3 +62,8 @@ is not involved (as far as the car can reach it).
 The link below is a solution uses priority queue.
 
 https://leetcode.com/problems/minimum-number-of-refueling-stops/discuss/149858/Simple-Java-Solution-Using-PriorityQueue-O(nlogn)
+
+I remember the idea of being greedy, but that's not enough.
+First, we try to go as far as we can with minimum stop, which means we only stop at the reachable stations with the most gas.
+And then if we can't go any further, we take additional fuels from the stations we pass (without any cost) until we reach the
+target or there is no gas left. 

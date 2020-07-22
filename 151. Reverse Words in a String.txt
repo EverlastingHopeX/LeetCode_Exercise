@@ -1,0 +1,25 @@
+class Solution {
+    public String reverseWords(String s) {
+        String[] str=s.split(" ");
+        List<String> li=new LinkedList<>();
+        for(String t:str){
+            li.add(t);
+        }
+        Collections.reverse(li);
+        StringBuilder sb=new StringBuilder("");
+        for(String t:li){
+            if(t.length()==0){
+                continue;
+            }
+            // System.out.println(t+" "+t.length());
+            sb.append(t+" ");
+        }
+        if(sb.length()>0){
+            sb.setLength(sb.length()-1);
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 2 ms, faster than 85.95% of Java online submissions for Reverse Words in a String.
+Memory Usage: 39.2 MB, less than 95.99% of Java online submissions for Reverse Words in a String.

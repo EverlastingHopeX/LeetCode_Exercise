@@ -1,0 +1,66 @@
+class Solution {
+    class webTime{
+        String web;
+        int time;
+        webTime(String w, int t){
+            web=w;
+            time=t;
+        }
+    }
+    
+    public List<String> mostVisitedPattern(String[] username, int[] timestamp, String[] website) {
+        Map<String, List<webTime>> userMap=new HashMap<>();
+        for(int i=0;i<username.length;i++){
+            List<webTime> list=userMap.getOrDefault(username[i], new LinkedList<webTime>());
+            list.add(new webTime(website[i], timestamp[i]));
+            userMap.put(username[i],list);
+        }
+        Map<String, Integer> seqMap=new HashMap<>();
+        for(String user:userMap.keySet()){
+            List<webTime> webList=userMap.get(user);
+            Collections.sort(webList, (w1,w2)->(w1.time-w2.time));
+            Set<String> Seqs=findSeqs(webList);
+            for(String seq:Seqs){
+                // System.out.println(seq);
+                if(seqMap.containsKey(seq)){
+                    seqMap.put(seq,seqMap.get(seq)+1);
+                }
+                else{
+                    seqMap.put(seq,1);
+                }
+            }
+        }
+        List<Map.Entry<String,Integer>> list=new LinkedList<>();
+        list.addAll(seqMap.entrySet());
+        Collections.sort(list,(o1,o2)->{
+            if(o1.getValue()==o2.getValue()){
+                return o1.getKey().compareTo(o2.getKey());
+            }
+            return o2.getValue().compareTo(o1.getValue());
+        });
+        // for(Map.Entry<String, Integer> entry: list){
+        //     System.out.println(entry.getKey()+" : "+entry.getValue());
+        // }
+        String[] seqArr=list.get(0).getKey().split(",");
+        List<String> ans=new ArrayList<>();
+        Collections.addAll(ans,seqArr);
+        return ans;
+    }
+    
+    private Set<String> findSeqs(List<webTime> webList){
+        int n=webList.size();
+        Set<String> seqs=new HashSet<String>();
+        for(int i=0;i<n-2;i++){
+            for(int j=i+1;j<n-1;j++){
+                for(int k=j+1;k<n;k++){
+                    String str=webList.get(i).web+","+webList.get(j).web+","+webList.get(k).web;
+                    seqs.add(str);
+                }
+            }
+        }
+        return seqs;
+    }
+}
+
+Runtime: 25 ms, faster than 34.08% of Java online submissions for Analyze User Website Visit Pattern.
+Memory Usage: 37.4 MB, less than 100.00% of Java online submissions for Analyze User Website Visit Pattern.

@@ -1,0 +1,91 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode fst=l1;
+        ListNode snd=l2;
+        ListNode dummy=new ListNode(0);
+        ListNode cur=dummy;
+        int add=0;
+        while(fst!=null && snd!=null){
+            int sum=fst.val+snd.val+add;
+            add=0;
+            if(sum>9){
+                add=1;
+                sum-=10;
+            }
+            fst=fst.next;
+            snd=snd.next;
+            cur.next=new ListNode(sum);
+            cur=cur.next;
+        }
+        ListNode tail=fst==null?snd:fst;
+        while(tail!=null){
+            int sum=tail.val+add;
+            add=0;
+            if(sum>9){
+                add=1;
+                sum-=10;
+            }
+            tail=tail.next;
+            cur.next=new ListNode(sum);
+            cur=cur.next;
+        }
+        if(add!=0){
+            cur.next=new ListNode(1);
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 2 ms, faster than 80.04% of Java online submissions for Add Two Numbers.
+Memory Usage: 44.2 MB, less than 86.83% of Java online submissions for Add Two Numbers.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode zero=new ListNode(0);
+        int sum=0;
+        int carry=0;
+        ListNode dummy=new ListNode();
+        ListNode cur=dummy;
+        while(l1!=null || l2!=null){
+            if(l1==null){
+                l1=zero;
+            }
+            if(l2==null){
+                l2=zero;
+            }
+            int t=l1.val+l2.val+carry;
+            carry=t/10;
+            cur.next=new ListNode(t%10);
+            cur=cur.next;
+            l1=l1.next;
+            l2=l2.next;
+        }
+        if(carry!=0){
+            cur.next=new ListNode(carry);
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 2 ms, faster than 63.90% of Java online submissions for Add Two Numbers.
+Memory Usage: 39.5 MB, less than 68.57% of Java online submissions for Add Two Numbers.
+
+The solution at the thrid time. More concise than the previous solution.

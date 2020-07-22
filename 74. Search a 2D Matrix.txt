@@ -43,3 +43,46 @@ class Solution {
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Search a 2D Matrix.
 Memory Usage: 43.1 MB, less than 5.05% of Java online submissions for Search a 2D Matrix.
 Next challenges:
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(matrix.length==0 || matrix[0].length==0){
+            return false;
+        }
+        int start=-1;
+        while( start < matrix.length-1 && matrix[start+1][0]<=target){
+            start++;
+        }
+        if(start==-1){
+            return false;
+        }
+        return bisearch(matrix[start],target);
+    }
+    
+    private boolean bisearch(int[] row, int target){
+        // System.out.println("bisearch");
+        int left=0;
+        int right=row.length;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(row[mid]<target){
+                left=mid+1;
+            }
+            else if(row[mid]>target){
+                right=mid-1;
+            }
+            else{
+                return true;
+            }
+        }
+        if(left>= row.length || row[left]!=target){
+            return false;
+        }
+        return true;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Search a 2D Matrix.
+Memory Usage: 41.4 MB, less than 6.06% of Java online submissions for Search a 2D Matrix.
+
+Although the performance is not worse compared with the first round, it still can be better to use 2 binary search.

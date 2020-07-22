@@ -1,0 +1,50 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] splitListToParts(ListNode root, int k) {
+        int n=0;
+        ListNode cur=root;
+        while(cur!=null){
+            n++;
+            cur=cur.next;
+        }
+        int size=n/k;
+        int extra=n-size*k;
+        // System.out.println("size:"+size+" extra:"+extra);
+        cur=root;
+        ListNode[] ans=new ListNode[k];
+        ans[0]=root;
+        int id=1;
+        while(true){
+            // System.out.println(cur.val);
+            // System.out.println("extra:"+extra);
+            int offset=0;
+            if(extra>0){
+                offset=1;
+                extra--;
+            }
+            // System.out.println("offset:"+offset);
+            // System.out.println("id:"+id);
+            for(int i=0;i<size+offset-1 && cur!=null;i++){
+                cur=cur.next;
+            }
+            if(cur==null || id>=k){
+                break;
+            }
+            ans[id]=cur.next;
+            cur.next=null;
+            cur=ans[id];
+            id++;
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Split Linked List in Parts.
+Memory Usage: 36.3 MB, less than 100.00% of Java online submissions for Split Linked List in Parts.

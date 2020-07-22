@@ -1,0 +1,55 @@
+class Solution {
+    
+    private int INF=Integer.MAX_VALUE;
+    int[][] dirs=new int[][]{{1,0},{-1,0},{0,-1},{0,1}};
+    
+    public void wallsAndGates(int[][] rooms) {
+        Queue<int[]> que=new LinkedList<>();
+        int cnt=0;
+        for(int i=0;i<rooms.length;i++){
+            for(int j=0;j<rooms[0].length;j++){
+                if(rooms[i][j]==0){
+                    que.offer(new int[]{i,j});
+                }
+            }
+        }
+        while(!que.isEmpty()){
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                int[] cur=que.poll();
+                // System.out.println(cur[0]+" "+cur[1]);
+                for(int[] d:dirs){
+                    int nr=cur[0]+d[0];
+                    int nc=cur[1]+d[1];
+                    if(!roomIsEmpty(rooms,nr,nc)){
+                        continue;
+                    }
+                    else{
+                        rooms[nr][nc]=rooms[cur[0]][cur[1]]+1;
+                        que.offer(new int[]{nr,nc});
+                        // System.out.println("add "+nr+" "+nc);
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    private boolean roomIsEmpty(int[][] rooms, int r, int c){
+        if(r<0 || r>=rooms.length || c<0 || c>=rooms[0].length){
+            return false;
+        }
+        if(rooms[r][c]==INF){
+            return true;
+        }
+        return false;
+    }
+}
+
+Runtime: 14 ms, faster than 28.95% of Java online submissions for Walls and Gates.
+Memory Usage: 55.6 MB, less than 7.38% of Java online submissions for Walls and Gates.
+
+BFS is pretty straightforward. We start from the doors and try to reach every empty rooms.
+Should be O(RC), since we will traverse each cell for at most twice. (One is searching for gates, and the second is searching for empty rooms)
+
+Other solutions are pretty much the same.

@@ -1,0 +1,8 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/minimum-cost-tree-from-leaf-values/discuss/339959/One-Pass-O(N)-Time-and-Space
+
+With some explanations
+The reason why the element before mid is larger than mid is that, if it is smaller than mid, it would be poped out
+as mid in the last loop.

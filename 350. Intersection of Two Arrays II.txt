@@ -1,0 +1,81 @@
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        if(nums1.length<nums2.length){
+            Map<Integer,Integer> freq=genMap(nums1);
+            return findInte(freq,nums2);
+        }
+        Map<Integer,Integer> freq=genMap(nums2);
+        return findInte(freq,nums1);
+    }
+    
+    private Map<Integer,Integer> genMap(int[] nums){
+        Map<Integer,Integer> freq=new HashMap<>();
+        for(int n:nums){
+            int cnt=freq.getOrDefault(n,0);
+            freq.put(n,cnt+1);
+        }
+        return freq;
+    }
+    
+    private int[] findInte(Map<Integer,Integer> freq, int[] nums){
+        List<Integer> inte=new ArrayList<>();
+        for(int n:nums){
+            int cnt=freq.getOrDefault(n,0);
+            if(cnt>0){
+                inte.add(n);
+                freq.put(n,cnt-1);
+            }
+        }
+        int[] arr=new int[inte.size()];
+        for(int i=0;i<inte.size();i++){
+            arr[i]=inte.get(i);
+        }
+        return arr;
+    }
+}
+
+Runtime: 3 ms, faster than 55.49% of Java online submissions for Intersection of Two Arrays II.
+Memory Usage: 39.4 MB, less than 84.49% of Java online submissions for Intersection of Two Arrays II.
+
+For the follow up.
+1. If the array is already sorted, I think we can use two pointers.
+
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int p1=0,p2=0;
+        List<Integer> ans=new ArrayList<>();
+        while(p1<nums1.length && p2<nums2.length){
+            while(p1<nums1.length && p2<nums2.length && nums1[p1]!=nums2[p2]){
+                if(nums1[p1]<nums2[p2]){
+                    p1++;
+                }
+                else if(nums2[p2]<nums1[p1]){
+                    p2++;
+                }
+            }
+            while(p1<nums1.length && p2<nums2.length && nums1[p1]==nums2[p2]){
+                ans.add(nums1[p1]);
+                p1++;
+                p2++;
+            }
+        }
+        int[] inte=new int[ans.size()];
+        for(int i=0;i<ans.size();i++){
+            inte[i]=ans.get(i);
+        }
+        return inte;
+    }
+}
+
+Runtime: 4 ms, faster than 38.35% of Java online submissions for Intersection of Two Arrays II.
+Memory Usage: 40.8 MB, less than 13.25% of Java online submissions for Intersection of Two Arrays II.
+
+This performance is for the unsorted array, if the array is sorted, I think it would be faster than the previous solution.
+
+2. If nums1's size is small, it doesn't change much for the first solution, cause it will only save a if statement. For the latter solution, it also won't impact anything.
+
+3.If nums2 is stored on disk, and I cannot load all, I think it means I cannot use the hashmap method to store array's elements. Still, I can use the two pointers solution.
+
+Another thing to mark for this problem is that we cannot use List.toArray(int[]), since int is a primitive type.

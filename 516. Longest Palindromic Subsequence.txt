@@ -1,0 +1,5 @@
+Didn't work it out.
+
+Other's DP solution.
+Concise and easy to understand.
+https://leetcode.com/problems/longest-palindromic-subsequence/discuss/99101/Straight-forward-Java-DP-solution

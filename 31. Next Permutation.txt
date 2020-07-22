@@ -9,3 +9,50 @@ The link below is a solution provided by others, and the comments below includes
 video explaning the principle behind the algorithm.
 
 https://leetcode.com/problems/next-permutation/discuss/13872/Easiest-JAVA-Solution
+
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int left=nums.length-2;
+        while(!Next(nums,left)){
+            left--;
+        }
+    }
+    
+    private boolean Next(int[] nums, int left){
+        // System.out.println("left "+left);
+        if(left<0){
+            int[] sub=Arrays.copyOfRange(nums,0,nums.length);
+            Arrays.sort(sub);
+            for(int i=0;i<nums.length;i++){
+                nums[i]=sub[i];
+            }
+            return true;
+        }
+        int[] sub=Arrays.copyOfRange(nums,left,nums.length);
+        Arrays.sort(sub);
+        int n=0;
+        while(n<sub.length && sub[n]<=nums[left]){
+            n++;
+        }
+        if(n==sub.length){
+            return false;
+        }
+        nums[left]=sub[n];
+        int idx=0;
+        while(idx<n){
+            nums[left+idx+1]=sub[idx];
+            idx++;
+        }
+        idx++;
+        while(idx<sub.length){
+            nums[left+idx]=sub[idx];
+            idx++;
+        }
+        return true;
+    }
+}
+
+Runtime: 1 ms, faster than 86.97% of Java online submissions for Next Permutation.
+Memory Usage: 36.3 MB, less than 100.00% of Java online submissions for Next Permutation.
+
+Become really easy in the second round.

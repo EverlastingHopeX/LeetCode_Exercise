@@ -1,0 +1,101 @@
+class Solution {
+    
+    List<List<Integer>> ans=new ArrayList<>();
+    Set<String> found=new HashSet<>();
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        func(candidates, -1, target, 0, new ArrayList<>());
+        return ans;
+    }
+    
+    private void func(int[] candidates, int idx, int target, int sum, List<Integer> li){
+        // System.out.println("cur ");
+        // for(int k:li){
+        //     System.out.print(k);
+        // }
+        // System.out.println("");
+        if(sum>target){
+            return;
+        }
+        else if(sum == target){
+            List<Integer> temp=new ArrayList<>();
+            temp.addAll(li);
+            String str=temp.toString();
+            if(!found.contains(str)){
+                ans.add(temp);
+                found.add(str);
+            }
+        }
+        else{
+            for(int i=idx+1;i<candidates.length;i++){
+                li.add(candidates[i]);
+                func(candidates, i,target, sum+candidates[i], li);
+                li.remove(li.size()-1);
+            }
+        }
+    }
+}
+
+Runtime: 26 ms, faster than 8.75% of Java online submissions for Combination Sum II.
+Memory Usage: 40.2 MB, less than 29.48% of Java online submissions for Combination Sum II.
+
+Brute force solution.
+
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);        
+        List<List<boolean[]>> dp=new ArrayList<>();
+        List<boolean[]> init=new ArrayList<>();
+        init.add(new boolean[candidates.length]);
+        dp.add(init);
+        for(int i=1;i<=target;i++){
+            // System.out.println("i "+i);
+            dp.add(new ArrayList<>());
+            Set<String> check=new HashSet<>();
+            for(int j=0;j<candidates.length;j++){
+                // System.out.println(candidates[j]);
+                if(candidates[j]>i){
+                    break;
+                }
+                List<boolean[]> li=dp.get(i-candidates[j]);
+                for(boolean[] taken:li){
+                    if(!taken[j]){
+                        boolean[] copy=Arrays.copyOf(taken,taken.length);
+                        copy[j]=true;
+                        StringBuilder sb=new StringBuilder("");
+                        for(int k=0;k<candidates.length;k++){
+                            if(copy[k]){
+                                sb.append(candidates[k]+",");
+                            }
+                        }
+                        String str=sb.toString();
+                        if(check.contains(str)){
+                            continue;
+                        }
+                        // System.out.println("found "+str);
+                        check.add(str);
+                        dp.get(i).add(copy);
+                    }
+                }
+            }
+        }
+        List<boolean[]> li=dp.get(target);
+        List<List<Integer>> ans=new ArrayList<>();
+        for(boolean[] taken:li){
+            List<Integer> temp=new ArrayList<>();
+            for(int i=0;i<taken.length;i++){
+                if(taken[i]){
+                    temp.add(candidates[i]);
+                }
+            }
+            ans.add(temp);
+        }
+        return ans;
+        
+    }
+}
+
+Runtime: 23 ms, faster than 10.78% of Java online submissions for Combination Sum II.
+Memory Usage: 40.4 MB, less than 27.37% of Java online submissions for Combination Sum II.
+
+This DP solution is a little better but still not good enough.

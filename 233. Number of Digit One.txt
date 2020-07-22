@@ -1,0 +1,62 @@
+class Solution {
+    public int countDigitOne(int n) {
+        if(n<=0){
+            return 0;
+        }
+        String num=n+"";
+        char[] digits=num.toCharArray();
+        int ans=0;
+        for(int i=0;i<digits.length;i++){
+            ans+=count(digits,i);
+        }
+        return ans;
+    }
+    
+    private int count(char[] digits, int idx){
+        // System.out.println("count "+idx);
+        int num=0;
+        if(digits[idx]=='0'){
+            for(int i=0;i<digits.length;i++){
+                if(i>idx){
+                    num=num*10+9;
+                }
+                else if(i<idx){
+                    num=num*10+(digits[i]-'0');
+                }
+                else{
+                    num--;
+                }
+            }
+            num++;
+        }
+        else if(digits[idx]=='1'){
+            for(int i=0;i<digits.length;i++){
+                if(i==idx){
+                    continue;
+                }
+                num=num*10+(digits[i]-'0');
+            }
+            num++;
+        }
+        else{
+            for(int i=0;i<digits.length;i++){
+                // System.out.println("cur:"+digits[i]);
+                if(i>idx){
+                    num=num*10+9;
+                }
+                else if(i<idx){
+                    num=num*10+(digits[i]-'0');
+                }
+                // System.out.println(num);
+            }
+            num++;
+        }
+        // System.out.println(num);
+        return num;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Number of Digit One.
+Memory Usage: 33 MB, less than 16.67% of Java online submissions for Number of Digit One.
+
+I couldn't believe I finally got it.

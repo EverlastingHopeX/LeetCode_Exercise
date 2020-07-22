@@ -1,0 +1,39 @@
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> nSet=new HashSet<>();
+        for(int n:nums){
+            nSet.add(n);
+        }
+        Set<Integer> visited=new HashSet<>();
+        int max=0;
+        for(int n:nSet){
+            if(visited.contains(n)){
+                continue;
+            }
+            // System.out.println("visit "+n);
+            visited.add(n);
+            int range=0;
+            int p=n-1;
+            while(nSet.contains(p)){
+                visited.add(p);
+                p--;
+            }
+            range+=n-p;
+            p=n+1;
+            while(nSet.contains(p)){
+                visited.add(p);
+                p++;
+            }
+            range+=p-n;
+            range--;
+            max=Math.max(range,max);
+        }
+        return max;
+    }
+}
+
+Runtime: 4 ms, faster than 65.75% of Java online submissions for Longest Consecutive Sequence.
+Memory Usage: 39.7 MB, less than 73.47% of Java online submissions for Longest Consecutive Sequence.
+
+This solution is O(N). The idea is by expanding the range from one point and memorized the numbers visited, otherwise  it would be O(N^2).
+O(NlogN) is easy to achieve by sorting.

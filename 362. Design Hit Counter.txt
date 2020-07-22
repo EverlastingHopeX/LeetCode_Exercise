@@ -1,0 +1,58 @@
+class HitCounter {
+    LinkedList<int[]> cntQ;
+    int cnt;
+
+    /** Initialize your data structure here. */
+    public HitCounter() {
+        cntQ=new LinkedList<int[]>();
+        cnt=0;
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public void hit(int timestamp) {
+        // System.out.println("hit "+timestamp);
+        int[] front=cntQ.peekFirst();
+        while(front!=null && front[0]<=timestamp-300){
+            // System.out.println(front[0]);
+            cnt-=front[1];
+            cntQ.removeFirst();
+            front=cntQ.peekFirst();
+        }
+        int[] back=cntQ.peekLast();
+        if(back !=null && back[0]==timestamp){
+            cntQ.removeLast();
+            back[1]++;
+        }
+        else{
+            back=new int[]{timestamp,1};
+        }
+        cntQ.addLast(back);
+        cnt++;
+    }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    public int getHits(int timestamp) {
+        int[] front=cntQ.peekFirst();
+        while(front!=null && front[0]<=timestamp-300){
+            // System.out.println(front[0]);
+            cnt-=front[1];
+            cntQ.removeFirst();
+            front=cntQ.peekFirst();
+        }
+        return cnt;
+    }
+}
+
+/**
+ * Your HitCounter object will be instantiated and called as such:
+ * HitCounter obj = new HitCounter();
+ * obj.hit(timestamp);
+ * int param_2 = obj.getHits(timestamp);
+ */
+
+Runtime: 1 ms, faster than 99.68% of Java online submissions for Design Hit Counter.
+Memory Usage: 34.1 MB, less than 42.86% of Java online submissions for Design Hit Counter.
+
+pretty straightforward solution.

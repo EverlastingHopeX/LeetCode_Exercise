@@ -1,0 +1,10 @@
+Didn't work it out.
+At first, I tried to find out the pattern, but it is not that clear.
+
+Other's solution based on the pattern.
+https://leetcode.com/problems/minimum-knight-moves/discuss/392053/Here-is-how-I-get-the-formula-(with-graphs)
+
+A BFS solution.
+https://leetcode.com/problems/minimum-knight-moves/discuss/401580/Clean-Java-BFS-solution
+
+The solution based on pattern is way faster than BFS.

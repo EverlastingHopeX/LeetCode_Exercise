@@ -1,0 +1,60 @@
+class Solution {
+    public List<List<String>> partition(String s) {
+        Map<Integer,List<Integer>> palinMap=new HashMap<>();
+        char[] chArr=s.toCharArray();
+        for(int i=0;i<chArr.length;i++){
+            fillPalinMap(palinMap,chArr,i,i);
+            fillPalinMap(palinMap,chArr,i,i+1);
+        }
+        List<Integer> gap=new ArrayList<>();
+        List<List<String>> ans=new ArrayList<>();
+        LinkedList<Integer> curList=new LinkedList<Integer>();
+        curList.add(0);
+        fillAns(ans,s,palinMap,curList);
+        return ans;
+    }
+    
+    private void fillPalinMap(Map<Integer,List<Integer>> palinMap,char[] chArr, int left,int right){
+        while(left>=0 && right<chArr.length){
+            List<Integer> li=palinMap.getOrDefault(left,new ArrayList<Integer>());
+            if(chArr[left]==chArr[right]){
+                li.add(right);
+            }
+            else{
+                break;
+            }
+            palinMap.put(left,li);
+            left--;
+            right++;
+        }
+    }
+    
+    private void fillAns(List<List<String>> ans, String s, Map<Integer,List<Integer>> palinMap, LinkedList<Integer> curList){
+        int idx=curList.getLast();
+        if(idx==s.length()){
+            List<String> li=new ArrayList<>();
+            int prev=0;
+            for(int i:curList){
+                if(i==0){
+                    continue;
+                }
+                li.add(s.substring(prev,i));
+                prev=i;
+            }
+            ans.add(li);
+            return;
+        }
+        List<Integer> nextIdx=palinMap.get(idx);
+        for(int nIdx:nextIdx){
+            curList.add(nIdx+1);
+            fillAns(ans,s,palinMap,curList);
+            curList.removeLast();
+        }
+    }
+}
+
+Runtime: 2 ms, faster than 68.75% of Java online submissions for Palindrome Partitioning.
+Memory Usage: 40.9 MB, less than 18.18% of Java online submissions for Palindrome Partitioning.
+
+The idea is to store the index to represent the palindrome in palinMap first. We find the palindrome by trying to expand the palindrome whose mid is i. The value of each key is the list of end index of palindromes whose start is the key. Then we can do a DFS to find all the possible partitions.
+Find and store palindrome is O(n^2). The complexity of DFS is hard to compute. It's O(2^n) which the characters of string is all the same, which makes there 2^n ways to divede it (in each position we can choose to divide it or not).

@@ -1,0 +1,55 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int ans=0;
+    public int pathSum(TreeNode root, int sum) {
+        if(root==null){
+            return ans;
+        }
+        List<Integer> li=new ArrayList<>();
+        DFS(root,sum,li);
+        return ans;
+    }
+    private void DFS(TreeNode cur, int sum, List<Integer> li){
+        List<Integer> nli=new ArrayList<>();
+        for(int n:li){
+            int tmp=n+cur.val;
+            if(tmp==sum){
+                ans++;
+            }
+            nli.add(tmp);
+        }
+        nli.add(cur.val);
+        if(cur.val==sum){
+            ans++;
+        }
+        if(cur.left!=null){
+            DFS(cur.left,sum,nli);
+        }
+        if(cur.right!=null){
+            DFS(cur.right,sum,nli);
+        }
+    }
+}
+
+Runtime: 26 ms, faster than 10.38% of Java online submissions for Path Sum III.
+Memory Usage: 47 MB, less than 5.01% of Java online submissions for Path Sum III.
+
+Other's solution.
+Use prefix just like two sum.
+It uses hashmap's key to store the sum of path from root, and the value is the number of paths available. For example, we are in node j, and we want to find node i that "(sum of path to j) - target = (sum of path to i)", then path from i to j is the path we want. We will increase the number of avaiable path whose sum is current sum by one. And after we finishing one node (the node will not be in the availble path anymore), we need to decrease the number of available paths by one.
+
+https://leetcode.com/problems/path-sum-iii/discuss/91878/17-ms-O(n)-java-Prefix-sum-method

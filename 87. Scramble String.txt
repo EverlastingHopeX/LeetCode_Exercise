@@ -1,0 +1,42 @@
+class Solution {
+    public boolean isScramble(String s1, String s2) {
+        return isScramble(s1,0,s1.length(),s2,0,s2.length());
+    }
+    
+    private boolean isScramble(String s1, int l1, int r1, String s2, int l2, int r2){
+        
+        int[] letters = new int[26];
+        for (int i=0; i<r1-l1; i++) {
+            letters[s1.charAt(l1+i)-'a']++;
+            letters[s2.charAt(l2+i)-'a']--;
+        }
+        for (int i=0; i<26; i++) if (letters[i]!=0) return false;
+        
+        if(r1-l1<=1){
+            return r1==l1?true:s1.charAt(l1)==s2.charAt(l2);
+        }
+        
+        for(int i=1;i<r1-l1;i++){
+            int s=i;
+            int l=r1-l1-i;
+            //s,l | s,l
+            if(isScramble(s1,l1,l1+s,s2,l2,l2+s) && isScramble(s1,l1+s,r1,s2,l2+s,r2)){
+                return true;
+            }
+            //s,l | l,s
+            if(isScramble(s1,l1,l1+s,s2,l2+l,r2) && isScramble(s1,l1+s,r1,s2,l2,l2+l)){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Scramble String.
+Memory Usage: 39.3 MB, less than 37.50% of Java online submissions for Scramble String.
+
+I tried use the recursive solution with substring(), which got TLE. Then I improve it by using index instead of substring(), but still got TLE. I checked other's solution and found another way to improve it which is return false as early as the word frequency of two string is not equal. It surprisingly increase the performance a lot.
+The time complexity is O(n!). Since T(n)=(n-1)*T(n)+n. It can be better with 3D DP, which is O(n^3).
+
+Other's solution.
+https://leetcode.com/problems/scramble-string/discuss/29387/Accepted-Java-solution

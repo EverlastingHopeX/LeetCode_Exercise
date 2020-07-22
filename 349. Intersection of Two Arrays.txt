@@ -1,0 +1,38 @@
+class Solution {
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> ansSet=new HashSet<>();
+        if(nums1.length<nums2.length){
+            Set<Integer> set=buildSet(nums1);
+            for(int n:nums2){
+                if(set.contains(n)){
+                    ansSet.add(n);
+                }
+            }
+        }
+        else{
+            Set<Integer> set=buildSet(nums2);
+            for(int n:nums1){
+                if(set.contains(n)){
+                    ansSet.add(n);
+                }
+            }
+        }
+        int[] ans=new int[ansSet.size()];
+        int i=0;
+        for(int n:ansSet){
+            ans[i++]=n;
+        }
+        return ans;
+    }
+    
+    private Set<Integer> buildSet(int[] nums){
+        Set<Integer> set=new HashSet<>();
+        for(int n:nums){
+            set.add(n);
+        }
+        return set;
+    }
+}
+
+Runtime: 5 ms, faster than 26.09% of Java online submissions for Intersection of Two Arrays.
+Memory Usage: 41.6 MB, less than 5.02% of Java online submissions for Intersection of Two Arrays.

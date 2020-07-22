@@ -1,0 +1,28 @@
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int carry=1;
+        for(int i=digits.length-1;i>=0;i--){
+            if(carry==0){
+                break;
+            }
+            digits[i]++;
+            carry=0;
+            if(digits[i]>9){
+                digits[i]=0;
+                carry=1;
+            }
+        }
+        if(carry==0){
+            return digits;
+        }
+        int[] ans=new int[digits.length+1];
+        ans[0]=1;
+        for(int i=0;i<digits.length;i++){
+            ans[i+1]=digits[i];
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Plus One.
+Memory Usage: 39.6 MB, less than 5.64% of Java online submissions for Plus One.

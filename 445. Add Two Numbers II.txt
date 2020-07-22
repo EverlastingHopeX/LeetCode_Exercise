@@ -1,0 +1,50 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        Stack<Integer> s1=new Stack<Integer>();
+        Stack<Integer> s2=new Stack<Integer>();
+        ListNode cur=l1;
+        while(cur!=null){
+            s1.push(cur.val);
+            cur=cur.next;
+        }
+        cur=l2;
+        while(cur!=null){
+            s2.push(cur.val);
+            cur=cur.next;
+        }
+        int add=0;
+        Stack<Integer> stack=new Stack<Integer>();
+        while(!s1.empty() || !s2.empty()){
+            int fst=s1.empty()?0:s1.pop();
+            int snd=s2.empty()?0:s2.pop();
+            int sum=fst+snd+add;
+            add=0;
+            if(sum>9){
+                add=1;
+                sum-=10;
+            }
+            stack.push(sum);
+        }
+        if(add!=0){
+            stack.push(add);
+        }
+        ListNode dummy=new ListNode(0);
+        cur=dummy;
+        while(!stack.empty()){
+            cur.next=new ListNode(stack.pop());
+            cur=cur.next;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 7 ms, faster than 12.93% of Java online submissions for Add Two Numbers II.
+Memory Usage: 45.6 MB, less than 58.82% of Java online submissions for Add Two Numbers II.

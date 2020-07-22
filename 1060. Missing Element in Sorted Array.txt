@@ -1,0 +1,21 @@
+class Solution {
+    public int missingElement(int[] nums, int k) {
+        int cnt=0;
+        for(int i=1;i<nums.length;i++){
+            // System.out.println(i);
+            int range=nums[i]-nums[i-1]-1;
+            if(k<=cnt+range){
+                // System.out.println("within range "+cnt+"," +range);
+                return nums[i-1]+(k-cnt);
+            }
+            cnt+=range;
+        }
+        return nums[nums.length-1]+(k-cnt);
+    }
+}
+
+Runtime: 4 ms, faster than 15.34% of Java online submissions for Missing Element in Sorted Array.
+Memory Usage: 55.2 MB, less than 9.84% of Java online submissions for Missing Element in Sorted Array.
+
+A brilliant binary search solution.
+https://leetcode.com/problems/missing-element-in-sorted-array/discuss/303444/Java-O(logN)-solution-Binary-Search

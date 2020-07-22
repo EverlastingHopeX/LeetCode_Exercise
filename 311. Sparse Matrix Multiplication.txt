@@ -1,0 +1,21 @@
+class Solution {
+    public int[][] multiply(int[][] A, int[][] B) {
+        int rA=A.length,cA=A[0].length,rB=B.length, cB=B[0].length;
+        int[][] ans =new int[rA][cB];
+        for(int i=0;i<rA;i++){
+            for(int j=0;j<cB;j++){
+                for(int k=0;k<cA;k++){
+                    ans[i][j]+=A[i][k]*B[k][j];
+                }
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 9 ms, faster than 5.05% of Java online submissions for Sparse Matrix Multiplication.
+Memory Usage: 39.9 MB, less than 85.01% of Java online submissions for Sparse Matrix Multiplication.
+
+Pretty easy according to matrix multiplication definition.
+Can be improved by skipping the zero element. The first thing to notice is that the order of the loops can be swapped, the order doesn't really matter in this solution. So by swapping k and j, we can detect 0 early and skip them.

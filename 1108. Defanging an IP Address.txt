@@ -1,0 +1,14 @@
+class Solution {
+    public String defangIPaddr(String address) {
+        String[] adds=address.split("\\.");
+        StringBuilder sb=new StringBuilder("");
+        for(String a:adds){
+            sb.append(a+"[.]");
+        }
+        sb.setLength(sb.length()-3);
+        return sb.toString();
+    }
+}
+
+Runtime: 1 ms, faster than 36.08% of Java online submissions for Defanging an IP Address.
+Memory Usage: 37.2 MB, less than 80.14% of Java online submissions for Defanging an IP Address.

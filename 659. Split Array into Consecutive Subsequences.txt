@@ -1,0 +1,73 @@
+class Solution {
+    public boolean isPossible(int[] nums) {
+        List<int[]> subs=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            // System.out.println("cur "+nums[i]);
+            boolean found=false;
+            for(int j=subs.size()-1;j>=0 && !found;j--){
+                int[] sub=subs.get(j);
+                if(sub[0]==nums[i]-1){
+                    sub[0]=nums[i];
+                    sub[1]++;
+                    found=true;
+                    // System.out.println("insert "+j);
+                }
+            }
+            if(!found){
+                int[] nSub=new int[]{nums[i],1};
+                subs.add(nSub);
+            }
+        }
+        for(int[] sub:subs){
+            if(sub[1]<3){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 177 ms, faster than 5.05% of Java online submissions for Split Array into Consecutive Subsequences.
+Memory Usage: 40.1 MB, less than 91.67% of Java online submissions for Split Array into Consecutive Subsequences.
+
+Couldn't solve this 8 months ago. At least I've made some progress.
+This solution is O(M*N). Can be improved by break early when sub[0]<nums[i]-1.
+
+class Solution {
+    public boolean isPossible(int[] nums) {
+        List<int[]> subs=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            // System.out.println("cur "+nums[i]);
+            boolean found=false;
+            for(int j=subs.size()-1;j>=0 && !found;j--){
+                int[] sub=subs.get(j);
+                if(sub[0]==nums[i]-1){
+                    sub[0]=nums[i];
+                    sub[1]++;
+                    found=true;
+                }
+                else if(sub[0]<nums[i]-1){
+                    break;
+                }
+            }
+            if(!found){
+                int[] nSub=new int[]{nums[i],1};
+                subs.add(nSub);
+            }
+        }
+        for(int[] sub:subs){
+            if(sub[1]<3){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 20 ms, faster than 70.82% of Java online submissions for Split Array into Consecutive Subsequences.
+Memory Usage: 39.3 MB, less than 99.93% of Java online submissions for Split Array into Consecutive Subsequences.
+
+Here is other's O(N) solution with two hashmap.
+It uses a map called appendfreq to represent the slots of existing sequences which can be appended. For example, we look at num k. If there is a slot for k, we will reduce the slot (decrease the value of key k in appendfreq by 1 and increase the value of key k+1 in appendfreq). Otherwise, we will try to find if there is available k+1 and k+2 in freq. if there is, we will add a slot and decrease the frequency of k+1 and k+2. If there is no avaiable numbers left, then return false.
+
+https://leetcode.com/problems/split-array-into-consecutive-subsequences/discuss/106496/Java-O(n)-Time-O(n)-Space

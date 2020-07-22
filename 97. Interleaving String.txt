@@ -1,0 +1,39 @@
+It is kind of stupid that they won't accept the brute force solution when there is no explicit constrain about the time complexity.
+
+class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if(s1.length()+s2.length()!=s3.length()){
+            return false;
+        }
+        boolean[][] dp=new boolean[s1.length()+1][s2.length()+1];
+        for(int i=0;i<=s1.length();i++){
+            for(int j=0;j<=s2.length();j++){
+                check(dp,i,j,s1,s2,s3);
+                // System.out.println(i+", "+j+" "+dp[i][j]);
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+    
+    private void check(boolean[][] dp, int i, int j, String s1, String s2, String s3){
+        if(i==0 && j==0){
+            dp[0][0]=true;
+            return;
+        }
+        int k=i+j;
+        boolean ans=false;
+        if(i!=0){
+            ans|=dp[i-1][j] && s1.charAt(i-1)==s3.charAt(k-1);
+        }
+        if(j!=0){
+            ans|=dp[i][j-1] && s2.charAt(j-1)==s3.charAt(k-1);
+        }
+        dp[i][j]=ans;
+    }
+}
+
+Runtime: 3 ms, faster than 63.88% of Java online submissions for Interleaving String.
+Memory Usage: 37.8 MB, less than 5.00% of Java online submissions for Interleaving String.
+
+dp[i][j] means whether previous i char of s1 and previous j char of s2 matches previous i+j char of s3.
+The time complexity is O(m*n) since we only have to fill the  matrix one by one. The time complexity of brute force solution is O(2^(m+n)) since we will have at most 2 branches for each char in s3.

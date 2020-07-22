@@ -1,0 +1,26 @@
+class Solution {
+    public int numDistinct(String s, String t) {
+        int m=s.length(), n=t.length();
+        int[][] dp=new int[n+1][m+1];
+        for(int i=0;i<=m;i++){
+            dp[0][i]=1;
+        }
+        for(int i=1;i<=n;i++){
+            for(int j=i;j<=m;j++){
+                // System.out.println(i+" "+j);
+                dp[i][j]=dp[i][j-1];
+                if(t.charAt(i-1)==s.charAt(j-1)){
+                    dp[i][j]+=dp[i-1][j-1];
+                }
+                // System.out.println(dp[i][j]);
+            }
+        }
+        return dp[n][m];
+    }
+}
+
+Runtime: 5 ms, faster than 89.71% of Java online submissions for Distinct Subsequences.
+Memory Usage: 39.3 MB, less than 69.33% of Java online submissions for Distinct Subsequences.
+
+Typical DP.
+dp[i][j] represents the number of t's substring (0-i) appear in s's substring(0-j). And where t[i] is equal to s[j], then the number of t(0,i) in t(0,j) is the sum of number of t(0,i) in s(0,j-1) and number of t(0,i-1) in s(0,j-1).

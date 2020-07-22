@@ -1,0 +1,35 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if(nums.length<3){
+            return nums.length;
+        }
+        int left=2;
+        while(left<nums.length && nums[left]!=nums[left-2]){
+            left++;
+        }
+        int right=findNext(nums,left);
+        while(right<nums.length){
+            for(int i=0;i<2;i++){
+                // System.out.println(left+" "+right);
+                nums[left++]=nums[right++];
+                if(right>=nums.length || nums[right]!=nums[right-1]){
+                    break;
+                }
+            }
+            right=findNext(nums,right);
+        }
+        return left;
+    }
+    
+    private int findNext(int[] nums, int idx){
+        while(idx<nums.length && nums[idx]==nums[idx-1]){
+            idx++;
+        }
+        return idx;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Duplicates from Sorted Array II.
+Memory Usage: 39.4 MB, less than 5.26% of Java online submissions for Remove Duplicates from Sorted Array II.
+
+Use findNext() make the code more readable. The performance will not increased if I don't extract it as a function.

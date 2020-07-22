@@ -1,0 +1,4 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/path-with-maximum-minimum-value/discuss/324923/C%2B%2BJava-Clear-Code-Dijkstra-Algorithm

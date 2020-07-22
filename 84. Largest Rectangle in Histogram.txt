@@ -1,0 +1,25 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int max=0;
+        for(int i=0;i<heights.length;i++){
+            int minH=heights[i];
+            for(int j=i;j<heights.length;j++){
+                minH=Math.min(minH,heights[j]);
+                max=Math.max(minH*(j-i+1),max);
+            }
+        }
+        return max;
+    }
+}
+
+Runtime: 640 ms, faster than 14.29% of Java online submissions for Largest Rectangle in Histogram.
+Memory Usage: 41 MB, less than 75.00% of Java online submissions for Largest Rectangle in Histogram.
+
+The brute force solution is easy to come up with.
+
+The divide and conquer solution is a bit hard to come up with. Not to mention the improvement with segment tree.
+The stack solution is easier to understand.
+It will keep pushing index into stack until the height of current index k is smaller than one in the top of stack. And then it will keep poping index out until the height of top one is smaller than current index k (or empty). Since we only need to know the previous smaller bar's index p to calculate the area of max rectangle which is (k-p)*heights[k] (it is the max rectangle for bar 0 - k which contains bar k), we can find the max area by comparing these temporal max rectangles. Since we can always find the previous smaller bar with stack, this solution is O(n).
+
+Divide and conquer solution.
+https://leetcode.com/problems/largest-rectangle-in-histogram/discuss/28902/5ms-O(n)-Java-solution-explained-(beats-96)

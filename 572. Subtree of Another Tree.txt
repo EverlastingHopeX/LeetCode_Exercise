@@ -1,0 +1,68 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        TreeNode cur=s;
+        Stack<TreeNode> st=new Stack<TreeNode>();
+        st.push(cur);
+        while(!st.empty()){
+            cur=st.pop();
+            if(cur.val==t.val && check(cur,t)){
+                return true;
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+        }
+        return false;
+    }
+    
+    private boolean check(TreeNode cur, TreeNode t){
+        Stack<TreeNode> st1=new Stack<TreeNode>();
+        Stack<TreeNode> st2=new Stack<TreeNode>();
+        st1.push(cur);
+        st2.push(t);
+        while(!st1.empty() && !st2.empty()){
+            TreeNode cur1=st1.pop();
+            TreeNode cur2=st2.pop();
+            if(cur1.val!=cur2.val){
+                return false;
+            }
+            if(cur1.left!=null){
+                st1.push(cur1.left);
+            }
+            if(cur1.right!=null){
+                st1.push(cur1.right);
+            }
+            if(cur2.left!=null){
+                st2.push(cur2.left);
+            }
+            if(cur2.right!=null){
+                st2.push(cur2.right);
+            }
+        }
+        if(st1.empty() && st2.empty()){
+            return true;
+        }
+        return false;
+    }
+}
+
+Runtime: 79 ms, faster than 5.78% of Java online submissions for Subtree of Another Tree.
+Memory Usage: 39.8 MB, less than 100.00% of Java online submissions for Subtree of Another Tree.
+
+The basic solution is easy, but the performance is not that good.
+Using recursive solution with the same idea can greatly improve 
+the performance.
+Other's recursive solution.
+https://leetcode.com/problems/subtree-of-another-tree/discuss/102724/Java-Solution-tree-traversal

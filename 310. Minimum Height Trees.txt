@@ -74,3 +74,10 @@ class Solution {
 
 A AC solution.
 https://leetcode.com/problems/minimum-height-trees/discuss/76055/Share-some-thoughts
+
+Come up with an algorithm which is similar to the previous one, which means I still could not solve this problem.
+
+Other's solution, pretty easy to understand.
+It keep removing the leaf nodes and where there is no node left, the previous layer is the answer.
+
+https://leetcode.com/problems/minimum-height-trees/discuss/76129/Share-my-BFS-JAVA-code-using-degree-with-explanation-which-beats-more-than-95

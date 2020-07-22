@@ -1,0 +1,73 @@
+class Solution {
+    class Trie{        
+        Node root;
+        
+        Trie(){
+            root=new Node();
+        }
+        
+        public boolean insert(String word){
+            // System.out.println("insert "+word);
+            Node cur=root;
+            for(char ch:word.toCharArray()){
+                // System.out.println(ch);
+                int idx=ch-'a';
+                // System.out.println(idx);
+                if(cur.children[idx]==null){
+                    cur.children[idx]=new Node();
+                    cur.children[idx].val=ch;
+                }
+                cur=cur.children[idx];
+            }
+            cur.isEnd=true;
+            return true;
+        }
+    }
+    
+    class Node{
+        char val;
+        boolean isEnd;
+        Node[] children;
+
+        Node(){
+            isEnd=false;
+            children=new Node[26];
+            val='!';
+        }
+    }
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Trie trie=new Trie();
+        for(String str:wordDict){
+            trie.insert(str);
+        }
+        boolean[] dp=new boolean[s.length()+1];
+        dp[s.length()]=true;
+        for(int i=s.length()-1;i>=0;i--){
+            // System.out.println("i: "+i);
+            Node cur=trie.root;
+            for(int j=i;j<s.length();j++){
+                int idx=s.charAt(j)-'a';
+                cur=cur.children[idx];
+                if(cur==null){
+                    break;
+                }
+                // System.out.println("j: "+j);
+                // System.out.println(cur.val+":"+s.charAt(j));
+                if(cur.isEnd && dp[j+1]){
+                    // System.out.println("dp["+i+"]: true");
+                    dp[i]=true;
+                }
+            }
+        }
+        return dp[0];
+    }
+}
+
+Runtime: 1 ms, faster than 99.52% of Java online submissions for Word Break.
+Memory Usage: 36 MB, less than 93.48% of Java online submissions for Word Break.
+
+I tried to solve this with Trie alone at first, but I got TLE. Then I tried
+to optimized it using greedy (use stack to match the longest string first), 
+and it still failed. However, I checked other's solution and found out this
+question should be solved using dp and traverse string from end to start.

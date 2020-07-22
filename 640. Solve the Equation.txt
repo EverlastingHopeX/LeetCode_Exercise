@@ -1,0 +1,80 @@
+class Solution {
+    public String solveEquation(String equation) {
+        String[] eq=equation.split("=");
+        if(eq.length!=2){
+            System.out.println("error");
+        }
+        int[] left=process(eq[0]);
+        int[] right=process(eq[1]);
+        // System.out.println(left[0]+" x + "+left[1]+" = "+right[0]+" x + "+right[1]);
+        int coef=left[0]-right[0];
+        int cons=right[1]-left[1];
+        if(coef==0){
+            if(cons==0){
+                return "Infinite solutions";
+            }
+            else{
+                return "No solution";
+            }
+        }
+        return "x="+cons/coef;
+    }
+    
+    private int[] process(String statement){
+        int[] ans=new int[]{0,0};
+        int coef=0;
+        boolean isCoef=false;
+        boolean isNeg=false;
+        boolean noCoef=true;
+        for(char ch:statement.toCharArray()){
+            if(Character.isDigit(ch)){
+                coef=coef*10+(ch-'0');
+                noCoef=false;
+            }
+            else if(ch=='x'){
+                isCoef=true;
+            }
+            //'+' or '-'
+            else{
+                if(isNeg){
+                    coef=-coef;
+                }
+                if(isCoef){
+                    if(coef==0 && noCoef){
+                        coef=isNeg?-1:1;
+                    }
+                    ans[0]+=coef;
+                    // System.out.println("coef + "+coef);
+                }
+                else{
+                    ans[1]+=coef;
+                    // System.out.println("cons + "+coef);
+                }
+                coef=0;
+                isNeg=ch=='-';
+                isCoef=false;
+                noCoef=true;
+            }
+        }
+        if(isNeg){
+            coef=-coef;
+        }
+        if(isCoef){
+            if(coef==0 && noCoef){
+                coef=isNeg?-1:1;
+            }
+            ans[0]+=coef;
+            // System.out.println("coef + "+coef);
+        }
+        else{
+            ans[1]+=coef;
+            // System.out.println("cons + "+coef);
+        }
+        return ans;
+    }
+}
+
+Runtime: 3 ms, faster than 82.00% of Java online submissions for Solve the Equation.
+Memory Usage: 37.4 MB, less than 80.28% of Java online submissions for Solve the Equation.
+
+The question itself is easy, but it takes some time to implement a solution without bugs.

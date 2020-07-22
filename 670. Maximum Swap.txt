@@ -1,0 +1,71 @@
+class Solution {
+    public int maximumSwap(int num) {
+        char[] ch=String.valueOf(num).toCharArray();
+        int[] nextLg=new int[ch.length];
+        Stack<Integer> st=new Stack<>();
+        for(int i=0;i<ch.length;i++){
+            nextLg[i]=i;
+            while(!st.isEmpty()){
+                int k=st.peek();
+                if(ch[k]>ch[i]){
+                    break;
+                }
+                nextLg[k]=i;
+                st.pop();
+            }
+            st.push(i);
+        }
+        //find the first element which has a larger element in the following bits
+        int left=0;
+        while(left<ch.length){
+            if(nextLg[left]!=left){
+                int p=left;
+                while(nextLg[p]!=p){
+                    p++;
+                }
+                if(ch[p]!=ch[left]){
+                    break;
+                }
+            }
+            left++;
+        }
+        // System.out.println("left "+left);
+        //no swap
+        if(left==ch.length){
+            return num;
+        }
+        int right=nextLg[left];
+        //find the largest number after left
+        while(nextLg[right]!=right){
+            right=nextLg[right];
+        }
+        // System.out.println("right "+right);
+        char temp=ch[left];
+        ch[left]=ch[right];
+        ch[right]=temp;
+        String str=new String(ch);
+        return Integer.parseInt(str);
+    }
+}
+
+Runtime: 2 ms, faster than 16.70% of Java online submissions for Maximum Swap.
+Memory Usage: 38 MB, less than 14.09% of Java online submissions for Maximum Swap.
+
+Not much to improve.
+O(N) time. O(N) space.
+I used (num+"") at first and then change it to String.valueOf(num). Performance is slightly improved. One post mentioned that the former one is O(N^2).
+I checked the source code.
+
+For valueOf() method.
+1. In valueOf(), it calls Integer.toString(i,10). (O(1))
+2. In Integer.toString(i,10), it calls new String(buffer,i,33-i,true). (O(N))
+3. String(buffer,i,33-i,true). The last parameter indicates that it should not copy array in this step. (O(1)).
+
+For num+"" method.
+I found a question in Overflow, one comment claimed that string concatenation is O(N^2), but the scene seem to be multiple string concatenation within a loop. Apart from that, another article in DZone claimed that compiler would auomatically use stringbuilder for simple concatenation outside a loop.
+
+So I am still not sure about the time complexity of this solution.
+
+Another brilliant (at least I don't understand this solution at all) solution is here.
+https://leetcode.com/problems/maximum-swap/discuss/680594/Java-constant-space-arithmetic-solution-(0ms-beats-100)
+

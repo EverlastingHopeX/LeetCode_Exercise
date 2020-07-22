@@ -1,0 +1,40 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode sHead=new ListNode(0), leHead=new ListNode(0);
+        ListNode sp=sHead, lep=leHead;
+        ListNode cur=head;
+        while(cur!=null){
+            if(cur.val<x){
+                // System.out.println("sp "+cur.val);
+                sp.next=cur;
+                sp=cur;
+                cur=cur.next;
+                sp.next=null;
+            }
+            else{
+                // System.out.println("lep "+cur.val);
+                lep.next=cur;
+                lep=cur;
+                cur=cur.next;
+                lep.next=null;
+            }
+        }
+        sp.next=leHead.next;
+        return sHead.next;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Partition List.
+Memory Usage: 39.4 MB, less than 5.77% of Java online submissions for Partition List. 
+
+Dummy head is convenient to use, could save some memory without it, but the code would be less concise and less readable.

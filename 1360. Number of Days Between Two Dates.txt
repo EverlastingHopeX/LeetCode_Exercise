@@ -1,0 +1,91 @@
+class Solution {
+    int[] months=new int[]{31,28,31,30,31,30,31,31,30,31,30,31};
+    
+    public int daysBetweenDates(String date1, String date2) {
+        int[][] nDate=dateSort(date1, date2);
+        // System.out.println(nDate[0][0]+" "+nDate[0][1]+" "+nDate[0][2]);
+        // System.out.println(nDate[1][0]+" "+nDate[1][1]+" "+nDate[1][2]);
+        int cnt=getOffset(nDate);
+        for(int year=nDate[0][0];year<=nDate[1][0];year++){
+            // System.out.println("year "+year);
+            boolean isLeap=isLeap(year);
+            int monSta=1;
+            if(year==nDate[0][0]){
+                monSta=nDate[0][1];
+            }
+            int monEnd=12;
+            if(year==nDate[1][0]){
+                monEnd=nDate[1][1];
+            }
+            for(int month=monSta;month<=monEnd;month++){
+                // System.out.println("mon "+month);
+                cnt+=months[month-1];
+                if(month==2 && isLeap){
+                    cnt++;
+                }
+            }
+            // System.out.println("cnt "+cnt);
+        }
+        return cnt;
+    }
+    
+    private int[][] dateSort(String date1, String date2){
+        String[] d1=date1.split("-");
+        String[] d2=date2.split("-");
+        int[][] ans=new int[2][3];
+        boolean reverse=false;
+        for(int i=0;i<3;i++){
+            int t1=Integer.parseInt(d1[i]);
+            int t2=Integer.parseInt(d2[i]);
+            if(t1>t2){
+                // System.out.println(i+" need reverse");
+                reverse=true;
+                break;
+            }
+            else if(t1<t2){
+                break;
+            }
+        }
+        if(reverse){
+            // System.out.println("reverse");
+            for(int i=0;i<3;i++){
+                ans[0][i]=Integer.parseInt(d2[i]);
+                ans[1][i]=Integer.parseInt(d1[i]);
+            }
+        }
+        else{
+            for(int i=0;i<3;i++){
+                ans[0][i]=Integer.parseInt(d1[i]);
+                ans[1][i]=Integer.parseInt(d2[i]);
+            }
+        }
+        return ans;
+    }
+    
+    private boolean isLeap(int year){
+        boolean leap=false;
+        if(year % 4 == 0){
+            if( year % 100 == 0){
+                if ( year % 400 == 0){
+                    leap = true;
+                }
+            }
+            else{
+                leap = true;
+            }
+        }
+        return leap;
+    }
+    
+    private int getOffset(int[][] nDate){
+        int offset=nDate[0][2];
+        offset+=months[nDate[1][1]-1]-nDate[1][2];
+        if(isLeap(nDate[1][0]) && nDate[1][1]==2){
+            offset++;
+        }
+        return -offset;
+    }
+}
+
+Runtime: 2 ms, faster than 39.13% of Java online submissions for Number of Days Between Two Dates.
+Memory Usage: 37.6 MB, less than 62.36% of Java online submissions for Number of Days Between Two Dates.

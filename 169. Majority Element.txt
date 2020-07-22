@@ -1,0 +1,15 @@
+class Solution {
+    public int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length/2];
+    }
+}
+
+Runtime: 1 ms, faster than 99.85% of Java online submissions for Majority Element.
+Memory Usage: 42.7 MB, less than 51.47% of Java online submissions for Majority Element.
+
+Easy to come up with the sorting method.
+The time complexity is O(nlogn).
+Boyer-Moore Majority Vote Algorithm can provide O(n) solution.
+Others' vote will cancel the previous vote, so only the majority vote can
+last to the end.

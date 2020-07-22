@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        int depth=1;
+        Queue<TreeNode> queue=new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            // System.out.println("depth "+depth);
+            for(int i=queue.size();i>0;i--){
+                TreeNode cur=queue.poll();
+                if(cur.left==null && cur.right==null){
+                    return depth;
+                }
+                if(cur.left!=null){
+                    queue.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    queue.offer(cur.right);
+                }
+            }
+            depth++;
+        }
+        return depth;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Minimum Depth of Binary Tree.
+Memory Usage: 39.3 MB, less than 96.88% of Java online submissions for Minimum Depth of Binary Tree.
+
+BFS and stop when meet leaf node.

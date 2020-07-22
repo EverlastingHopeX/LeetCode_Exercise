@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    int sum=0;
+    public TreeNode bstToGst(TreeNode root) {
+        if(root==null){
+            return null;
+        }
+        TreeNode nRoot=new TreeNode(-1);
+        nRoot.right=bstToGst(root.right);
+        sum+=root.val;
+        nRoot.val=sum;
+        nRoot.left=bstToGst(root.left);
+        return nRoot;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Search Tree to Greater Sum Tree.
+Memory Usage: 34.1 MB, less than 100.00% of Java online submissions for Binary Search Tree to Greater Sum Tree.
+
+A pretty easy one.

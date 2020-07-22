@@ -1,0 +1,44 @@
+class FirstUnique {
+    
+    Queue<Integer> queue;
+    Map<Integer, Integer> freq;
+    
+    
+    public FirstUnique(int[] nums) {
+        queue=new LinkedList<>();
+        freq=new HashMap<>();
+        for(int n:nums){
+            add(n);
+        }
+    }
+    
+    public int showFirstUnique() {
+        int ans=-1;
+        while(!queue.isEmpty()){
+            int cur=queue.element();
+            if(freq.get(cur)==1){
+                return cur;
+            }
+            queue.poll();
+        }
+        return ans;
+    }
+    
+    public void add(int value) {
+        int cnt=freq.getOrDefault(value,0);
+        if(cnt<=1){
+            freq.put(value,cnt+1);
+            queue.offer(value);
+        }
+    }
+}
+
+/**
+ * Your FirstUnique object will be instantiated and called as such:
+ * FirstUnique obj = new FirstUnique(nums);
+ * int param_1 = obj.showFirstUnique();
+ * obj.add(value);
+ */
+
+Runtime: 110 ms, faster than 83.64% of Java online submissions for First Unique Number.
+Memory Usage: 82 MB, less than 66.49% of Java online submissions for First Unique Number.

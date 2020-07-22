@@ -1,0 +1,41 @@
+class Solution {
+    public int reverse(int x) {
+        if(x==Integer.MIN_VALUE){
+            return 0;
+        }
+        String s=Math.abs(x)+"";
+        char[] chs=s.toCharArray();
+        int idx=s.length()-1;
+        while(idx>=0 && chs[idx]=='0'){
+            idx--;
+        }
+        if(idx<0){
+            return 0;
+        }
+        int ans=0;
+        while(idx>0){
+            ans=ans*10+(chs[idx]-'0');
+            System.out.println("idx "+idx);
+            System.out.println("ans "+ans);
+            idx--;
+        }
+        int last=chs[idx]-'0';
+        int K=Integer.MAX_VALUE/10;
+        if(ans>K){
+            return 0;
+        }
+        else if(ans==K){
+            int bound=x<0?8:7;
+            if(last>bound){
+                return 0;
+            }
+        }
+        ans=ans*10+last;
+        return x>0?ans:-ans;
+    }
+}
+
+Runtime: 22 ms, faster than 5.30% of Java online submissions for Reverse Integer.
+Memory Usage: 37.6 MB, less than 5.55% of Java online submissions for Reverse Integer.
+
+idea is simple, while the performance is not good.

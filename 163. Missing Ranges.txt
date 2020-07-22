@@ -1,0 +1,36 @@
+class Solution {
+    public List<String> findMissingRanges(int[] nums, int lower, int upper) {
+        List<String> ans=new ArrayList<>();
+        if(nums.length==0){
+            ans.add(helper(lower,upper));
+            return ans;
+        }
+        if(nums[0]>lower){
+            ans.add(helper(lower,nums[0]-1));
+        }
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]==nums[i-1]){
+                continue;
+            }
+            if(nums[i-1]!=nums[i]-1){
+                ans.add(helper(nums[i-1]+1,nums[i]-1));
+            }
+        }
+        if(nums[nums.length-1]<upper){
+            ans.add(helper(nums[nums.length-1]+1,upper));
+        }
+        return ans;
+    }
+    
+    private String helper(int lo, int hi){
+        if(hi>lo){
+            return lo+"->"+hi;
+        }
+        return lo+"";
+    }
+}
+
+Runtime: 6 ms, faster than 66.20% of Java online submissions for Missing Ranges.
+Memory Usage: 37.9 MB, less than 56.74% of Java online submissions for Missing Ranges.
+
+A simple problem.

@@ -1,0 +1,7 @@
+Didn't work it out.
+
+Other's algorithm
+https://leetcode.com/problems/snapshot-array/discuss/350562/JavaPython-Binary-Search
+
+use map to store snap_id and corresponding value.
+not use for loop as a:A to initialize.

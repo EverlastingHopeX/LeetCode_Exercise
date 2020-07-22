@@ -1,0 +1,116 @@
+class Solution {
+    int[] idx;
+    Map<Integer, List<Integer>> islands;
+    int R,C;
+    
+    public int numDistinctIslands(int[][] grid) {
+        int[][] dir=new int[][]{{0,-1},{-1,0}};
+        islands=new HashMap<>();
+        R=grid.length;
+        C=grid[0].length;
+        idx=new int[R*C];
+        for(int i=0;i<R*C;i++){
+            idx[i]=i;
+        }
+        for(int i=0;i<R;i++){
+            for(int j=0;j<C;j++){
+                if(grid[i][j]!=1){
+                    continue;
+                }
+                int id=getIdx(i,j);
+                // System.out.println(i+", "+j+" "+id);
+                List<Integer> li=new LinkedList<Integer>();
+                li.add(id);
+                islands.put(id,li);
+                for(int[] d:dir){
+                    int r=i+d[0];
+                    int c=j+d[1];
+                    if(r<0 || r>=R || c<0 || c>=C){
+                        continue;
+                    }
+                    if(grid[r][c]==1){
+                        union(id,getIdx(r,c));
+                    }
+                }
+            }
+        }
+        Set<String> set=new HashSet<String>();
+        for(int key:islands.keySet()){
+            List<Integer> li=islands.get(key);
+            String str=normalize(li);
+            // System.out.println(str);
+            set.add(str);
+        }
+        return set.size();
+    }
+    
+    private int getIdx(int r, int c){
+        // System.out.println(r+", "+c+" -> "+(r*C+c));
+        return r*C+c;
+    }
+    
+    private int[] getRC(int idx){
+        int r=idx/C;
+        int c=idx-C*r;
+        return new int[]{r,c};
+    }
+    
+    private void union(int o1, int o2){
+        // System.out.println("union "+o1+" and "+o2);
+        int p1=find(o1);
+        int p2=find(o2);
+        // System.out.println("parent "+p1+" and "+p2);
+        if(p1!=p2){
+            // System.out.println("union "+p1+" and "+p2);
+            idx[p2]=idx[p1];
+            List<Integer> li1=islands.get(p1);
+            List<Integer> li2=islands.get(p2);
+            li1.addAll(li2);
+            islands.remove(p2);
+        }
+    }
+    
+    private int find(int x){
+        while(idx[x]!=x){
+            x=idx[x];
+        }
+        return x;
+    }
+    
+    private String normalize(List<Integer> li){
+        // System.out.println("normalize");
+        int left=C;
+        int top=R;
+        Collections.sort(li);
+        for(int id:li){
+            // System.out.println(id);
+            int[] rc=getRC(id);
+            if(rc[0]<top){
+                top=rc[0];
+            }
+            if(rc[1]<left){
+                left=rc[1];
+            }
+        }
+        int offset=top*C+left;
+        StringBuilder sb=new StringBuilder("");
+        for(int id:li){
+            sb.append(id-offset);
+            sb.append(",");
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 54 ms, faster than 5.12% of Java online submissions for Number of Distinct Islands.
+Memory Usage: 48 MB, less than 9.09% of Java online submissions for Number of Distinct Islands.
+
+This solution is quite straightforward. I use union-find
+and normalize the found island to find the unique islands.
+But the performance is not good.
+
+Other's DFS solution.
+https://leetcode.com/problems/number-of-distinct-islands/discuss/108475/Java-very-Elegant-and-concise-DFS-Solution(Beats-100)
+
+This one is not hard to understand. It uses a different idea from union-find and record the path. 
+There is a pattern for each path so the same islands will have same path.

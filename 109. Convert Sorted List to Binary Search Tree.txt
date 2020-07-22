@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if(head==null){
+            return null;
+        }
+        List<Integer> list=new ArrayList<Integer>();
+        ListNode cur=head;
+        while(cur!=null){
+            list.add(cur.val);
+            cur=cur.next;
+        }
+        int N=list.size();
+        int mid=N/2;
+        TreeNode root=new TreeNode(list.get(mid));
+        root.left=formTree(list.subList(0,mid));
+        root.right=formTree(list.subList(mid+1,N));
+        return root;
+    }
+    
+    private TreeNode formTree(List<Integer> list){
+        int N=list.size();
+        if(N==0){
+            return null;
+        }
+        int mid=N/2;
+        TreeNode root=new TreeNode(list.get(mid));
+        root.left=formTree(list.subList(0,mid));
+        root.right=formTree(list.subList(mid+1,N));
+        return root;
+    }
+}
+
+Runtime: 2 ms, faster than 15.95% of Java online submissions for Convert Sorted List to Binary Search Tree.
+Memory Usage: 38.4 MB, less than 100.00% of Java online submissions for Convert Sorted List to Binary Search Tree.
+
+Brute force is quite easy.
+The time complexity should be O(n);
+
+However, other's solution using 2 pointers seems to take less time with larger time complexity (O(n^2)).

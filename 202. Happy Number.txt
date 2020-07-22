@@ -1,0 +1,35 @@
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> nums=new HashSet<>();
+        nums.add(n);
+        while(true){
+            n=helper(n);
+            if(n==1){
+                break;
+            }
+            if(nums.contains(n)){
+                return false;
+            }
+            nums.add(n);
+        }
+        return true;
+    }
+    
+    private int helper(int n){
+        String str=n+"";
+        int res=0;
+        for(char ch:str.toCharArray()){
+            int d=ch-'0';
+            res+=d*d;
+        }
+        return res;
+    }
+}
+
+Runtime: 6 ms, faster than 7.11% of Java online submissions for Happy Number.
+Memory Usage: 36.9 MB, less than 6.06% of Java online submissions for Happy Number.
+
+Pretty easy to come up with the hashset algorithm.
+But it is actually more intuitive with the slow and fast
+pointer algorithm.
+https://leetcode.com/problems/happy-number/discuss/56917/My-solution-in-C(-O(1)-space-and-no-magic-math-property-involved-)

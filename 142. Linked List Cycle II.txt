@@ -1,0 +1,45 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if(head==null){
+            return null;
+        }
+        ListNode slow=head;
+        ListNode fast=head.next;
+        int count=0;
+        while(slow!=fast && fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            count++;
+        }
+        if(fast==null || fast.next==null){
+            return null;
+        }
+        // System.out.println(count);
+        fast=head.next;
+        slow=head;
+        while(count>0){
+            fast=fast.next;
+            count--;
+        }
+        while(slow!=fast){
+            // System.out.println(slow.val+":"+fast.val);
+            slow=slow.next;
+            fast=fast.next;
+        }
+        return slow;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Linked List Cycle II.
+Memory Usage: 34.7 MB, less than 87.37% of Java online submissions for Linked List Cycle II.

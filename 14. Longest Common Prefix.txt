@@ -1,0 +1,59 @@
+class Solution {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEnd;
+        TrieNode(){
+            children=new TrieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    public String longestCommonPrefix(String[] strs) {
+        if(strs.length==0){
+            return "";
+        }
+        TrieNode root=new TrieNode();
+        for(String str:strs){
+            if(str.length()==0){
+                return "";
+            }
+            TrieNode cur=root;
+            for(char ch:str.toCharArray()){
+                int idx=ch-'a';
+                if(cur.children[idx]==null){
+                    cur.children[idx]=new TrieNode();
+                }
+                cur=cur.children[idx];
+            }
+            cur.isEnd=true;
+        }
+        StringBuilder sb=new StringBuilder("");
+        TrieNode cur=root;
+        boolean flag=true;
+        while(!cur.isEnd){
+            int next=-1;
+            for(int i=0;i<26 && !flag;i++){
+                if(cur.children[i]!=null){
+                    if(next==-1){
+                        next=i;
+                    }
+                    else{
+                        return sb.toString();
+                    }
+                }
+            }
+            if(next==-1){
+                flag=false;
+            }
+            else{
+                sb.append((char)('a'+next));
+                cur=cur.children[next];
+            }
+        }
+        
+        return sb.toString();
+    }
+}
+
+Runtime: 1 ms, faster than 70.74% of Java online submissions for Longest Common Prefix.
+Memory Usage: 38 MB, less than 80.70% of Java online submissions for Longest Common Prefix.

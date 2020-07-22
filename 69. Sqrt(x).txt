@@ -1,0 +1,40 @@
+class Solution {
+    public int mySqrt(int x) {
+        if(x==0){
+            return 0;
+        }
+        if(x<4){
+            return 1;
+        }
+        int left=0, right=Math.min(x/2,46340);
+        while(left<=right){
+            int mid=left+(right-left)/2;
+            // System.out.println(mid);
+            int sqr=mid*mid;
+            // System.out.println("sqr "+sqr);
+            if(sqr<x){
+                left=mid+1;
+            }
+            else if(sqr==x){
+                return mid;
+            }
+            else{
+                right=mid-1;
+            }
+        }
+        // System.out.println(left+" "+right);
+        return right;
+    }
+}
+
+Runtime: 2 ms, faster than 25.83% of Java online submissions for Sqrt(x).
+Memory Usage: 38.5 MB, less than 5.00% of Java online submissions for Sqrt(x).
+
+To avoid the risk of overflow, should compare mid and x/mid instead of mid^2 and x.
+However, the performance is actually worse, which is confusing.
+
+Bit operation can be way more faster (O(1))
+Other's solution.
+https://leetcode.com/problems/sqrtx/discuss/25047/A-Binary-Search-Solution
+
+Another solution will use the equation involves e and log.

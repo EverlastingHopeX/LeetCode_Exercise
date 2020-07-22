@@ -1,0 +1,52 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/reorder-data-in-log-files/discuss/212748/Jave-solution
+
+It can be easily done by overriding comparator.
+I tried to sort it in a more brute force way, but it 
+becomes so complex that makes me frustrated.
+
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        PriorityQueue<String> letPQ=new PriorityQueue<>(new Comparator<String>(){
+            @Override
+            public int compare(String log1, String log2){
+                String[] l1=log1.split(" ",2);
+                String[] l2=log2.split(" ",2);
+                int k=l1[1].compareTo(l2[1]);
+                if(k==0){
+                    k=l1[0].compareTo(l2[0]);
+                }
+                return k;
+            }
+        });
+        List<String> digLi=new ArrayList<>();
+        
+        for(String log:logs){
+            String[] str=log.split(" ");
+            if(!Character.isDigit(str[1].charAt(0))){
+                letPQ.offer(log);
+            }
+            else{
+                digLi.add(log);
+            }
+        }
+        String[] ans=new String[logs.length];
+        int p=0;
+        while(!letPQ.isEmpty()){
+            ans[p]=letPQ.poll();
+            p++;
+        }
+        for(String log:digLi){
+            ans[p]=log;
+            p++;
+        }
+        return ans;
+    }
+}
+
+Runtime: 11 ms, faster than 23.85% of Java online submissions for Reorder Data in Log Files.
+Memory Usage: 46.8 MB, less than 6.09% of Java online submissions for Reorder Data in Log Files.
+
+Not very satisfying performance. Could be better using Arrays.sort() with a comparator.

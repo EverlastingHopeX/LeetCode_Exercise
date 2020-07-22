@@ -1,0 +1,54 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void flatten(TreeNode root) {
+        if(root==null){
+            return;
+        }
+        // System.out.println(root.val);
+        TreeNode prev=rightMost(root.left);
+        TreeNode latt=root.right;
+        flatten(root.left);
+        flatten(root.right);
+        if(prev!=null){
+            // System.out.println("prev:"+prev.val);
+            prev.right=latt;
+            root.right=root.left;
+            root.left=null;
+        }
+    }
+    
+    private TreeNode rightMost(TreeNode root){
+        if(root!=null){
+            // System.out.println("rightMost of "+root.val);
+        }
+        else{
+            // System.out.println("null");
+            return null;
+        }
+        TreeNode cur=root;
+        TreeNode prev=null;
+        while(cur!=null){
+            if(cur.right!=null){
+                prev=cur;
+                cur=cur.right;
+            }
+            else{
+                prev=cur;
+                cur=cur.left;
+            }
+        }
+        // System.out.println("is "+prev.val);
+        return prev;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Flatten Binary Tree to Linked List.
+Memory Usage: 36 MB, less than 100.00% of Java online submissions for Flatten Binary Tree to Linked List.

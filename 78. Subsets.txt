@@ -1,0 +1,90 @@
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        Map<Integer, List<List<Integer>>> setMap=new HashMap<>();
+        for(int i=0;i<=nums.length;i++){
+            setMap.put(i,new ArrayList<>());
+        }
+        for(int i=0;i<=nums.length/2;i++){
+            fillSet(nums,setMap,i);
+        }
+        List<List<Integer>> ans=new ArrayList<>();
+        for(List<List<Integer>> li:setMap.values()){
+            ans.addAll(li);
+        }
+        return ans;
+    }
+    
+    private void fillSet(int[] nums, Map<Integer, List<List<Integer>>> setMap, int length){
+        // System.out.println("fill "+length+" "+(nums.length-length));
+        List<List<Integer>> list1=new ArrayList<>();
+        List<List<Integer>> list2=new ArrayList<>();
+        boolean[] taken=new boolean[nums.length];
+        if(length*2==nums.length){
+            DFS(nums,list1, taken, 0, length);
+        }
+        else{
+            DFS(nums,list1,list2, taken, 0, length);
+            // System.out.println((nums.length-length)+" put "+list2.size());
+            setMap.put(nums.length-length,list2);
+        }
+        // System.out.println(length+" put "+list1.size());
+        setMap.put(length,list1);
+    }
+    
+    private void DFS(int[] nums, List<List<Integer>> list1, List<List<Integer>> list2, boolean[] taken, int idx, int res){
+        if(res==0){            
+            List<Integer> temp1=new ArrayList<>();
+            List<Integer> temp2=new ArrayList<>();
+            for(int i=0;i<nums.length;i++){
+                if(taken[i]){
+                    temp1.add(nums[i]);
+                }
+                else{
+                    temp2.add(nums[i]);
+                }
+            }
+            // System.out.println(temp1.size()+" found 1");
+            // System.out.println(temp2.size()+" found 1");
+            list1.add(temp1);
+            list2.add(temp2);
+            return;
+        }
+        for(int i=idx;i<taken.length;i++){
+            if(taken[i]){
+                continue;
+            }
+            taken[i]=true;
+            DFS(nums,list1,list2, taken, i+1,res-1);
+            taken[i]=false;
+        }
+    }
+    
+    private void DFS(int[] nums, List<List<Integer>> list,boolean[] taken, int idx, int res){
+        if(res==0){            
+            List<Integer> temp=new ArrayList<>();
+            for(int i=0;i<nums.length;i++){
+                if(taken[i]){
+                    temp.add(nums[i]);
+                }
+            }
+            list.add(temp);
+            return;
+        }
+        for(int i=idx;i<taken.length;i++){
+            if(taken[i]){
+                continue;
+            }
+            taken[i]=true;
+            DFS(nums,list, taken, i+1,res-1);
+            taken[i]=false;
+        }
+    }
+}
+
+Runtime: 2 ms, faster than 18.25% of Java online submissions for Subsets.
+Memory Usage: 40.2 MB, less than 5.74% of Java online submissions for Subsets.
+
+Not hard but took me a long time to complete. This solution is not bad, but the direction is a bit wrong.
+
+Other's better solution.
+https://leetcode.com/problems/subsets/discuss/27281/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)

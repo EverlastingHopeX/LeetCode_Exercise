@@ -1,0 +1,25 @@
+class Solution {
+    public int singleNumber(int[] nums) {
+        Set<Integer> set=new HashSet<>();
+        for(int n:nums){
+            if(set.contains(n)){
+                set.remove(n);
+            }
+            else{
+                set.add(n);
+            }
+        }
+        for(int k:set){
+            return k;
+        }
+        return -1;
+    }
+}
+
+Runtime: 6 ms, faster than 34.94% of Java online submissions for Single Number.
+Memory Usage: 39.8 MB, less than 96.30% of Java online submissions for Single Number.
+
+Time: O(n), space: O(n)
+
+I need to practice bit operation, can't think it up now.
+The basic principle is that A^A=0, A^B^A=B.

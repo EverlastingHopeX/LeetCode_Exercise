@@ -1,0 +1,64 @@
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int r=obstacleGrid.length, c=obstacleGrid[0].length;
+        int[][] dp=new int[r][c];
+        if(obstacleGrid[0][0]==1 || obstacleGrid[r-1][c-1]==1){
+            return 0;
+        }
+        dp[0][0]=1;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(inRange(r,c,i-1,j) && obstacleGrid[i-1][j]!=1){
+                    dp[i][j]+=dp[i-1][j];
+                }
+                if(inRange(r,c,i,j-1) && obstacleGrid[i][j-1]!=1){
+                    dp[i][j]+=dp[i][j-1];
+                }
+                // System.out.println(i+", "+j+" "+dp[i][j]);
+            }
+        }
+        return dp[r-1][c-1];
+    }
+    
+    private boolean inRange(int r, int c, int rr, int cc){
+        if(rr>=0 && rr<r && cc>=0 && cc<c){
+            return true;
+        }
+        return false;
+    }
+}
+
+Runtime: 2 ms, faster than 7.80% of Java online submissions for Unique Paths II.
+Memory Usage: 39 MB, less than 66.15% of Java online submissions for Unique Paths II.
+
+Using dp. Can be easily improved but the basic idea is the same.
+
+Improved version.
+
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int r=obstacleGrid.length, c=obstacleGrid[0].length;
+        int[][] dp=new int[r][c];
+        if(obstacleGrid[0][0]==1 || obstacleGrid[r-1][c-1]==1){
+            return 0;
+        }
+        dp[0][0]=1;
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(obstacleGrid[i][j]==1){
+                    continue;
+                }
+                if(i>0){
+                    dp[i][j]+=dp[i-1][j];
+                }
+                if(j>0){
+                    dp[i][j]+=dp[i][j-1];
+                }
+            }
+        }
+        return dp[r-1][c-1];
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Unique Paths II.
+Memory Usage: 39 MB, less than 70.77% of Java online submissions for Unique Paths II.

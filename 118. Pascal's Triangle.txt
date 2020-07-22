@@ -1,0 +1,26 @@
+class Solution {
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(numRows<=0){
+            return ans;
+        }
+        List<Integer> prev=new ArrayList<>();
+        prev.add(1);
+        ans.add(prev);
+        for(int i=1;i<numRows;i++){
+            List<Integer> cur=new ArrayList<>();
+            int p=0;
+            for(int k:prev){
+                cur.add(k+p);
+                p=k;
+            }
+            cur.add(1);
+            ans.add(cur);
+            prev=cur;
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Pascal's Triangle.
+Memory Usage: 37.5 MB, less than 6.02% of Java online submissions for Pascal's Triangle.

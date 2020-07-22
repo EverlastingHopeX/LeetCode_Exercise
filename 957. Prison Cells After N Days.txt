@@ -1,0 +1,53 @@
+Didn't work it out.
+Based on other's solution.
+https://leetcode.com/problems/prison-cells-after-n-days/discuss/266854/Java%3A-easy-to-understand
+
+class Solution {
+    public int[] prisonAfterNDays(int[] cells, int N) {
+        int num=cells.length;
+        Set<String> states=new HashSet<String>();
+        Map<Integer, int[]> days=new HashMap<Integer, int[]>();
+        boolean hasCycle=false;
+        int cycle=0;
+        for(int i=0;i<N;i++){
+            cells=nextDay(cells);
+            String nStr=Arrays.toString(cells);
+            if(states.contains(nStr)){
+                hasCycle=true;
+                break;
+            }
+            else{
+                cycle++;
+                states.add(nStr);
+                days.put(i,cells);
+            }
+        }
+        if(hasCycle){
+            // System.out.println("cycle: "+cycle);
+            int day=(N-1)%cycle;
+            // System.out.println("day: "+day);
+            // for(int i=0;i<cycle;i++){
+            //     System.out.println(Arrays.toString(days.get(i)));
+            // }
+            cells=days.get(day);
+        }
+        return cells;
+    }
+    
+    private int[] nextDay(int[] cells){
+        int[] next=new int[cells.length];
+        for(int i=1;i<cells.length-1;i++){
+            if(cells[i-1]==cells[i+1]){
+                next[i]=1;
+            }
+        }
+        return next;
+    }
+}
+
+Runtime: 3 ms, faster than 57.94% of Java online submissions for Prison Cells After N Days.
+Memory Usage: 36.6 MB, less than 97.62% of Java online submissions for Prison Cells After N Days.
+
+It becomes easier when I know there has to be a cycle, as there can only be limited states.
+One mistake I made was assuming day 0 is also part of the cycle. Actually, it is not always true.
+Because cell 0 and cell 7 cannot become 1 again.

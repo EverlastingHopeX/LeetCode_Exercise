@@ -1,0 +1,36 @@
+class Solution {
+    
+    Map<Integer,List<Integer>> map;
+    Random rd;
+    public Solution(int[] nums) {
+        map=new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            List<Integer> li=map.getOrDefault(nums[i],new ArrayList<>());
+            li.add(i);
+            map.put(nums[i],li);
+        }
+        rd=new Random();
+    }
+    
+    public int pick(int target) {
+        List<Integer> li=map.get(target);
+        int k=rd.nextInt(li.size());
+        return li.get(k);
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int param_1 = obj.pick(target);
+ */
+
+Runtime: 158 ms, faster than 5.11% of Java online submissions for Random Pick Index.
+Memory Usage: 98.6 MB, less than 5.02% of Java online submissions for Random Pick Index.
+
+This is a brute force solution.
+O(N)
+
+Other's O(1) memory solution.
+Used some math, the mechanism is explained in the comment.
+https://leetcode.com/problems/random-pick-index/discuss/88072/Simple-Reservoir-Sampling-solution

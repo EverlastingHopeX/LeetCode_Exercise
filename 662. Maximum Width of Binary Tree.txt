@@ -1,0 +1,9 @@
+Didn't work it out.
+Even in the second round.
+
+Other's solution.
+https://leetcode.com/problems/maximum-width-of-binary-tree/discuss/106653/Java-One-Queue-Solution-with-HashMap
+
+This one is brilliant.
+Just store the index of nodes using map, and BFS.
+Get the index of first element and last element, then the width can be calculated.

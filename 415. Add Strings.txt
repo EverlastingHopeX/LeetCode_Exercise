@@ -1,0 +1,36 @@
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int p1=num1.length()-1;
+        int p2=num2.length()-1;
+        int carry=0;
+        StringBuilder sb=new StringBuilder("");
+        while(p1>=0 || p2>=0){
+            int n1=0,n2=0;
+            if(p1>=0){
+                n1=num1.charAt(p1)-'0';
+            }
+            if(p2>=0){
+                n2=num2.charAt(p2)-'0';
+            }
+            int sum=n1+n2+carry;
+            if(sum>9){
+                carry=1;
+                sum=sum-10;
+            }
+            else{
+                carry=0;
+            }
+            sb.append(sum);
+            p1--;
+            p2--;
+        }
+        if(carry>0){
+            sb.append("1");
+        }
+        sb.reverse();
+        return sb.toString();
+    }
+}
+
+Runtime: 3 ms, faster than 54.44% of Java online submissions for Add Strings.
+Memory Usage: 39.6 MB, less than 59.72% of Java online submissions for Add Strings.

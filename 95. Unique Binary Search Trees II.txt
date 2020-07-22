@@ -1,0 +1,6 @@
+Didn't work it out.
+The difficulty level is greatly higher than 76. I think it should be a difficult.
+
+Other's dp solution.
+The idea is to save the structure of subtrees and then clone it according to offset.
+https://leetcode.com/problems/unique-binary-search-trees-ii/discuss/31493/Java-Solution-with-DP

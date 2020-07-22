@@ -1,0 +1,152 @@
+class Solution {
+    public int calculate(String s) {
+        Queue<String> queue=new LinkedList<>();
+        StringBuilder sb=new StringBuilder("");
+        for(int i=0;i<s.length();i++){
+            // System.out.println("i "+i);
+            char ch=s.charAt(i);
+            if(ch==' '){
+                continue;
+            }
+            if(Character.isDigit(ch)){
+                sb.append(ch);
+            }
+            else{
+                String op0=sb.toString();
+                sb.setLength(0);
+                String op1=getNextOp(s,i+1);
+                if(ch=='*' || ch=='/'){
+                    String res=compute(op0,ch+"",op1);
+                    sb=new StringBuilder(res);
+                }
+                else{
+                    queue.offer(op0);
+                    queue.offer(ch+"");
+                    sb=new StringBuilder(op1);
+                }
+                i+=op1.length();
+            }
+        }
+        queue.offer(sb.toString());
+        String ans=queue.poll();
+        while(queue.size()>1){
+            String opt=queue.poll();
+            String opd=queue.poll();
+            ans=compute(ans,opt,opd);
+        }
+        return Integer.parseInt(ans);
+    }
+    
+    private String getNextOp(String s, int idx){
+        int i=idx;
+        while(s.charAt(i)==' '){
+            i++;
+        }
+        while(i<s.length() && Character.isDigit(s.charAt(i))){
+            i++;
+        }
+        return s.substring(idx,i);
+    }
+    
+    private String compute(String opd0, String opt, String opd1){
+        opd0=opd0.trim();
+        opd1=opd1.trim();
+        // System.out.println("compute "+opd0+opt+opd1);
+        int op0=Integer.parseInt(opd0), op1=Integer.parseInt(opd1);
+        switch(opt){
+            case "+":
+                return op0+op1+"";
+            case "-":
+                return op0-op1+"";
+            case "*":
+                return op0*op1+"";
+            case "/":
+                return op0/op1+"";
+        }
+        return "NA";
+    }
+}
+
+Runtime: 38 ms, faster than 9.86% of Java online submissions for Basic Calculator II.
+Memory Usage: 58.7 MB, less than 5.01% of Java online submissions for Basic Calculator II.
+
+The problem itself is not hard. The solution is O(N). It still can be improved, although the time complexity will still be O(N).
+
+class Solution {
+    public int calculate(String s) {
+        Queue<Integer> opdQ=new LinkedList<>();
+        Queue<Character> optQ=new LinkedList<>();
+        StringBuilder sb=new StringBuilder("");
+        int num=0;
+        for(int i=0;i<s.length();i++){
+            // System.out.println("i "+i);
+            char ch=s.charAt(i);
+            if(ch==' '){
+                continue;
+            }
+            if(Character.isDigit(ch)){
+                // System.out.println("num "+num);
+                num=num*10+(ch-'0');
+                // System.out.println("num "+num);
+            }
+            else{
+                String opStr=getNextOp(s,i+1);
+                // System.out.println("next op "+opStr);
+                int op=Integer.parseInt(opStr.trim());
+                if(ch=='*' || ch=='/'){
+                    int res=compute(num,ch,op);
+                    num=res;
+                }
+                else{
+                    // System.out.println("offer "+num);
+                    opdQ.offer(num);
+                    // System.out.println("offer "+ch);
+                    optQ.offer(ch);
+                    num=op;
+                }
+                i+=opStr.length();
+            }
+        }
+        opdQ.offer(num);
+        int ans=opdQ.poll();
+        while(!optQ.isEmpty()){
+            char opt=optQ.poll();
+            int opd=opdQ.poll();
+            ans=compute(ans,opt,opd);
+        }
+        return ans;
+    }
+    
+    private String getNextOp(String s, int idx){
+        int i=idx;
+        while(s.charAt(i)==' '){
+            i++;
+        }
+        while(i<s.length() && Character.isDigit(s.charAt(i))){
+            i++;
+        }
+        return s.substring(idx,i);
+    }
+    
+    private int compute(int op0, char opt, int op1){
+        // System.out.println("compute "+op0+opt+op1);
+        switch(opt){
+            case '+':
+                return op0+op1;
+            case '-':
+                return op0-op1;
+            case '*':
+                return op0*op1;
+            case '/':
+                return op0/op1;
+        }
+        return -1;
+    }
+}
+
+Runtime: 18 ms, faster than 28.57% of Java online submissions for Basic Calculator II.
+Memory Usage: 45.4 MB, less than 12.04% of Java online submissions for Basic Calculator II.
+
+This still can be improved.
+Other's solution.
+https://leetcode.com/problems/basic-calculator-ii/discuss/63003/Share-my-java-solution

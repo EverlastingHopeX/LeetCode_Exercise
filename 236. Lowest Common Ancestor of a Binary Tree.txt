@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root==null){
+            return null;
+        }
+        TreeNode ans=null;
+        TreeNode l=lowestCommonAncestor(root.left,p,q);
+        TreeNode r=lowestCommonAncestor(root.right,p,q);
+        // if(root == p || root==q){
+        //     if(l!=null || r!=null){
+        //         ans=root;
+        //     }
+        // }
+        if(l!=null && r!=null){
+            ans=root;
+        }
+        else{
+            if(root==q || root==p){
+                ans=root;
+            }
+            else{
+                ans=l==null?r:l;
+            }
+        }
+        // System.out.println(root.val+" return "+ans);
+        return ans;
+    }
+}
+
+Runtime: 6 ms, faster than 75.53% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+Memory Usage: 35.2 MB, less than 5.55% of Java online submissions for Lowest Common Ancestor of a Binary Tree.
+
+Solved at the second round.

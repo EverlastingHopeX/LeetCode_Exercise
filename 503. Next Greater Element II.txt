@@ -27,3 +27,52 @@ Memory Usage: 50.7 MB, less than 13.02% of Java online submissions for Next Grea
 This solution is straightforward and thus of low time efficiency, it will cost O(N^2) in the 
 worst case. The link below provides solution with O(N) time complexity.
 https://leetcode.com/problems/next-greater-element-ii/discuss/98273/Java-10-lines-and-C%2B%2B-12-lines-linear-time-complexity-O(n)-with-explanation
+
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        if(nums.length==0){
+            return new int[0];
+        }
+        else if(nums.length==1){
+            return new int[]{-1};
+        }
+        Deque<Integer> st=new ArrayDeque<Integer>();
+        // int[] ans=new int[nums.length];
+        List<Integer> ans=new ArrayList<Integer>();
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            ans.add(null);
+            if(nums[i]>nums[max]){
+                max=i;
+            }
+            while(!st.isEmpty() && nums[st.peek()]<nums[i]){
+                // ans.get(st.pop())=nums[i];
+                ans.set(st.pop(),nums[i]);
+            }
+            st.push(i);
+        }
+        int left=0;
+        int right=nums.length-1;
+        while(left<right){
+            while(nums[left]>nums[right]){
+                if(ans.get(right)==null){
+                    // ans.get(right)=nums[left];
+                    ans.set(right,nums[left]);
+                }
+                right--;
+            }
+            if(ans.get(left)==null){
+                ans.set(left,-1);
+            }
+            left++;
+        }
+        // ans.get(right)=-1;
+        ans.set(right,-1);
+        return ans.stream().mapToInt(i->i).toArray();
+    }
+}
+
+Runtime: 15 ms, faster than 86.21% of Java online submissions for Next Greater Element II.
+Memory Usage: 41.1 MB, less than 100.00% of Java online submissions for Next Greater Element II.
+
+O(n) solution. Much better than the first round.

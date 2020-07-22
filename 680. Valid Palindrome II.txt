@@ -1,0 +1,28 @@
+class Solution {
+    public boolean validPalindrome(String s) {
+        return check(s,0,s.length()-1,false);
+    }
+    
+    private boolean check(String s, int left, int right, boolean removed){
+        while(left<right){
+            if(s.charAt(left)==s.charAt(right)){
+                left++;
+                right--;
+            }
+            else{
+                if(removed){
+                    return false;
+                }
+                else{
+                    return check(s,left+1,right,true) || check(s,left,right-1,true);
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 8 ms, faster than 47.47% of Java online submissions for Valid Palindrome II.
+Memory Usage: 51.9 MB, less than 16.23% of Java online submissions for Valid Palindrome II.
+
+O(n) time, O(1) space.

@@ -1,0 +1,80 @@
+class ExamRoom {
+    
+    LinkedList<Integer> taken;
+    int cap;
+    public ExamRoom(int N) {
+        taken=new LinkedList<>();
+        cap=N;
+        // System.out.println("cap "+cap);
+    }
+    
+    public int seat() {
+        // System.out.println("seat");
+        if(taken.size()==0){
+            // System.out.println("add 0 in 0");
+            taken.add(0);
+            return 0;
+        }
+        int left=0, right=taken.get(0);
+        int dist=right-left;
+        // System.out.println("init dist "+dist);
+        int p=-1;
+        for(int i=1;i<taken.size();i++){
+            int t=(taken.get(i)-taken.get(i-1))/2;
+            if(t>dist){
+                p=i-1;
+                dist=t;
+                // System.out.println("dist "+dist);
+            }
+        }
+        int tail=taken.get(taken.size()-1);
+        if(cap-tail-1>dist){
+            p=taken.size()-1;
+            dist=cap-tail-1;
+        }
+        if(p==-1){
+            taken.add(0,0);
+            // System.out.println("add 0 in 0");
+            return 0;
+        }
+        int idx=taken.get(p)+dist;
+        taken.add(p+1,idx);
+        // System.out.println("add "+idx+" in "+(p+1));
+        return idx;
+    }
+    
+    public void leave(int p) {
+        // System.out.println("leave "+p);
+        int left=0,right=taken.size();
+        while(left<right){
+            int mid=left+(right-left)/2;
+            if(taken.get(mid)>p){
+                right=mid-1;
+            }
+            else if(taken.get(mid)<p){
+                left=mid+1;
+            }
+            else{
+                left=mid;
+                break;
+            }
+        }
+        taken.remove(left);
+    }
+}
+
+/**
+ * Your ExamRoom object will be instantiated and called as such:
+ * ExamRoom obj = new ExamRoom(N);
+ * int param_1 = obj.seat();
+ * obj.leave(p);
+ */
+
+Runtime: 621 ms, faster than 5.03% of Java online submissions for Exam Room.
+Memory Usage: 43.7 MB, less than 6.20% of Java online submissions for Exam Room
+
+I used boolean array at first, but apparently it will use too much memory when the room is too big.
+So I use linkedlist instead. The algorithm is pretty straightforward.
+
+Other's O(logN) solution using TreeSet to maintain the order of seats and intervals.
+https://leetcode.com/problems/exam-room/discuss/404676/Java-Two-TreeSets-Solution.-Both-Seat-and-Leave-O(log-n)-Time-Complexity

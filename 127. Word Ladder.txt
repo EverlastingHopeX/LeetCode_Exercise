@@ -3,3 +3,13 @@ Tried to implement Dijkstra or Floyd but got completly confused.
 
 Link to a solution (using Dijkstra).
 https://leetcode.com/problems/word-ladder/discuss/40704/Java-Solution-using-BFS-with-explanation
+
+Didn't work it out.
+I use one direction search, but it is too slow.
+And actually the solution above is not Dijkstra.
+Here is why:
+https://stackoverflow.com/questions/25449781/what-is-difference-between-bfs-and-dijkstras-algorithms-when-looking-for-shorte
+
+Other's solution using 2 end BFS.
+https://leetcode.com/problems/word-ladder/discuss/40711/Two-end-BFS-in-Java-31ms.
+Actually, the bidirectional solution given by leetcode has much better performance.

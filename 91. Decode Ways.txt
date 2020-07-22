@@ -1,0 +1,41 @@
+class Solution {
+    int ans;
+    
+    public int numDecodings(String s) {
+        if(s==null || s.length()==0){
+            return 0;
+        }
+        ans=0;
+        DFS(s,0,0);
+        return ans;
+    }
+    
+    private void DFS(String s, int idx, int curSum){
+        // System.out.println("DFS "+idx+" "+curSum);
+        if(idx==s.length()){
+            if(curSum==0)
+                ans++;
+            return;
+        }
+        int cur=s.charAt(idx)-'0';
+        if(curSum==0){
+            if(cur==0){
+                return;
+            }
+            DFS(s,idx+1,cur);
+            DFS(s,idx+1,0);
+        }
+        else{
+            if(curSum*10+cur>26){
+                return;
+            }
+            DFS(s,idx+1,0);
+        }
+    }
+}
+
+Runtime: 557 ms, faster than 5.01% of Java online submissions for Decode Ways.
+Memory Usage: 34.4 MB, less than 100.00% of Java online submissions for Decode Ways.
+
+bad performance.
+Other's solution using dp has much better performance.

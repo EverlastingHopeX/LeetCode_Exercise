@@ -1,0 +1,52 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+
+    public Node() {}
+
+    public Node(int _val,Node _prev,Node _next,Node _child) {
+        val = _val;
+        prev = _prev;
+        next = _next;
+        child = _child;
+    }
+};
+*/
+class Solution {
+    public Node flatten(Node head) {
+        if(head==null){
+            return head;
+        }
+        Node cur=head;
+        Stack<Node> stack=new Stack<Node>();
+        while(cur!=null){
+            // System.out.println(cur.val);
+            if(cur.child!=null){
+                stack.push(cur.next);
+                cur.next=cur.child;
+                cur.child=null;
+                if(cur.next!=null)
+                    cur.next.prev=cur;
+            }
+            else if(cur.next==null && !stack.empty()){
+                Node n=stack.pop();
+                // System.out.println("pop:"+t.val);
+                cur.next=n;
+                if(cur.next!=null)
+                    n.prev=cur;
+            }
+            cur=cur.next;
+        }
+        return head;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Flatten a Multilevel Doubly Linked List.
+Memory Usage: 37.9 MB, less than 72.50% of Java online submissions for Flatten a Multilevel Doubly Linked List.
+
+Didn't use stack the first round, which can be better as the capacity of stack is limited. But also it is not one
+pass.

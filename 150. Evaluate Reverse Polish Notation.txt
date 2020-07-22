@@ -1,0 +1,49 @@
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> st=new Stack<>();
+        for(String str:tokens){
+            if(isNum(str)){
+                st.push(Integer.parseInt(str));
+            }
+            else{
+                calculate(st,str);
+            }
+        }
+        return st.pop();
+    }
+    
+    private boolean isNum(String str){
+        if(str.equals("+") || str.equals("-") || str.equals("*") || str.equals("/")){
+            return false;
+        }
+        return true;
+    }
+    
+    private void calculate(Stack<Integer> st, String operator){
+        int op2=st.pop();
+        int op1=st.pop();
+        int res=0;
+        switch(operator){
+            case "+":
+                res=op1+op2;
+                break;
+            case "-":
+                res=op1-op2;
+                break;
+            case "*":
+                res=op1*op2;
+                break;
+            case "/":
+                res=op1/op2;
+                break;
+            default:
+                System.out.println("wrong operator");
+        }
+        st.push(res);
+    }
+}
+
+Runtime: 3 ms, faster than 97.98% of Java online submissions for Evaluate Reverse Polish Notation.
+Memory Usage: 38.9 MB, less than 92.41% of Java online submissions for Evaluate Reverse Polish Notation.
+
+Typical problem for stack.

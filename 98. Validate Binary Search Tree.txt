@@ -1,0 +1,98 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        long min=(long)Integer.MIN_VALUE-1;
+        long max=(long)Integer.MAX_VALUE+1;
+        return isValidBST(root,min,max);
+    }
+    
+    private boolean isValidBST(TreeNode root, long min, long max){
+        System.out.println(root.val+", "+min+", "+max);
+        if(root.val<=min || root.val>=max){
+            return false;
+        }
+        if(root.left!=null){
+            if(!isValidBST(root.left,min,root.val)){
+                return false;
+            }
+        }
+        if(root.right!=null){
+            if(!isValidBST(root.right,root.val,max)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 35 ms, faster than 6.90% of Java online submissions for Validate Binary Search Tree.
+Memory Usage: 40.9 MB, less than 5.58% of Java online submissions for Validate Binary Search Tree.
+
+Using Integer and null instead of long would bring a lot of improvement.
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        return isValidBST(root, null, null);
+    }
+    
+    private boolean isValidBST(TreeNode root, Integer min, Integer max){
+        // System.out.println(root.val+", "+min+", "+max);
+        if((min!=null && root.val<=min) || (max!=null && root.val>=max)){
+            return false;
+        }
+        if(root.left!=null){
+            if(!isValidBST(root.left,min,root.val)){
+                return false;
+            }
+        }
+        if(root.right!=null){
+            if(!isValidBST(root.right,root.val,max)){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Validate Binary Search Tree.
+Memory Usage: 39 MB, less than 81.40% of Java online submissions for Validate Binary Search Tree.
+
+Other's solution using Integer and null. The first comment.
+https://leetcode.com/problems/validate-binary-search-tree/discuss/32109/My-simple-Java-solution-in-3-lines
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root,null,null);
+    }
+    
+    private boolean isValid(TreeNode root, Integer min, Integer max){
+        if(root==null){
+            return true;
+        }
+        if(min!=null && root.val<=min){
+            return false;
+        }
+        if(max!=null && root.val>=max){
+            return false;
+        }
+        
+        return isValid(root.left,min,root.val) && isValid(root.right,root.val,max);
+    }
+}
+
+More concise than the previous solution. Apparently O(N) for a DFS.
+The null value of Integer can be very helpful for problems involves boundary.

@@ -1,0 +1,28 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/longest-well-performing-interval/discuss/334565/JavaC%2B%2BPython-O(N)-Solution-Life-needs-996-and-669
+
+The code is pretty concise.
+
+public int longestWPI(int[] hours) {
+	int res = 0, score = 0, n = hours.length;
+        Map<Integer, Integer> seen = new HashMap<>();
+        for (int i = 0; i < n; ++i) {
+            score += hours[i] > 8 ? 1 : -1;
+	    //score > 0, the sum(0,i)>0, (i+1) is one potential result.
+            if (score > 0) {
+                res = i + 1;
+            }
+	    //score < 0, if j=seen.containsKey(score-1), then sum(j,i)>0, (i-j) is one potential result.
+	    else {
+                seen.putIfAbsent(score, i);
+                if (seen.containsKey(score - 1))
+                    res = Math.max(res, i - seen.get(score - 1));
+            }
+        }
+	return res;
+}
+
+This kind of max size of subarray can normally be solved using presum.
+

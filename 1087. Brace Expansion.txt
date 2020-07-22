@@ -1,0 +1,62 @@
+class Solution {
+    public String[] expand(String S) {
+        List<String> list=new LinkedList<String>();
+        list.add("");
+        char[] ch=S.toCharArray();
+        for(int i=0;i<ch.length;i++){
+            // System.out.println(ch[i]);
+            List<Character> op=new LinkedList<Character>();
+            if(ch[i]=='{'){
+                while(ch[i]!='}'){
+                    // System.out.println(ch[i]);
+                    if(ch[i]>='a' && ch[i]<='z'){
+                        op.add(ch[i]);
+                    }
+                    i++;
+                }
+            }
+            else{
+                op.add(ch[i]);
+            }
+            list=insertOp(list,op);
+            // for(String s:list){
+            //     System.out.println("s:"+s);
+            // }
+        }
+        String[] ans=list.toArray(new String[0]);
+        Arrays.sort(ans);
+        // for(String s:ans){
+        //     System.out.println(s);
+        // }
+        return ans;
+    }
+    
+    private List<String> insertOp(List<String> list, List<Character> op){
+        // System.out.println("insert");
+        // for(String s:list){
+        //     System.out.println(s);
+        // }
+        // for(char c:op){
+        //     System.out.println(c);
+        // }
+        List<String> newlist=new LinkedList<String>();
+        for(String s:list){
+            // System.out.println("s:"+s);
+            for(Character c:op){
+                // System.out.println(s+c);
+                newlist.add(s+c);
+            }
+        }
+        // list.clear();
+        // list=newlist;
+        // for(String s:list){
+        //     System.out.println("s:"+s);
+        // }
+        // System.out.println("insert end");
+        return newlist;
+    }
+}
+
+Runtime: 3 ms, faster than 82.29% of Java online submissions for Brace Expansion.
+Memory Usage: 37.2 MB, less than 100.00% of Java online submissions for Brace Expansion.
+

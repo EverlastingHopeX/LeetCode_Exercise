@@ -1,0 +1,45 @@
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int[][] vocRange=new int[26][2];
+        char[] chArr=S.toCharArray();
+        for(int i=0;i<chArr.length;i++){
+            int idx=chArr[i]-'a';
+            if(vocRange[idx][0]==-1){
+                vocRange[idx][0]=i;
+            }
+            vocRange[idx][1]=i;
+        }
+        int i=0;
+        List<Integer> ans=new ArrayList<>();
+        while(i<chArr.length){
+            int t=i;
+            i=expand(chArr,i,vocRange);
+            ans.add(i-t+1);
+            i++;
+        }
+        
+        return ans;
+    }
+    
+    private int expand(char[] chArr, int idx, int[][] vocRange){
+        // System.out.println("expand "+idx);
+        int start=idx, end=vocRange[chArr[idx]-'a'][1];
+        while(start<end){
+            // System.out.println(start+" "+end);
+            int nEnd=end;
+            for(int i=start;i<end;i++){
+                nEnd=Math.max(nEnd,vocRange[chArr[i]-'a'][1]);
+            }
+            start=end+1;
+            if(nEnd!=end){
+                end=nEnd;
+            }
+        }
+        return end;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Partition Labels.
+Memory Usage: 38 MB, less than 76.60% of Java online submissions for Partition Labels.
+
+The algorithm is simple, only expand when it is necessary.

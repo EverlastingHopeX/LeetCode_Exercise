@@ -1,0 +1,93 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> boundaryOfBinaryTree(TreeNode root) {
+        List<Integer> ans=new ArrayList<Integer>();
+        if(root==null){
+            return ans;
+        }
+        ans.add(root.val);
+        if(root.left!=null)
+            lTraverse(root.left,ans);
+        if(root.right!=null)
+            rTraverse(root.right,ans);
+        return ans;
+    }
+    
+    private void lTraverse(TreeNode root, List<Integer> ans){
+        Stack<TreeNode> st=new Stack<TreeNode>();
+        st.push(root);
+        // List<Integer> bottom=new ArrayList<Integer>();
+        TreeNode cur=null;
+        boolean lmFound=false;
+        while(!st.isEmpty()){
+            cur=st.pop();
+            if(!lmFound){
+                ans.add(cur.val);
+            }
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+            if(cur.left==null && cur.right==null){
+                if(lmFound){
+                    // System.out.println("add "+cur.val);
+                    ans.add(cur.val);
+                }
+                else{
+                    lmFound=true;
+                }
+            }
+        }
+    }
+    
+    private void rTraverse(TreeNode root, List<Integer> ans){
+        Stack<TreeNode> st=new Stack<TreeNode>();
+        st.push(root);
+        List<Integer> rans=new ArrayList<Integer>();
+        TreeNode cur=null;
+        boolean rmFound=false;
+        while(!st.isEmpty()){
+            cur=st.pop();
+            if(!rmFound){
+                // System.out.println("add "+cur.val);
+                rans.add(0,cur.val);
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+            if(cur.left==null && cur.right==null){
+                if(rmFound){
+                    // System.out.println("add "+cur.val);
+                    rans.add(0,cur.val);
+                }
+                else{
+                    rmFound=true;
+                }
+            }
+        }
+        ans.addAll(rans);
+    }
+}
+
+Runtime: 4 ms, faster than 5.50% of Java online submissions for Boundary of Binary Tree.
+Memory Usage: 38.1 MB, less than 89.47% of Java online submissions for Boundary of Binary Tree.
+
+Not good performance.
+
+Other's recursive solution.
+https://leetcode.com/problems/boundary-of-binary-tree/discuss/101294/Java-C%2B%2B-Clean-Code-(1-Pass-perorder-postorder-hybrid)
+
+It's a littlbe complex and confusing, not suitable for interview.

@@ -1,0 +1,13 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/group-anagrams/discuss/19176/Share-my-short-JAVA-solution
+
+It is brilliant to use Arrays.sort().
+I tried to sort the words in map or code them into integer, both become too complicated.
+This solution is very concise and has acceptable performance.
+
+Also, using String.valueOf() will greatly improve the performance than using Arrays.toString()
+
+Worked this out at the second time. However, I use collections.sort(), but using Arrays.sort would be faster. Just thought that we should not directly sort the char array returned by toCharArray(), but the returned array is actually newly allocated array. So toCharArray() is not providing a view to iterate the str.
+On the other hand, the list returned by Arrays.asList() is immutable.

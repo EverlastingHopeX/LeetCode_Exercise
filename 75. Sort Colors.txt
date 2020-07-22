@@ -1,0 +1,53 @@
+class Solution {
+    public void sortColors(int[] nums) {
+        quicksort(nums,0,nums.length-1);
+    }
+    
+    private void quicksort(int[] nums, int start, int end){
+        if(end<=start){
+            return;
+        }
+        // System.out.println("sort "+start+" "+end);
+        int sml=start+1;
+        int lrg=end;
+        while(sml<lrg){
+            // System.out.println(sml+" "+lrg);
+            if(nums[sml]>nums[start]){
+                swap(nums,sml,lrg--);
+            }
+            else{
+                sml++;
+            }
+        }
+        if(nums[lrg]>nums[start]){
+            swap(nums,start,lrg-1);
+        }
+        else{
+            swap(nums,start,lrg);
+        }
+        // for(int i=start;i<=end;i++){
+        //     System.out.println(nums[i]);
+        // }
+        quicksort(nums,start,lrg-1);
+        quicksort(nums,sml,end);
+    }
+    
+    private void swap(int[] nums, int i, int j){
+        // System.out.println("swap "+i+" "+j);
+        if(i==j){
+            return;
+        }
+        int temp=nums[i];
+        nums[i]=nums[j];
+        nums[j]=temp;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Sort Colors.
+Memory Usage: 37.9 MB, less than 5.51% of Java online submissions for Sort Colors.
+
+Just a variation of quicksort, which only has three numbers.
+The space is not actually O(1). And can be improved, there is no need for using recursive quicksort since there is only 3 colors.
+
+Other's solution.
+https://leetcode.com/problems/sort-colors/discuss/26549/Java-solution-both-2-pass-and-1-pass

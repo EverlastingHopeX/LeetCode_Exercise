@@ -1,0 +1,62 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    public Node connect(Node root) {
+        Node start=root;
+        while(start!=null){
+            // System.out.println("start "+start.val);
+            Node cur=start;
+            while(cur!=null){
+                // System.out.println("cur "+cur.val);
+                if(cur.left!=null){
+                    cur.left.next=cur.right==null?getNext(cur.next):cur.right;
+                }
+                if(cur.right!=null){
+                    cur.right.next=getNext(cur.next);
+                }
+                cur=cur.next;
+            }
+            start=getNext(start);
+        }
+        return root;
+    }
+    
+    private Node getNext(Node cur){
+        while(cur!=null){
+            if(cur.left!=null){
+                return cur.left;
+            }
+            if(cur.right!=null){
+                return cur.right;
+            }
+            cur=cur.next;
+        }
+        return cur;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Populating Next Right Pointers in Each Node II.
+Memory Usage: 38.7 MB, less than 100.00% of Java online submissions for Populating Next Right Pointers in Each Node II.
+
+Pretty easy based on the solution of 117.

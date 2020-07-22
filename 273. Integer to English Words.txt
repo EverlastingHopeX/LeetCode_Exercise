@@ -1,0 +1,68 @@
+class Solution {
+    String[] units=new String[]{"","Thousand","Million","Billion"};
+    String[] oneToNine=new String[]{"","One","Two","Three","Four","Five","Six","Seven","Eight","Nine"};
+    String[] tenToNineteen=new String[]{"Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"};
+    String[] twentyToNinety=new String[]{"Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
+    
+    public String numberToWords(int num) {
+        String str=num+"";
+        int bits=str.length();
+        int k=(bits-1)/3;
+        String ans="";
+        for(int i=0;i<=k;i++){
+            String s=getNum(str,str.length()-i*3);
+            if(s.length()==0){
+                continue;
+            }
+            ans=s+" "+units[i]+" "+ans;
+        }
+        ans=ans.trim();
+        if(ans.length()==0){
+            return "Zero";
+        }
+        return ans;
+    }
+    
+    private String getNum(String str, int idx){
+        // System.out.println("getNum "+idx);
+        int start=Math.max(0,idx-3);
+        String s=str.substring(start,idx);
+        // System.out.println("num "+s);
+        int n=Integer.parseInt(s);
+        if(n==0){
+            return "";
+        }
+        StringBuilder sb=new StringBuilder("");
+        int k=n/100;
+        if(n>=100){
+            sb.append(oneToNine[k]);
+            sb.append(" Hundred");
+        }
+        n=n%100;
+        if(n!=0 && k!=0){
+            sb.append(" ");
+        }
+        if(n<10){
+            sb.append(oneToNine[n]);
+        }
+        else if(n<20){
+            sb.append(tenToNineteen[n-10]);
+        }
+        else{
+            k=n/10;
+            n=n%10;
+            sb.append(twentyToNinety[k-2]);
+            if(n!=0){
+                sb.append(" ");
+            }
+            sb.append(oneToNine[n]);
+        }
+        // System.out.println("English "+sb.toString());
+        return sb.toString();
+    }
+}
+
+Runtime: 28 ms, faster than 5.80% of Java online submissions for Integer to English Words.
+Memory Usage: 40.6 MB, less than 5.47% of Java online submissions for Integer to English Words.
+
+Not really hard but the corner cases are annoying.

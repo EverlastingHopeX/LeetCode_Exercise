@@ -1,0 +1,42 @@
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> st=new Stack<>();
+        for(int as:asteroids){
+            if(as>0){
+                st.push(as);
+            }
+            else{
+                while(!st.isEmpty()){
+                    if(st.peek()>0){
+                        int a0=st.pop();
+                        int rem=a0+as;
+                        if(rem>=0){
+                            if(rem>0){
+                                st.push(a0);
+                            }
+                            as=0;
+                            break;
+                        }
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if(as<0){
+                    st.push(as);
+                }
+            }
+        }
+        
+        int[] ans=new int[st.size()];
+        for(int i=st.size()-1;i>=0;i--){
+            ans[i]=st.pop();
+        }
+        return ans;
+    }
+}
+
+Runtime: 6 ms, faster than 41.33% of Java online submissions for Asteroid Collision.
+Memory Usage: 45.1 MB, less than 14.47% of Java online submissions for Asteroid Collision.
+
+Pretty easy with stack.

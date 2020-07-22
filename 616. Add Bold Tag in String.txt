@@ -1,0 +1,5 @@
+My solution is the same as #758.
+
+Another solution using bold array and String.startWith(), which is much faster than mine using Stack and HashMap.
+
+https://leetcode.com/problems/add-bold-tag-in-string/discuss/104248/Java-Solution-boolean-array

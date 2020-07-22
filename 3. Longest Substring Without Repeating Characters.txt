@@ -1,0 +1,65 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if(s==null || s.length()==0){
+            return 0;
+        }
+        Map<Character,List<Integer>> map=new HashMap<Character, List<Integer>>();
+        for(int i=0;i<s.length();i++){
+            List<Integer> list=map.getOrDefault(s.charAt(i),new ArrayList<Integer>());
+            list.add(i);
+            map.put(s.charAt(i),list);
+        }
+        int N=s.length();
+        int[] next=new int[N];
+        PriorityQueue<int[]> pq=new PriorityQueue<int[]>((o1,o2)->((o2[1]-o2[0])-(o1[1]-o1[0])));
+        for(Map.Entry<Character, List<Integer>> entry:map.entrySet()){
+            List<Integer> list=entry.getValue();
+            int i=0;
+            for(;i<list.size()-1;i++){
+                int cur=list.get(i);
+                int nxt=list.get(i+1);
+                next[cur]=nxt;
+                pq.offer(new int[]{cur,nxt});
+            }
+            next[list.get(i)]=N;
+            pq.offer(new int[]{list.get(i),N});
+        }
+        while(pq.size()>0){
+            int[] cur=pq.poll();
+            // System.out.println(cur[0]+", "+cur[1]);
+            if(cur[1]<=cur[0]+1){
+                break;
+            }
+            if(cur[1]<N && s.charAt(cur[0])!=s.charAt(cur[1])){
+                return cur[1]-cur[0];
+            }
+            int nxt=cur[1];
+            for(int i=cur[0]+1;i<nxt;i++){
+                if(next[i]<nxt){
+                    next[cur[0]]=next[i];
+                    nxt=next[cur[0]];
+                }
+            }
+            // System.out.println("next changed: "+next[cur[0]]);
+            int nLength=nxt-cur[0];
+            if(pq.size()!=0){
+                int[] top=pq.peek();
+                // System.out.println("peek "+top[0]+", "+top[1]);
+                if(top[1]-top[0]<=nLength){
+                    return nLength;
+                }
+            }
+            pq.offer(new int[]{cur[0],next[cur[0]]});
+        }
+        return 1;
+    }
+}
+
+Runtime: 19 ms, faster than 19.99% of Java online submissions for Longest Substring Without Repeating Characters.
+Memory Usage: 39.5 MB, less than 15.58% of Java online submissions for Longest Substring Without Repeating Characters.
+
+Basically, it's dp memo. A lot of corner cases needed to be considered.
+And the time complexity can be large.
+
+Other's O(n) concise solution using sliding window.
+https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1729/11-line-simple-Java-solution-O(n)-with-explanation

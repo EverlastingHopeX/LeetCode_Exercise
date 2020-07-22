@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int max;
+    public int maxPathSum(TreeNode root) {
+        max=Integer.MIN_VALUE;
+        maxSubtree(root);
+        return max;
+    }
+    
+    public int maxSubtree(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        int lSum=maxSubtree(root.left);
+        int rSum=maxSubtree(root.right);
+        int pathSum=root.val;
+        if(lSum>0){
+            pathSum+=lSum;
+        }
+        if(rSum>0){
+            pathSum+=rSum;
+        }
+        // System.out.println("pathSum for "+root.val+" "+pathSum);
+        max=Math.max(max,pathSum);
+        return root.val+Math.max(0,Math.max(lSum,rSum));
+    }
+}
+
+Runtime: 1 ms, faster than 48.47% of Java online submissions for Binary Tree Maximum Path Sum.
+Memory Usage: 45.4 MB, less than 5.05% of Java online submissions for Binary Tree Maximum Path Sum.
+
+Made several mistakes understanding the problem.
+Typical divide and conquer, not very hard. 1 ms performance doesn't need more improvement.

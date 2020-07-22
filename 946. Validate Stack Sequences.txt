@@ -1,0 +1,35 @@
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        if(pushed.length!=popped.length){
+            return false;
+        }
+        if(pushed.length==0){
+            return true;
+        }
+        Stack<Integer> st=new Stack<>();
+        int p1=1, p2=0;
+        st.push(pushed[0]);
+        while(p2<popped.length){
+            if(st.isEmpty()){
+                st.push(pushed[p1++]);
+            }
+            if(st.peek()!=popped[p2]){
+                if(p1==pushed.length){
+                    return false;
+                }
+                st.push(pushed[p1++]);
+            }
+            else{
+                st.pop();
+                p2++;
+            }
+        }
+        return true;
+        
+    }
+}
+
+Runtime: 2 ms, faster than 76.65% of Java online submissions for Validate Stack Sequences.
+Memory Usage: 39.4 MB, less than 36.68% of Java online submissions for Validate Stack Sequences.
+
+Solved by simulating the push and pop process.

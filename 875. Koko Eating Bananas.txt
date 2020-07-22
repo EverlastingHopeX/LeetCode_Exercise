@@ -40,3 +40,51 @@ Memory Usage: 37.7 MB, less than 99.62% of Java online submissions for Koko Eati
 
 Although trying to find the low bound of K seems to be reasonal, it actually costs more time 
 than it saves. So the part calculating min is not neccessary.
+
+class Solution {
+    public int minEatingSpeed(int[] piles, int H) {
+        if(piles.length==1){
+            return (piles[0]+H-1)/H;
+        }
+        Arrays.sort(piles);
+        // double sum=0;
+        // for(int p:piles){
+        //     sum+=p;
+        // }
+        // int min=(int)sum/H;
+        // if(min*H<sum){
+        //     min++;
+        // }
+        // int left=min;
+        int left=0;
+        int right=piles[piles.length-1];
+        while(left<right){
+            // System.out.println(left+", "+right);
+            int mid=left+(right-left)/2;
+            // System.out.println("k "+mid);
+            int h=0;
+            for(int p:piles){
+                if(p<=mid){
+                    h++;
+                }
+                else{
+                    h+=(p+mid-1)/mid;
+                }
+            }
+            // System.out.println("h "+h);
+            if(h<=H){
+                right=mid;
+            }
+            else{
+                left=mid+1;
+            }
+        }
+        return left;
+    }
+}
+
+Runtime: 17 ms, faster than 27.95% of Java online submissions for Koko Eating Bananas.
+Memory Usage: 39.9 MB, less than 100.00% of Java online submissions for Koko Eating Bananas.
+
+Similar solution in the second round.
+Doesn't worth sorting the array either.

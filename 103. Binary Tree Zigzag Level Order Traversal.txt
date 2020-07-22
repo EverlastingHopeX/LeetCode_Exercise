@@ -1,0 +1,83 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        Queue<TreeNode> q=new LinkedList<TreeNode>();
+        q.offer(root);
+        BFS(q,ans,true);
+        return ans;
+    }
+    
+    private void BFS(Queue<TreeNode> q, List<List<Integer>> ans, boolean isAppend){
+        int size=q.size();
+        if(size==0){
+            return;
+        }
+        List<Integer> list=new ArrayList<Integer>();
+        for(int i=0;i<size;i++){
+            TreeNode cur=q.poll();
+            if(cur.left!=null){
+                q.offer(cur.left);
+            }
+            if(cur.right!=null){
+                q.offer(cur.right);
+            }
+            if(isAppend){
+                list.add(cur.val);
+            }
+            else{
+                list.add(0,cur.val);
+            }
+        }
+        ans.add(list);
+        BFS(q,ans,!isAppend);
+    }
+}
+
+Runtime: 1 ms, faster than 98.31% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+Memory Usage: 36.3 MB, less than 99.04% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        boolean needRev=false;
+        Queue<TreeNode> que=new LinkedList<>();
+        que.offer(root);
+        while(!que.isEmpty()){
+            List<Integer> li=new ArrayList<>();
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                TreeNode cur=que.poll();
+                li.add(cur.val);
+                if(cur.left!=null){
+                    que.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    que.offer(cur.right);
+                }
+            }
+            if(needRev){
+                Collections.reverse(li);
+            }
+            ans.add(li);
+            needRev=!needRev;
+        }
+        return ans;
+    }
+}
+
+More concise than previous.

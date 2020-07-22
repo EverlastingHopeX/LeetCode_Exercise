@@ -1,0 +1,6 @@
+Tried Dijskra, didn't even make that right.
+
+Other's solution.
+https://leetcode.com/problems/minimum-path-sum/discuss/344980/Java.-Details-from-Recursion-to-DP.
+
+DP is easier sometimes.

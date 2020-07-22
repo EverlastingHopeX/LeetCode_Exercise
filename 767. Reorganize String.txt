@@ -1,0 +1,52 @@
+class Solution {
+    public String reorganizeString(String S) {
+        int max=(S.length()+1)/2;
+        Map<Character, Integer> freq=new HashMap<Character, Integer>();
+        for(char ch:S.toCharArray()){
+            int cnt=freq.getOrDefault(ch,0)+1;
+            if(cnt>max){
+                return "";
+            }
+            freq.put(ch,cnt);
+        }
+        Queue<Map.Entry<Character,Integer>> pq=new PriorityQueue<Map.Entry<Character, Integer>>((o1,o2)->(o2.getValue().compareTo(o1.getValue())));
+        for(Map.Entry<Character, Integer> entry:freq.entrySet()){
+            pq.add(entry);
+        }
+        StringBuilder sb=new StringBuilder("");
+        build(sb,pq,0);
+        return sb.toString();
+    }
+    
+    private void build(StringBuilder sb, Queue<Map.Entry<Character, Integer>> pq, int startIdx){
+        if(pq.size()==0){
+            return;
+        }
+        Map.Entry<Character,Integer> entry=pq.poll();
+        String ch=entry.getKey()+"";
+        int cnt=entry.getValue();
+        if(sb.length()==0){
+            for(int i=0;i<cnt;i++){
+                sb.append(ch);
+            }
+            build(sb,pq,1);
+        }
+        else{
+            int idx=startIdx;
+            for(int i=0;i<cnt;i++){
+                if(idx>sb.length()){
+                    idx=1;
+                }
+                sb.insert(idx,ch);
+                idx+=2;
+            }
+            build(sb,pq,idx);
+        }
+    }
+}
+
+Runtime: 4 ms, faster than 56.54% of Java online submissions for Reorganize String.
+Memory Usage: 35.6 MB, less than 78.57% of Java online submissions for Reorganize String.
+
+Easier than I thought. I thought the key point is how to determine whether the given string can
+be reorganized, but it actually is how to reorganize it.

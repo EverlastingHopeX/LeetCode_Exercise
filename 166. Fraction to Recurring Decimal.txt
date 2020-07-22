@@ -1,0 +1,70 @@
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        if(numerator==0){
+            return "0";
+        }
+        boolean neg=false;
+        long nume=numerator;
+        long deno=denominator;
+        if(nume<0){
+            nume=-nume;
+            neg=!neg;
+        }
+        if(deno<0){
+            deno=-deno;
+            neg=!neg;
+        }
+        StringBuilder sb=new StringBuilder("");
+        long quo=nume/deno;
+        sb.append(quo);
+        long remainder=nume-quo*deno;
+        if(remainder==0){
+            return neg?"-"+sb.toString():sb.toString();
+        }
+        sb.append(".");
+        Set<Long> reSet=new HashSet<>();
+        remainder*=10;
+        // System.out.println("deno "+deno);
+        while(remainder!=0){
+            if(reSet.contains(remainder)){
+                return format(sb.toString(),remainder,deno,neg);
+            }
+            reSet.add(remainder);
+            while(remainder<deno){
+                remainder*=10;
+                sb.append(0);
+            }
+            // System.out.println("remiander "+remainder);
+            quo=(int)(remainder/deno);
+            sb.append(quo);
+            remainder=remainder-quo*deno;
+            remainder*=10;
+        }
+        String ans=sb.toString();
+        return neg?"-"+ans:ans;
+    }
+    
+    private String format(String str, long remainder, long denominator,boolean neg){
+        // System.out.println("format "+str+" "+remainder);
+        Set<Long> reSet=new HashSet<>();
+        StringBuilder sb=new StringBuilder("");
+        while(!reSet.contains(remainder)){
+            reSet.add(remainder);
+            while(remainder<denominator){
+                remainder*=10;
+                sb.append(0);
+            }
+            int t=(int)(remainder/denominator);
+            sb.append(t);
+            remainder=remainder-t*denominator;
+            remainder*=10;
+        }
+        String ans=str.substring(0,str.length()-sb.length())+"("+sb.toString()+")";
+        return neg?"-"+ans:ans;
+    }
+}
+
+Runtime: 8 ms, faster than 15.22% of Java online submissions for Fraction to Recurring Decimal.
+Memory Usage: 37.5 MB, less than 30.55% of Java online submissions for Fraction to Recurring Decimal.
+
+Algorithm is not hard, but the corner cases are frustrating.

@@ -1,0 +1,66 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+        if(nums.length==0){
+            return 0;
+        }
+        List<List<Integer>> numList=new ArrayList<>();
+        List<Integer> li=new ArrayList<>();
+        for(int n:nums){
+            if(n==0){
+                numList.add(li);
+                li=new ArrayList<Integer>();
+            }
+            else{
+                li.add(n);
+            }
+        }
+        numList.add(li);
+        int max=0;
+        // System.out.println("size: "+numList.size());
+        if(numList.size()>1){
+            for(List<Integer> num:numList){
+                max=Math.max(findMax(num),max);
+            }
+        }
+        else{
+            max=Math.max(findMax(numList.get(0)),nums[0]);
+        }
+        return max;
+    }
+    
+    private int findMax(List<Integer> li){
+        if(li.size()==0){
+            return 0;
+        }
+        List<Integer> pos=new ArrayList<>();
+        List<Integer> neg=new ArrayList<>();
+        int pro=1;
+        for(int n:li){
+            pro*=n;
+            if(pro>0){
+                pos.add(pro);
+            }
+            else{
+                neg.add(pro);
+            }
+        }
+        int max=li.get(0);
+        int n=neg.size()-1;
+        if(n>=1){
+            max=Math.max(max,neg.get(n)/neg.get(0));
+        }
+        n=pos.size()-1;
+        if(n>=0){
+            max=Math.max(pos.get(n),max);
+        }
+        // System.out.println("find "+max);
+        return max;
+    }
+}
+
+Runtime: 2 ms, faster than 53.72% of Java online submissions for Maximum Product Subarray.
+Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for Maximum Product Subarray.
+
+O(n) solution. The time complexity is acceptable, but not concise, and not good enough compared with others'
+O(n) solution.
+https://leetcode.com/problems/maximum-product-subarray/discuss/48230/Possibly-simplest-solution-with-O(n)-time-complexity
