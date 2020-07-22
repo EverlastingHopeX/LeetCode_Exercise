@@ -2,3 +2,123 @@ Didn't work it out.
 
 Other's solution.
 https://leetcode.com/problems/word-ladder-ii/discuss/40475/My-concise-JAVA-solution-based-on-BFS-and-DFS
+
+Came up with the BFS solution in the second time, but got TLE.
+
+class Solution {
+    
+    class State{
+        List<String> path;
+        Set<String> unvisited;
+        String word;
+        
+        State(){
+            path=new ArrayList<>();
+            unvisited=new HashSet<>();
+            word=null;
+        }
+        
+        State(State st){
+            path=new ArrayList<>(st.path);
+            unvisited=new HashSet<>(st.unvisited);
+            word=st.word;
+        }
+    }
+    
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        Set<String> words=new HashSet<>(wordList);
+        List<List<String>> ans=new ArrayList<>();
+        Map<String, List<String>> transMap=new HashMap<>();
+        buildTransMap(beginWord,endWord, words,transMap);
+        // printTransMap(transMap);
+        BFS(ans,transMap,beginWord,endWord,words);
+        return ans;
+    }
+    
+    private void buildTransMap(String beginWord,String endWord,Set<String> words, Map<String, List<String>> transMap){
+        Set<String> src=new HashSet<>(words);
+        src.add(beginWord);
+        src.remove(endWord);
+        Set<String> tgt=new HashSet<>(words);
+        for(String word:src){
+            char[] wArr=word.toCharArray();
+            //alter each char in word
+            for(int i=0;i<wArr.length;i++){
+                //store initial char
+                char tmp=wArr[i];
+                //try every character
+                for(int j=0;j<26;j++){
+                    char ch=(char)('a'+j);
+                    wArr[i]=ch;
+                    String tWord=new String(wArr);
+                    if(word.equals(tWord)){
+                        continue;
+                    }
+                    if(tgt.contains(tWord)){
+                        List<String> li=transMap.getOrDefault(word,new ArrayList<>());
+                        li.add(tWord);
+                        transMap.put(word,li);
+                    }
+                    
+                }
+                wArr[i]=tmp;
+            }
+        }
+    }
+    
+    private void printTransMap(Map<String, List<String>> transMap){
+        System.out.println("print transMap");
+        for(String word:transMap.keySet()){
+            System.out.println(word+":");
+            for(String t:transMap.get(word)){
+                System.out.print(t+" ");
+            }
+            System.out.println();
+        }
+    }
+    
+    private void BFS(List<List<String>> ans, Map<String, List<String>> transMap, String beginWord, String endWord, Set<String> words){
+        // System.out.println("BFS");
+        Queue<State> que=new LinkedList<>();
+        State init=new State();
+        init.word=beginWord;
+        init.path.add(beginWord);
+        init.unvisited.addAll(words);
+        que.offer(init);
+        boolean notFound=true;
+        while(!que.isEmpty() && notFound){
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                State cur=que.poll();
+                // System.out.println("cur "+cur.word+" "+cur.path.size());
+                for(String nextWord:transMap.getOrDefault(cur.word,new ArrayList<String>())){
+                    //not visited
+                    if(cur.unvisited.contains(nextWord)){
+                        if(nextWord.equals(endWord)){
+                            // System.out.println("found end");
+                            notFound=false;
+                        }
+                        State nState=new State(cur);
+                        nState.word=nextWord;
+                        nState.path.add(nextWord);
+                        nState.unvisited.remove(nextWord);
+                        que.offer(nState);
+                    }
+                }
+            }
+        }
+        while(!que.isEmpty()){
+            State st=que.poll();
+            if(st.word.equals(endWord)){
+                // System.out.println("add path");
+                ans.add(new ArrayList<>(st.path));
+            }
+        }
+    }
+}
+
+There are two end BFS solution and solution used both BFS and DFS.
+Here is a solution using two end BFS.
+https://leetcode.com/problems/word-ladder-ii/discuss/40477/Super-fast-Java-solution-(two-end-BFS)
+There is a comment used basic BFS, it didn't build transformation map, but it used map and set to store the status.
+The idea of using BFS and improve it with two end is not hard, but it is a little bit complex to implement it correctly.

@@ -13,3 +13,82 @@ https://stackoverflow.com/questions/25449781/what-is-difference-between-bfs-and-
 Other's solution using 2 end BFS.
 https://leetcode.com/problems/word-ladder/discuss/40711/Two-end-BFS-in-Java-31ms.
 Actually, the bidirectional solution given by leetcode has much better performance.
+
+Finally work it out this time with one end BFS.
+
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        Map<String,List<String>> trMap=buildTrMap(beginWord,endWord,wordList);
+        Set<String> visited=new HashSet<>();
+        Set<String> level=new HashSet<>();
+        int len=1;
+        level.add(beginWord);
+        // System.out.println("BFS");
+        while(level.size()>0){
+            visited.addAll(level);
+            Set<String> nextLv=new HashSet<>();
+            for(String word:level){
+                // System.out.println("cur "+word);
+                for(String tw:trMap.getOrDefault(word,new ArrayList<>())){
+                    // System.out.println("next "+tw);
+                    if(tw.equals(endWord)){
+                        // System.out.println("found");
+                        return len+1;
+                    }
+                    if(visited.contains(tw)){
+                        // System.out.println("visited");
+                        continue;
+                    }
+                    else{
+                        // System.out.println("add");
+                        nextLv.add(tw);
+                    }
+                }
+            }
+            level=nextLv;
+            len++;
+        }
+        return 0;
+    }
+    
+    private Map<String, List<String>> buildTrMap(String beginWord, String endWord, List<String> wordList){
+        // System.out.println("build map");
+        Set<String> src=new HashSet<>(wordList);
+        Set<String> tgt=new HashSet<>(wordList);
+        src.add(beginWord);
+        src.remove(endWord);
+        Map<String,List<String>> trMap=new HashMap<>();
+        for(String sw:src){
+            // System.out.println("src "+sw);
+            char[] arr=sw.toCharArray();
+            for(int i=0;i<arr.length;i++){
+                char tmp=arr[i];
+                for(char ch='a';ch<='z';ch++){
+                    // System.out.println(ch);
+                    if(ch==tmp){
+                        continue;
+                    }
+                    arr[i]=ch;
+                    String tw=new String(arr);
+                    if(tgt.contains(tw)){
+                        // System.out.println("tgt "+tw);
+                        List<String> li=trMap.getOrDefault(sw,new ArrayList<>());
+                        li.add(tw);
+                        trMap.put(sw,li);
+                    }
+                }
+                arr[i]=tmp;
+            }
+        }
+        return trMap;
+    }
+}
+
+Runtime: 174 ms, faster than 31.74% of Java online submissions for Word Ladder.
+Memory Usage: 114.6 MB, less than 5.00% of Java online submissions for Word Ladder
+
+Although the performance is not really good, improve it with two end BFS is straightforward.
+Just as the following post, it add another endSet to store the status of BFS from another end, and swap beginSet and endSet if beginSet is larger than endSet (so we only need to add words to beginSet).
+I wonder why they don't build transformation map, since it should be more efficient. But actually, there is not need to build transformation map for words. The reason is that even if we don't build the map, we will at most check once the possible transformation for each word, the the word is marked as visited. It will actually bring more improvement to my original solution compared with using two end BFS.
+ 
+https://leetcode.com/problems/word-ladder/discuss/40711/Two-end-BFS-in-Java-31ms.
