@@ -54,3 +54,56 @@ Memory Usage: 37.8 MB, less than 72.11% of Java online submissions for Symmetric
 
 DFS comparison.
 Stack can hold null, so it can be improved using this.
+
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if(root==null){
+            return true;
+        }
+        if(root.left==null || root.right==null){
+            if(root.left!=null || root.right!=null){
+                return false;
+            }
+            return true;
+        }
+        Stack<TreeNode> st1=new Stack<>();
+        Stack<TreeNode> st2=new Stack<>();
+        st1.push(root.left);
+        st2.push(root.right);
+        while(!st1.isEmpty() && !st2.isEmpty()){
+            TreeNode lft=st1.pop();
+            TreeNode rgt=st2.pop();
+            if(lft.val!=rgt.val){
+                return false;
+            }
+            if(lft.left!=null){
+                if(rgt.right==null){
+                    return false;
+                }
+                st1.push(lft.left);
+                st2.push(rgt.right);
+            }
+            else{
+                if(rgt.right!=null){
+                    return false;
+                }
+            }
+            
+            if(lft.right!=null){
+                if(rgt.left==null){
+                    return false;
+                }
+                st1.push(lft.right);
+                st2.push(rgt.left);
+            }
+            else{
+                if(rgt.left!=null){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Similar solution compared with the previous one. The traverse process is actually better in the previous solution.

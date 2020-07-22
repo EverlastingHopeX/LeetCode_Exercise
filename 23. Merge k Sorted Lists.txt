@@ -42,3 +42,28 @@ Memory Usage: 57.1 MB, less than 5.47% of Java online submissions for Merge k So
 
 My solution is quite brute, priorityqueue is one way to reduce time complexity to O(nlogk), 
 where k is size of lists.
+
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        ListNode dummy=new ListNode();
+        ListNode cur=dummy;
+        PriorityQueue<ListNode> pq=new PriorityQueue<>((o1,o2)->(o1.val-o2.val));
+        for(ListNode node:lists){
+            if(node==null){
+                continue;
+            }
+            pq.offer(node);
+        }
+        while(!pq.isEmpty()){
+            ListNode t=pq.poll();
+            cur.next=t;
+            if(t.next!=null){
+                pq.offer(t.next);
+            }
+            cur=cur.next;
+        }
+        return dummy.next;
+    }
+}
+
+Pretty easy in the second round. Came up with the PriorityQueue solution instantly, and figure out the time complexity correctly.

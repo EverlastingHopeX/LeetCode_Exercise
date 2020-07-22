@@ -73,3 +73,26 @@ Memory Usage: 39 MB, less than 81.40% of Java online submissions for Validate Bi
 
 Other's solution using Integer and null. The first comment.
 https://leetcode.com/problems/validate-binary-search-tree/discuss/32109/My-simple-Java-solution-in-3-lines
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return isValid(root,null,null);
+    }
+    
+    private boolean isValid(TreeNode root, Integer min, Integer max){
+        if(root==null){
+            return true;
+        }
+        if(min!=null && root.val<=min){
+            return false;
+        }
+        if(max!=null && root.val>=max){
+            return false;
+        }
+        
+        return isValid(root.left,min,root.val) && isValid(root.right,root.val,max);
+    }
+}
+
+More concise than the previous solution. Apparently O(N) for a DFS.
+The null value of Integer can be very helpful for problems involves boundary.

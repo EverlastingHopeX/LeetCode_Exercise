@@ -108,3 +108,33 @@ Memory Usage: 41.2 MB, less than 5.61% of Java online submissions for Copy List 
 This question has been changed a little bit.
 Instead of combining the list, I build the node list from the beginning, which improves the performance 
 but cost more space.
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        Node cur=head;
+        Map<Node,Integer> idxMap=new HashMap<>();
+        List<Node> li=new ArrayList<>();
+        int idx=0;
+        while(cur!=null){
+            idxMap.put(cur,idx);
+            li.add(new Node(cur.val));
+            cur=cur.next;
+            idx++;
+        }
+        li.add(null);
+        idxMap.put(null,idx);
+        cur=head;
+        idx=0;
+        while(cur!=null){
+            int rand=idxMap.get(cur.random);
+            Node p=li.get(idx);
+            p.next=li.get(idx+1);
+            p.random=li.get(rand);
+            cur=cur.next;
+            idx++;
+        }
+        return li.get(0);
+    }
+}
+
+The solution is pretty much the same solution I used last time, only a bit more concise.
