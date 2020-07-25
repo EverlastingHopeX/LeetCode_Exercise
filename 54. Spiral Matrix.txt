@@ -1,0 +1,52 @@
+class Solution {
+    int R,C;
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> li=new ArrayList<>();
+        if(matrix.length==0 || matrix[0].length==0){
+            return li;
+        }
+        R=matrix.length;
+        C=matrix[0].length;
+        boolean[][] taken=new boolean[R][C];
+        spiral(matrix,new int[]{0,0}, new int[]{0,1},taken,li);
+        return li;
+    }
+    
+    private void spiral(int[][] matrix, int[] pos, int[] dir, boolean[][] taken, List<Integer> li){
+        li.add(matrix[pos[0]][pos[1]]);
+        taken[pos[0]][pos[1]]=true;
+        int[] next=new int[]{pos[0]+dir[0], pos[1]+dir[1]};
+        if(outRange(next) || taken[next[0]][next[1]]){
+            dir=getTurn(dir);
+            next[0]=pos[0]+dir[0];
+            next[1]=pos[1]+dir[1];
+            if(outRange(next) || taken[next[0]][next[1]]){
+                return;
+            }
+        }
+        spiral(matrix,next,dir,taken,li);
+    }
+    
+    private boolean outRange(int[] pos){
+        if(pos[0]<0 || pos[0]>=R || pos[1]<0 || pos[1]>=C){
+            return true;
+        }
+        return false;
+    }
+    //{0,1} -> {1,0} -> {0,-1} -> {-1,0} ->
+    private int[] getTurn(int[] dir){
+        int[] nDir=new int[2];
+        if(dir[1]==0){
+            nDir[0]=0;
+            nDir[1]=-dir[0];
+        }
+        else{
+            nDir[0]=dir[1];
+            nDir[1]=dir[0];
+        }
+        return nDir;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Spiral Matrix.
+Memory Usage: 37.5 MB, less than 5.21% of Java online submissions for Spiral Matrix.

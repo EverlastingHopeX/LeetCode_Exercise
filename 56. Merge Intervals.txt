@@ -1,0 +1,51 @@
+class Solution {
+    class myInterval{
+        int left;
+        int right;
+        myInterval(int l, int r){
+            this.left=l;
+            this.right=r;
+        }
+    }
+    public int[][] merge(int[][] intervals) {
+        if(intervals.length<=1){
+            return intervals;
+        }
+        Queue<myInterval> pq=new PriorityQueue<myInterval>((Comparator<myInterval>)(i1,i2)->i1.left-i2.left);
+        for(int[] in:intervals){
+            pq.offer(new myInterval(in[0],in[1]));
+        }
+        Stack<myInterval> stack=new Stack<myInterval>();
+        stack.push(pq.poll());
+        while(pq.size()>0){
+            myInterval cur=pq.poll();
+            myInterval prev=stack.peek();
+            if(cur.left<=prev.right){
+                if(cur.right>prev.right){
+                    stack.pop();
+                    stack.push(new myInterval(prev.left,cur.right));
+                }
+            }
+            else{
+                stack.push(cur);
+            }
+            // System.out.println(m.left+","+m.right);
+        }
+        List<myInterval> list=new LinkedList<myInterval>();
+        while(!stack.empty()){
+            list.add(stack.pop());
+        }
+        int n=list.size();
+        int[][] ans=new int[n][2];
+        for(int i=0;i<n;i++){
+            ans[i][0]=list.get(n-i-1).left;
+            ans[i][1]=list.get(n-i-1).right;
+        }
+        return ans;
+    }
+}
+
+Runtime: 50 ms, faster than 5.48% of Java online submissions for Merge Intervals.
+Memory Usage: 38.7 MB, less than 97.10% of Java online submissions for Merge Intervals.
+
+Could just use Arrays.sort() instead of priorityqueue and stack.

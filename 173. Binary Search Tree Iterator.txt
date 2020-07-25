@@ -58,5 +58,6 @@ class BSTIterator {
  * boolean param_2 = obj.hasNext();
  */
 
-Runtime: 16 ms, faster than 99.50% of Java online submissions for Binary Search Tree Iterator.
-Memory Usage: 50 MB, less than 93.83% of Java online submissions for Binary Search Tree Iterator.
+Runtime: 17 ms, faster than 99.47% of Java online submissions for Binary Search Tree Iterator.
+Memory Usage: 49.9 MB, less than 93.83% of Java online submissions for Binary Search Tree Iterator.
+

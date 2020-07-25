@@ -1,0 +1,38 @@
+class Solution {
+    public boolean isAlienSorted(String[] words, String order) {
+        Map<Character, Integer> dic=new HashMap<>();
+        int i=0;
+        for(char ch:order.toCharArray()){
+            dic.put(ch,i);
+            i++;
+        }
+        for(i=0;i<words.length-1;i++){
+            if(!compare(dic,words[i],words[i+1])){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean compare(Map<Character, Integer> dic, String word1, String word2){
+        // System.out.println("compare "+word1+", "+word2);
+        for(int i=0;i<word1.length() && i<word2.length();i++){
+            // System.out.println("i: "+i);
+            int id1=dic.get(word1.charAt(i));
+            int id2=dic.get(word2.charAt(i));
+            if(id1<id2){
+                return true;
+            }
+            else if(id1>id2){
+                return false;
+            }
+        }
+        if(word1.length()>word2.length()){
+            return false;
+        }
+        return true;
+    }
+}
+
+Runtime: 1 ms, faster than 45.85% of Java online submissions for Verifying an Alien Dictionary.
+Memory Usage: 38.3 MB, less than 15.38% of Java online submissions for Verifying an Alien Dictionary.

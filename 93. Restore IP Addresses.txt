@@ -1,0 +1,39 @@
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> ans=new LinkedList<String>();
+        if(s.length()>3)
+            helper(s.substring(1),1,s.charAt(0)-'0',""+s.charAt(0),ans);
+        return ans;
+    }
+    
+    private void helper(String s, int idx, int curNum, String curStr, List<String> ans){
+        // System.out.println("s:"+s);
+        // System.out.println("str:"+curStr);
+        // System.out.println(curNum);
+        // System.out.println(idx);
+        if(s.length()==0){
+            if(idx==4){
+                ans.add(curStr);
+            }
+            return;
+        }
+        if(idx>4){
+            return;
+        }
+        StringBuilder sb=new StringBuilder(curStr);
+        char c=s.charAt(0);
+        int x=c-'0';
+        int num=curNum*10+x;
+        sb.append(c);
+        //push into current segment
+        if(num<=255 && curNum!=0){
+            helper(s.substring(1),idx,num,sb.toString(),ans);
+        }
+        //put into new segment
+        sb.insert(sb.length()-1,".");
+        helper(s.substring(1),idx+1,x,sb.toString(),ans);
+    }
+}
+
+Runtime: 2 ms, faster than 91.96% of Java online submissions for Restore IP Addresses.
+Memory Usage: 39.5 MB, less than 6.98% of Java online submissions for Restore IP Addresses.

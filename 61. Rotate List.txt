@@ -1,0 +1,37 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode end=head;
+        int length=1;
+        while(end.next!=null){
+            end=end.next;
+            length++;
+        }
+        // System.out.println(length);
+        int target=length-k%length;
+        if(target==length){
+            return head;
+        }
+        ListNode cur=head;
+        for(int i=1;i<target;i++){
+            cur=cur.next;
+        }
+        ListNode latt=cur.next;
+        cur.next=null;
+        end.next=head;
+        return latt;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Rotate List.
+Memory Usage: 36 MB, less than 100.00% of Java online submissions for Rotate List.
