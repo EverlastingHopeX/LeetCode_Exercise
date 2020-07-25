@@ -48,3 +48,37 @@ class Solution {
 
 Runtime: 5 ms, faster than 30.02% of Java online submissions for Letter Combinations of a Phone Number.
 Memory Usage: 38.3 MB, less than 6.16% of Java online submissions for Letter Combinations of a Phone Number.
+
+class Solution {
+    String[] letters=new String[]{"abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+    public List<String> letterCombinations(String digits) {
+        List<String> ans=new ArrayList<>();
+        if(digits.length()==0){
+            return ans;
+        }
+        DFS(ans,new StringBuilder(""), digits,0);
+        return ans;
+    }
+    
+    private void DFS(List<String> ans, StringBuilder sb, String digits, int idx){
+        if(idx>=digits.length()){
+            ans.add(sb.toString());
+            return;
+        }
+        int cur=digits.charAt(idx)-'2';
+        if(cur<0 || cur>7){
+            // System.out.println("wrong char");
+            return;
+        }
+        for(char ch:letters[cur].toCharArray()){
+            sb.append(ch);
+            DFS(ans,sb,digits,idx+1);
+            sb.setLength(sb.length()-1);
+        }
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Letter Combinations of a Phone Number.
+Memory Usage: 39.4 MB, less than 44.40% of Java online submissions for Letter Combinations of a Phone Number.
+
+Easy DFS solution.

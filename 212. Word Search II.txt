@@ -3,3 +3,72 @@ Wouldn't spend a lot of time on it if I've known about Trie.
 
 Other's solution.
 https://leetcode.com/problems/word-search-ii/discuss/59784/My-simple-and-clean-Java-code-using-DFS-and-Trie
+
+class Solution {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEnd;
+        String word;
+        
+        TrieNode(){
+            children=new TrieNode[26];
+            isEnd=false;
+            word=null;
+        }
+    }
+    public List<String> findWords(char[][] board, String[] words) {
+        //init trie
+        TrieNode root=new TrieNode();
+        for(String w:words){
+            TrieNode cur=root;
+            for(char ch:w.toCharArray()){
+                int idx=ch-'a';
+                if(cur.children[idx]==null){
+                    cur.children[idx]=new TrieNode();
+                }
+                cur=cur.children[idx];
+            }
+            cur.isEnd=true;
+            cur.word=w;
+        }
+        
+        Set<String> set=new HashSet<>();
+        
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+                DFS(set,board,i,j,root);
+            }
+        }
+        List<String> ans=new ArrayList<>();
+        ans.addAll(set);
+        return ans;
+    }
+    
+    private void DFS(Set<String> set, char[][] board, int r, int c, TrieNode cur){
+        int idx=board[r][c]-'a';
+        if(idx<0 || idx>=26 || cur.children[idx]==null){
+            return;
+        }
+        cur=cur.children[idx];
+        if(cur.isEnd){
+            set.add(cur.word);
+        }
+        int[][] dirs=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        char tmp=board[r][c];
+        board[r][c]='/';
+        for(int[] d:dirs){
+            int nr=r+d[0], nc=c+d[1];
+            if(nr<0 || nr>=board.length || nc<0 || nc>=board[0].length){
+                continue;
+            }
+            DFS(set,board,nr,nc,cur);
+        }
+        board[r][c]=tmp;
+    }
+}
+
+Runtime: 13 ms, faster than 78.43% of Java online submissions for Word Search II.
+Memory Usage: 48.4 MB, less than 28.18% of Java online submissions for Word Search II.
+
+I know trie and how it works this time, so this problem is just a piece of cake now.
+I didn't realize this is the first problem that I met trie when I solve this, but trie just instantly come to my mind. And the last time I tried to solve this problem is 07/30/2019, exactly one year ago. Complete this problem bring me much sense of achievement.

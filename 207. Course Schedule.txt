@@ -46,3 +46,47 @@ class Solution {
 
 Runtime: 2 ms, faster than 99.82% of Java online submissions for Course Schedule.
 Memory Usage: 43.9 MB, less than 96.92% of Java online submissions for Course Schedule.
+
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] degree=new int[numCourses];
+        List<Integer>[] conn=new ArrayList[numCourses];
+        for(int i=0;i<numCourses;i++){
+            conn[i]=new ArrayList<>();
+        }
+        for(int[] p:prerequisites){
+            degree[p[1]]++;
+            conn[p[0]].add(p[1]);
+        }
+        boolean hasNodes=true;
+        while(hasNodes){
+            List<Integer> nodes=new ArrayList<>();
+            for(int i=0;i<numCourses;i++){
+                if(degree[i]==0){
+                    // System.out.println("remove "+tgt);
+                    degree[i]--;
+                    nodes.add(i);
+                }
+            }
+            if(nodes.size()==0){
+                hasNodes=false;
+            }
+            for(int n:nodes){
+                for(int tgt:conn[n]){
+                    degree[tgt]--;
+                }
+            }
+        }
+        for(int d:degree){
+            if(d>0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 8 ms, faster than 48.31% of Java online submissions for Course Schedule.
+Memory Usage: 39.5 MB, less than 93.38% of Java online submissions for Course Schedule.
+
+Another circle detection algorithm based on the degree of nodes, a bit slower than the DFS.

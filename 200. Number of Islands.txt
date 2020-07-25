@@ -125,3 +125,36 @@ Runtime: 1 ms, faster than 100.00% of Java online submissions for Number of Isla
 Memory Usage: 41.9 MB, less than 49.30% of Java online submissions for Number of Islands.
 
 Using loop instead of call spread() 4 times will cost much more.
+
+class Solution {
+    int[][] dirs=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    int cnt=0;
+    public int numIslands(char[][] grid) {
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]=='1'){
+                    cnt++;
+                    DFS(grid,i,j);
+                }
+            }
+        }
+        return cnt;
+    }
+    
+    private void DFS(char[][] grid, int r, int c){
+        if(grid[r][c]=='0'){
+            return;
+        }
+        grid[r][c]='0';
+        for(int[] d:dirs){
+            int nr=r+d[0];
+            int nc=c+d[1];
+            if(nr<0 || nr>=grid.length || nc<0 || nc>=grid[0].length){
+                continue;
+            }
+            DFS(grid,nr,nc);
+        }
+    }
+}
+
+A similar solution, solved this faster.
