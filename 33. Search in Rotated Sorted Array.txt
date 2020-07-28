@@ -48,3 +48,7 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Search in Rotated Sorted Array.
 Memory Usage: 38.5 MB, less than 44.03% of Java online submissions for Search in Rotated Sorted Array.
+
+Basically the same solution at the second time.
+But I forgot to check if the array is totally ordered, which makes the performance slower.
+The boundary handling of binary search is pretty hard to figure out perfectly without running.
