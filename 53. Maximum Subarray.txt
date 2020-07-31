@@ -22,3 +22,40 @@ This is the brute solution.
 
 Other's solution.
 https://leetcode.com/problems/maximum-subarray/discuss/20193/DP-solution-and-some-thoughts
+
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int[] sums=new int[nums.length];
+        int sum=0;
+        for(int i=0;i<sums.length;i++){
+            sum+=nums[i];
+            sums[i]=sum;
+        }
+        int min=nums[0];
+        int p=0;
+        int ans=nums[0];
+        while(p<sums.length){
+            while(p<sums.length-1 && sums[p+1]>=sums[p] ){
+                p++;
+            }
+            ans=Math.max(ans,sums[p]-min);
+            while(p<sums.length-1 && sums[p+1]<=sums[p]){
+                p++;
+            }
+            if(sums[p]<min){
+                min=sums[p];
+            }
+            p++;
+        }
+        return ans;
+    }
+}
+
+Runtime: 1 ms, faster than 78.24% of Java online submissions for Maximum Subarray.
+Memory Usage: 41.8 MB, less than 5.19% of Java online submissions for Maximum Subarray.
+
+Took me more than an hour to figure this easy problem out. However, the O(N^2) brute force solution is easy, but making a O(N) solution is at least medium. The basic idea is to observe the changes of sum, and find the difference between maximum and minimum. Also, the max and min are temporal. This is not DP.
+This can be improved by combining two loops into one.
+
+Other's more concise solution. Apart from removing sums array, it also does not use min to remember the temporal minimum, since it will reset sum when sum<0 (which means a new min is found).
+https://leetcode.com/problems/maximum-subarray/discuss/20210/O(n)-Java-solution

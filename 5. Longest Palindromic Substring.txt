@@ -9,3 +9,57 @@ This solution seems quite straightforward and has good performance.
 Another solution using DP.
 https://leetcode.com/problems/longest-palindromic-substring/discuss/2921/Share-my-Java-solution-using-dynamic-programming
 But this solution actually has worse performance.
+
+class Solution {
+    public String longestPalindrome(String s) {
+        Map<Character,List<Integer>> map=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            List<Integer> li=map.getOrDefault(ch,new ArrayList<>());
+            li.add(i);
+            map.put(ch,li);
+        }
+        String ans="";
+        for(int i=0;i<s.length();i++){
+            String str=helper(map,s,i,ans.length());
+            if(str!=null){
+                ans=str;
+            }
+        }
+        return ans;
+        
+    }
+    
+    private String helper(Map<Character,List<Integer>> map, String s, int idx, int len){
+        int left=idx;
+        List<Integer> li=map.get(s.charAt(idx));
+        String ans=null;
+        for(int i=li.size()-1;i>=0;i--){
+            int right=li.get(i);
+            if(right-left<len){
+                break;
+            }
+            int pleft=left,pright=right;
+            while(pleft<pright){
+                if(s.charAt(pleft)!=s.charAt(pright)){
+                    break;
+                }
+                pleft++;
+                pright--;
+            }
+            if(pleft>=pright){
+                ans=s.substring(left,right+1);
+                break;
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 216 ms, faster than 15.50% of Java online submissions for Longest Palindromic Substring.
+Memory Usage: 39.7 MB, less than 43.33% of Java online submissions for Longest Palindromic
+
+Solve this problem at the second time, but the performance is not satisfying.
+I store the idxes of characters in map, and shrink from two points to test if it is a palindromic.
+Pretty hard to tell the time complexity of this, but it is definitely much larger than O(N^2).
+The time complexity of recursive expanding and dp are both O(N^2).

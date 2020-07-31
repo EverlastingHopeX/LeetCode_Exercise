@@ -40,3 +40,33 @@ Runtime: 14 ms, faster than 61.43% of Java online submissions for Top K Frequent
 Memory Usage: 42.3 MB, less than 8.62% of Java online submissions for Top K Frequent Elements.
 
 Using bucket sort would make the time complexity O(n), which is better than O(nlogn).
+
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer,Integer> freq=new HashMap<>();
+        for(int n:nums){
+            int cnt=freq.getOrDefault(n,0);
+            freq.put(n,cnt+1);
+        }
+        PriorityQueue<int[]> pq=new PriorityQueue<>(k,(o1,o2)->(o1[1]-o2[1]));
+        for(int n:freq.keySet()){
+            int cnt=freq.get(n);
+            if(pq.size()==k){
+                int[] top=pq.poll();
+                if(cnt<top[1]){
+                    pq.offer(top);
+                    continue;
+                }
+            }
+            pq.offer(new int[]{n,cnt});
+        }
+        int[] ans=new int[k];
+        for(int i=0;i<k;i++){
+            ans[i]=pq.poll()[0];
+        }
+        return ans;
+    }
+}
+
+I use priorityqueue to sort the freqency, it is O(N+klogk). However, it is O(NlogN), for the case when k==N and every element in nums is unique.
+The bucket sort idea is way better, it is suitable for problems whose value is within a limited range.

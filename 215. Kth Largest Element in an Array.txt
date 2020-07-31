@@ -50,4 +50,26 @@ class Solution {
 Runtime: 3 ms, faster than 77.94% of Java online submissions for Kth Largest Element in an Array.
 Memory Usage: 37.3 MB, less than 90.16% of Java online submissions for Kth Largest Element in an Array.
 
-It's not a shame to use libraries, however, it provides no benefit.
+It's not a shame to use libraries, however, could not learn anything either.
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq=new PriorityQueue<>(k);
+        for(int n:nums){
+            if(pq.size()==k){
+                int top=pq.poll();
+                if(top>n){
+                    pq.offer(top);
+                    continue;
+                }
+            }
+            pq.offer(n);
+        }
+        return pq.poll();
+    }
+}
+
+Runtime: 4 ms, faster than 64.19% of Java online submissions for Kth Largest Element in an Array.
+Memory Usage: 40.2 MB, less than 20.94% of Java online submissions for Kth Largest Element in an Array.
+
+It is O(Nlogk), which should be better than sort the whole array (O(NlogN)).

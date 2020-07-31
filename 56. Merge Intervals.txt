@@ -49,3 +49,33 @@ Runtime: 50 ms, faster than 5.48% of Java online submissions for Merge Intervals
 Memory Usage: 38.7 MB, less than 97.10% of Java online submissions for Merge Intervals.
 
 Could just use Arrays.sort() instead of priorityqueue and stack.
+
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(o1,o2)->(o1[0]-o2[0]));
+        Stack<int[]> st=new Stack<>();
+        for(int[] t:intervals){
+            if(!st.isEmpty()){
+                int[] prev=st.peek();
+                if(prev[1]>=t[0]){
+                    st.pop();
+                    t[0]=prev[0];
+                    t[1]=Math.max(prev[1],t[1]);
+                }
+            }
+            st.push(t);
+        }
+        int[][] ans=new int[st.size()][2];
+        for(int i=ans.length-1;i>=0;i--){
+            int[] t=st.pop();
+            ans[i][0]=t[0];
+            ans[i][1]=t[1];
+        }
+        return ans;
+    }
+}
+
+Runtime: 7 ms, faster than 32.57% of Java online submissions for Merge Intervals.
+Memory Usage: 42.8 MB, less than 14.51% of Java online submissions for Merge Intervals.
+
+I use Arrays.sort() this time, kind of curious about how my memory works, since I don't really recall what I wrote last time.

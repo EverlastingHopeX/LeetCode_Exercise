@@ -23,3 +23,33 @@ Memory Usage: 60.2 MB, less than 65.22% of Java online submissions for K Closest
 quick select can provide better performance.
 Other's solution.
 https://leetcode.com/problems/k-closest-points-to-origin/discuss/220235/Java-Three-solutions-to-this-classical-K-th-problem.
+
+class Solution {
+    public int[][] kClosest(int[][] points, int K) {
+        PriorityQueue<int[]> pq=new PriorityQueue<>((o1,o2)->(o2[2]-o1[2]));
+        for(int[] p:points){
+            int dist=(int)Math.pow(p[0],2)+(int)Math.pow(p[1],2);
+            if(pq.size()==K){
+                int[] top=pq.poll();
+                // System.out.println("top "+top[0]+", "+top[1]);
+                if(dist>top[2]){
+                    // System.out.println("push "+top[0]+", "+top[1]);
+                    pq.offer(top);
+                    continue;
+                }
+            }
+            // System.out.println("push "+p[0]+", "+p[1]);
+            pq.offer(new int[]{p[0],p[1],dist});
+        }
+        int[][] ans=new int[K][2];
+        for(int i=0;i<K;i++){
+            int[] cur=pq.poll();
+            ans[i][0]=cur[0];
+            ans[i][1]=cur[1];
+        }
+        return ans;
+    }
+}
+
+Use priorityqueue to improve the perfromance from O(NlogN) to O(NlogK). 
+The quick select solution is not stable. The average time is N, but its time complexity is actually O(N^2).
