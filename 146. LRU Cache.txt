@@ -1,0 +1,7 @@
+Can't work it out.
+At first, I tried to maintain a linkedlist as queue to store the cache, and got a TLE. Then I tried to improve it by allowing duplicate keys in queue, and only removing the duplicate keys in put(). I still got a TLE.
+
+Other's solution.
+I guess it will be faster to remove a node in random position in a double linked list. It also uses a hashtable to store the key and corresponding node instead of value, which makes it easier to modify the list.
+
+https://leetcode.com/problems/lru-cache/discuss/45911/Java-Hashtable-%2B-Double-linked-list-(with-a-touch-of-pseudo-nodes)

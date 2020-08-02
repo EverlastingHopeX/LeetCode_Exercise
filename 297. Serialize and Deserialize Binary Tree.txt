@@ -70,3 +70,87 @@ Runtime: 14 ms, faster than 44.57% of Java online submissions for Serialize and 
 Memory Usage: 38.4 MB, less than 100.00% of Java online submissions for Serialize and Deserialize Binary Tree.
 
 Finally able to solve this in the second round.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root==null){
+            return "";
+        }
+        Queue<TreeNode> que=new LinkedList<>();
+        que.offer(root);
+        StringBuilder sb=new StringBuilder(root.val+"");
+        while(!que.isEmpty()){
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                TreeNode cur=que.poll();
+                if(cur.left!=null){
+                    que.offer(cur.left);
+                    sb.append(","+cur.left.val);
+                }
+                else{
+                    sb.append(",null");
+                }
+                if(cur.right!=null){
+                    que.offer(cur.right);
+                    sb.append(","+cur.right.val);
+                }
+                else{
+                    sb.append(",null");
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data.length()==0){
+            return null;
+        }
+        System.out.println(data);
+        String[] nodes=data.split(",");
+        TreeNode root=new TreeNode(Integer.parseInt(nodes[0]));
+        Queue<TreeNode> que=new LinkedList<>();
+        que.offer(root);
+        int p=1;
+        while(!que.isEmpty()){
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                TreeNode cur=que.poll();
+                // System.out.println("cur "+cur.val);
+                if(!"null".equals(nodes[p])){
+                    // System.out.println("left "+nodes[p]);
+                    cur.left=new TreeNode(Integer.parseInt(nodes[p]));
+                    que.offer(cur.left);
+                }
+                p++;
+                if(!"null".equals(nodes[p])){
+                    // System.out.println("right "+nodes[p]);
+                    cur.right=new TreeNode(Integer.parseInt(nodes[p]));
+                    que.offer(cur.right);
+                }
+                p++;
+            }
+        }
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
+
+Pretty easy since the format is already given. DFS is bit harder.
+Other's DFS solution.
+https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/74253/Easy-to-understand-Java-Solution

@@ -71,3 +71,68 @@ I tried to solve this with Trie alone at first, but I got TLE. Then I tried
 to optimized it using greedy (use stack to match the longest string first), 
 and it still failed. However, I checked other's solution and found out this
 question should be solved using dp and traverse string from end to start.
+
+class Solution {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEnd;
+        
+        TrieNode(){
+            children=new TrieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        TrieNode root=new TrieNode();
+        for(String word:wordDict){
+            TrieNode cur=root;
+            for(char ch:word.toCharArray()){
+                int idx=ch-'a';
+                if(cur.children[idx]==null){
+                    cur.children[idx]=new TrieNode();
+                }
+                cur=cur.children[idx];
+            }
+            cur.isEnd=true;
+        }
+        boolean[] notPossible=new boolean[s.length()];
+        return check(notPossible,root,s,0);
+    }
+    
+    private boolean check(boolean[] notPossible, TrieNode root,String s, int start){
+        // System.out.println("check "+start);
+        if(start>=s.length()){
+            return true;
+        }
+        if(notPossible[start]){
+            return false;
+        }
+        TrieNode cur=root;
+        Stack<Integer> st=new Stack<>();
+        for(int i=start;i<s.length();i++){
+            int idx=s.charAt(i)-'a';
+            if(cur.children[idx]==null){
+                break;
+            }
+            cur=cur.children[idx];
+            if(cur.isEnd){
+                st.push(i+1);
+            }
+        }
+        while(!st.isEmpty()){
+            int i=st.pop();
+            if(check(notPossible,root,s,i)){
+                return true;
+            }
+        }
+        notPossible[start]=true;
+        return false;
+    }
+}
+
+Runtime: 4 ms, faster than 86.75% of Java online submissions for Word Break.
+Memory Usage: 40.3 MB, less than 5.21% of Java online submissions for Word Break.
+
+Also got a TLE at first, even after adding an optimization with stack. Then I realize that the reason why I got TLE is that it will keep tring to start check from one index even if it has already been checked to be impossible to match, so I add a boolean array to memorize this.
+The perfromance difference between this solution and the previous dp solution is tiny, however, the previous one is more concise.

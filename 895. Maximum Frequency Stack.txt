@@ -1,0 +1,86 @@
+Tried to solve this with a double linked list and hashmap, but got TLE.
+
+class FreqStack {
+    class ListNode{
+        ListNode prev;
+        ListNode next;
+        int val;
+        
+        ListNode(){
+            prev=null;
+            next=null;
+            val=-1;
+        }
+        
+        ListNode(int val, ListNode prev, ListNode next){
+            this.prev=prev;
+            this.next=next;
+            this.val=val;
+        }
+    }
+    
+    ListNode root;
+    ListNode tail;
+    Map<Integer, Integer> freqMap;
+    
+    public FreqStack() {
+        // System.out.println("init");
+        root=new ListNode();
+        tail=new ListNode();
+        root.next=tail;
+        tail.prev=root;
+        freqMap=new HashMap<>();
+    }
+    
+    public void push(int x) {
+        // System.out.println("push "+x);
+        ListNode t=new ListNode(x,tail.prev,tail);
+        tail.prev.next=t;
+        tail.prev=t;
+        int f=freqMap.getOrDefault(x,0);
+        freqMap.put(x,f+1);
+    }
+    
+    public int pop() {
+        // System.out.println("pop");
+        //num, freq, idx of last occurance
+        int max=0;
+        for(int key:freqMap.keySet()){
+            max=Math.max(max,freqMap.get(key));
+        }
+        ListNode p=tail.prev;
+        while(p!=root){
+            if(freqMap.get(p.val)==max){
+                break;
+            }
+            p=p.prev;
+        }
+        p.prev.next=p.next;
+        p.next.prev=p.prev;
+        
+        if(max==1){
+            freqMap.remove(p.val);
+        }
+        else{
+            freqMap.put(p.val,max-1);
+        }
+        return p.val;
+    }
+}
+
+/**
+ * Your FreqStack object will be instantiated and called as such:
+ * FreqStack obj = new FreqStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ */
+
+O(1) push, O(N) pop. N is number of unique numbers in stack.
+
+Other's O(1) solution.
+Each bucket is a stack. bucket[i] stores the stack of numbers whose frequency is higher than i.
+So when we push a number, we use the frequency map to get its frequency, so we can push it into the proper bucket. This is O(1).
+And we pop a number, we will only need to pop the top number in the buckets of highest frequency, which is also O(1).
+Really brilliant solution, even trying to understand it makes my brain hurts.
+
+https://leetcode.com/problems/maximum-frequency-stack/discuss/163453/JAVA-O(1)-solution-easy-understand-using-bucket-sort

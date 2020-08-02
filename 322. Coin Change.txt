@@ -2,3 +2,45 @@ Didn't solve it.
 
 Other's solution.
 https://leetcode.com/problems/coin-change/discuss/77368/*Java*-Both-iterative-and-recursive-solutions-with-explanations
+
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        if(amount==0){
+            return 0;
+        }
+        Arrays.sort(coins);
+        // for(int c:coins){
+        //     System.out.println(c);
+        // }
+        int[] dp=new int[amount+1];
+        int sum=0;
+        for(int i=0;i<=amount;i++){
+            dp[i]=-1;
+            for(int j=coins.length-1;j>=0;j--){
+                int k=i-coins[j];
+                if(k<0){
+                    continue;
+                }
+                else if(k==0){
+                    dp[i]=1;
+                    break;
+                }
+                if(dp[k]>0){
+                    if(dp[i]==-1){
+                        dp[i]=dp[k]+1;
+                    }
+                    else{
+                        dp[i]=Math.min(dp[i],dp[k]+1);
+                    }
+                }
+            }
+             // System.out.println("dp "+i+" "+dp[i]);
+        }
+        return dp[amount];
+    }
+}
+
+Runtime: 22 ms, faster than 41.86% of Java online submissions for Coin Change.
+Memory Usage: 42 MB, less than 5.01% of Java online submissions for Coin Change
+
+Solve this using dp, this can be further improved using sum instead of i to traverse every number from 0 to amount.

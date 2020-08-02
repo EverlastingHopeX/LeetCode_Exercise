@@ -1,0 +1,81 @@
+class MedianFinder {
+    
+    int size=0;
+    List<Integer>[] buckets;
+    int Depth=100000000;
+    int bucketNum=44;
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        buckets=new ArrayList[bucketNum];
+    }
+    
+    public void addNum(int num) {
+        int idx=num/Depth;
+        if(num>=0){
+            idx+=bucketNum/2;
+        }
+        if(buckets[idx]==null){
+            buckets[idx]=new ArrayList<>();
+        }
+        buckets[idx].add(num);
+        size++;
+    }
+    
+    public double findMedian() {
+        // System.out.println("find median");
+        int target=(size+1)/2;
+        boolean isEven=size%2==0;
+        int num=0;
+        int p=0;
+        // System.out.println("target "+target);
+        while(p<bucketNum){
+            int t=buckets[p]==null?0:buckets[p].size();
+            if(num+t>=target){
+                break;
+            }
+            num+=t;
+            p++;
+        }
+        if(isEven){
+            Collections.sort(buckets[p]);
+            int n1=buckets[p].get(target-num-1);
+            int n2=0;
+            if(target-num==buckets[p].size()){
+                p++;
+                while(p<bucketNum && buckets[p]==null){
+                    p++;
+                }
+                n2=buckets[p].get(0);
+                for(int n:buckets[p]){
+                    n2=Math.min(n2,n);
+                }
+            }
+            else{
+                n2=buckets[p].get(target-num);
+            }
+            // System.out.println(n1+" "+n2);
+            return (n1+n2)/2.0;
+        }
+        Collections.sort(buckets[p]);
+        return buckets[p].get(target-num-1);
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+
+Runtime: 1734 ms, faster than 5.02% of Java online submissions for Find Median from Data Stream.
+Memory Usage: 50.2 MB, less than 89.79% of Java online submissions for Find Median from Data Stream.
+
+Not fast, but at least save some spaces.
+O(1) add, O(logN) find.
+For the follow up, I can adjust the bucket number and depth to make the numbers more evenly distributed in these buckets, so the findMedian() will be more effective.
+
+Other's solution using 2 priorityqueue.
+The idea is easy to understand, it maintains a min heap and max heap to store the larger part and smaller part of the numbers seperately. When a new number comes in, it will add it to larger part first, and put the min element into smaller part, and balance the size of two parts.
+
+https://leetcode.com/problems/find-median-from-data-stream/discuss/74062/Short-simple-JavaC%2B%2BPython-O(log-n)-%2B-O(1)

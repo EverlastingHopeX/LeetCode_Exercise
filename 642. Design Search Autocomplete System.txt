@@ -1,0 +1,149 @@
+class AutocompleteSystem {
+    class Sentence{
+        String s;
+        int t;
+        
+        Sentence(String st,int time){
+            s=st;
+            t=time;
+        }
+    }
+    
+    class TrieNode{
+        List<Integer> sens;
+        TrieNode[] children;
+        int key;
+        
+        TrieNode(){
+            sens=new ArrayList<>();
+            children=new TrieNode[27];
+            key=-1;
+        }
+    }
+    
+    Map<Integer,Sentence> senMap;
+    TrieNode root;
+    
+    StringBuilder sb=new StringBuilder("");
+    TrieNode curNode=root;
+    
+    public AutocompleteSystem(String[] sentences, int[] times) {
+        // System.out.println("construct");
+        root=new TrieNode();
+        curNode=root;
+        senMap=new HashMap<>();
+        for(int i=0;i<sentences.length;i++){
+            TrieNode cur=root;
+            Sentence st=new Sentence(sentences[i],times[i]);
+            senMap.put(i,st);
+            for(char ch:sentences[i].toCharArray()){
+                int idx=ch-'a';
+                if(idx<0){
+                    idx=0;
+                }
+                if(cur.children[idx]==null){
+                    cur.children[idx]=new TrieNode();
+                }
+                cur=cur.children[idx];
+                cur.sens.add(i);
+            }
+            cur.key=i;
+        }
+        // for(int k:senMap.keySet()){
+        //     Sentence st=senMap.get(k);
+        //     System.out.println(k+" "+st.s+" "+st.t);
+        // }
+    }
+    
+    public List<String> input(char c) {
+        // System.out.println("input "+c);
+        if(c=='#'){
+            addSens();
+        }
+        else{
+            sb.append(c);
+            int idx=c-'a';
+            if(idx<0){
+                idx=0;
+            }
+            // System.out.println("idx "+idx);
+            if(curNode.children[idx]==null){
+                curNode.children[idx]=new TrieNode();
+            }
+            curNode=curNode.children[idx];
+        }
+        List<Integer> li=curNode.sens;
+        // System.out.println("candidates "+li.size());
+        PriorityQueue<Sentence> pq=new PriorityQueue<>((o1,o2)->(compare(o1,o2)));
+        for(int k:li){
+            // System.out.println("sens "+k);
+            Sentence st=senMap.get(k);
+            if(pq.size()==3){
+                Sentence top=pq.poll();
+                if(compare(st,top)<0){
+                    st=top;
+                }
+            }
+            pq.offer(st);
+        }
+        List<String> ans=new ArrayList<>();
+        while(!pq.isEmpty()){
+            Sentence top=pq.poll();
+            ans.add(top.s);
+        }
+        // System.out.println("ans "+ans.size());
+        Collections.reverse(ans);
+        return ans;
+    }
+    
+    private void addSens(){
+        // System.out.println("addSens");
+        String str=sb.toString();
+        // System.out.println("string "+str);
+        //sentence already exist
+        if(curNode.key!=-1){
+            // System.out.println("already exist");
+            Sentence sen=senMap.get(curNode.key);
+            sen.t++;
+        }
+        else{
+            // System.out.println("not exist");
+            Sentence sen=new Sentence(str,1);
+            TrieNode cur=root;
+            int k=senMap.size();
+            for(char ch:str.toCharArray()){
+                int idx=ch-'a';
+                if(idx<0){
+                    idx=0;
+                }
+                cur=cur.children[idx];
+                cur.sens.add(k);
+            }
+            cur.key=k;
+            senMap.put(k,sen);
+        }
+        sb.setLength(0);
+        curNode=root;
+    }
+    //<0: s1.t<s2.t || (s1.t===s2.t && s1.s>s2.t)
+    private int compare(Sentence s1, Sentence s2){
+        if(s1.t==s2.t){
+            return -s1.s.compareTo(s2.s);
+        }
+        return s1.t-s2.t;
+    }
+}
+
+/**
+ * Your AutocompleteSystem object will be instantiated and called as such:
+ * AutocompleteSystem obj = new AutocompleteSystem(sentences, times);
+ * List<String> param_1 = obj.input(c);
+ */
+
+Runtime: 225 ms, faster than 45.19% of Java online submissions for Design Search Autocomplete System.
+Memory Usage: 115.9 MB, less than 5.59% of Java online submissions for Design Search Autocomplete System.
+
+The performance is not stable due to OJ, I will say it is acceptable since it was faster in one submit and beated 89.53% with 121 ms.
+
+The key idea is to use trie to memorize the possible match sentences.
+The mechanism is not hard to figure out, but implement it perfectly would be time consuming, I hope they won't ask me to complete a bug free implementation in an interview.
