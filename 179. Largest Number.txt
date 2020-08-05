@@ -1,0 +1,75 @@
+class Solution {
+    public String largestNumber(int[] nums) {
+        String[] strs=new String[nums.length];
+        for(int i=0;i<nums.length;i++){
+            strs[i]=nums[i]+"";
+        }
+        Comparator<String> comp=new Comparator<>(){
+            @Override
+            public int compare(String s1, String s2){
+                // System.out.println("compare "+s1+" "+s2);
+                int p=0;
+                while(p<s1.length()&& p<s2.length()){
+                    int p1=s1.charAt(p)-'0', p2=s2.charAt(p)-'0';
+                    if(p1==p2){
+                        p++;
+                        continue;
+                    }
+                    // System.out.println("return "+(p2-p1));
+                    return p2-p1;
+                }
+                if(s1.length()==s2.length()){
+                    return 0;
+                }
+                else if(s1.length()<s2.length()){
+                    String x=s2.substring(p);
+                    return compare(s1+x,x+s1);
+                }
+                String x=s1.substring(p);
+                return compare(x+s2,s2+x);
+            }
+        };
+        Arrays.sort(strs,comp);
+        // System.out.println("sort complete");
+        StringBuilder sb=new StringBuilder("");
+        int k=0;
+        while(k<strs.length-1 && strs[k].equals("0")){
+            k++;
+        }
+        while(k<strs.length){
+            sb.append(strs[k]);
+            k++;
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 15 ms, faster than 13.32% of Java online submissions for Largest Number.
+Memory Usage: 40.1 MB, less than 5.35% of Java online submissions for Largest Number.
+
+The comparator can be more improved to be more concise.
+Comparator<String> comp=new Comparator<>(){
+	@Override
+	public int compare(String s1, String s2){
+	// System.out.println("compare "+s1+" "+s2);
+	if(s1.length()!=s2.length()){
+		return compare(s1+s2,s2+s1);
+	}
+	int p=0;
+	while(p<s1.length()&& p<s2.length()){
+	int p1=s1.charAt(p)-'0', p2=s2.charAt(p)-'0';
+	if(p1==p2){
+		p++;
+		continue;
+	}
+	// System.out.println("return "+(p2-p1));
+		return p2-p1;
+	}
+	return 0;
+	}
+};
+
+or simply use String's compareTo()
+
+Apart from that, there is not need to skip the leading zeros, since if there is a leading zero, the rest of the s must be zero, otherwise there is an invalid number in nums like "0xxx".
+

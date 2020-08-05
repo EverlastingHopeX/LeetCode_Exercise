@@ -43,3 +43,41 @@ Runtime: 1 ms, faster than 100.00% of Java online submissions for Partition Labe
 Memory Usage: 38 MB, less than 76.60% of Java online submissions for Partition Labels.
 
 The algorithm is simple, only expand when it is necessary.
+
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        Map<Character, int[]> range=new HashMap<>();
+        for(int i=0;i<S.length();i++){
+            char ch=S.charAt(i);
+            int[] r=range.getOrDefault(ch,new int[]{i,-1});
+            r[1]=i;
+            range.put(ch,r);
+        }
+        boolean[] used=new boolean[26];
+        List<Integer> ans=new ArrayList<>();
+        int p=0;
+        while(p<S.length()){
+            int idx=S.charAt(p)-'a';
+            if(used[idx]){
+                continue;
+            }
+            
+            int left=p,right=p;
+            while(p<=right){
+                idx=S.charAt(p)-'a';
+                if(!used[idx]){
+                    used[idx]=true;
+                    int[] r=range.get(S.charAt(p));
+                    right=Math.max(right,r[1]);
+                }
+                p++;
+            }
+            // System.out.println(left+" "+right);
+            ans.add(right-left+1);
+        }
+        return ans;
+    }
+}
+
+Worse solution compared with my previous one.
+There is no need to use hashmap when there are definitive number of entries.

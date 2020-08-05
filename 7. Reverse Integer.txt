@@ -39,3 +39,26 @@ Runtime: 22 ms, faster than 5.30% of Java online submissions for Reverse Integer
 Memory Usage: 37.6 MB, less than 5.55% of Java online submissions for Reverse Integer.
 
 idea is simple, while the performance is not good.
+
+class Solution {
+    public int reverse(int x) {
+        long ans=0;
+        int flag=x>=0?1:-1;
+        String str=Math.abs(x)+"";
+        for(int i=str.length()-1;i>=0;i--){
+            int n=str.charAt(i)-'0';
+            ans=ans*10+n;
+            // System.out.println(ans);
+        }
+        ans=ans*flag;
+        if(ans>Integer.MAX_VALUE || ans<Integer.MIN_VALUE){
+            return 0;
+        }
+        return (int)ans;
+    }
+}
+
+Runtime: 6 ms, faster than 11.11% of Java online submissions for Reverse Integer.
+Memory Usage: 37.3 MB, less than 6.64% of Java online submissions for Reverse Integer.
+
+Better than last time. But I use long this time.
