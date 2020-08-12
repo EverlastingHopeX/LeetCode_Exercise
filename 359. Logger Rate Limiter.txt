@@ -1,0 +1,50 @@
+class Logger {
+    
+    Set<String>[] print;
+    int[] time;
+    int RANGE;
+    
+    /** Initialize your data structure here. */
+    public Logger() {
+        RANGE=10;
+        print=new HashSet[RANGE];
+        for(int i=0;i<print.length;i++){
+            print[i]=new HashSet<>();
+        }
+        time=new int[RANGE];
+    }
+    
+    /** Returns true if the message should be printed in the given timestamp, otherwise returns false.
+        If this method returns false, the message will not be printed.
+        The timestamp is in seconds granularity. */
+    public boolean shouldPrintMessage(int timestamp, String message) {
+        // System.out.println(message+" "+timestamp);
+        int idx=timestamp%RANGE;
+        if(timestamp>=time[idx]+10){
+            print[idx].clear();
+        }
+        //update print
+        for(int i=0;i<10;i++){
+            if(time[i]>timestamp-10 && print[i].contains(message)){
+                return false;
+            }
+        }
+        time[idx]=timestamp;
+        print[idx].add(message);
+        return true;
+    }
+    
+    
+}
+
+/**
+ * Your Logger object will be instantiated and called as such:
+ * Logger obj = new Logger();
+ * boolean param_1 = obj.shouldPrintMessage(timestamp,message);
+ */
+
+Runtime: 28 ms, faster than 79.49% of Java online submissions for Logger Rate Limiter.
+Memory Usage: 47.7 MB, less than 56.53% of Java online submissions for Logger Rate Limiter.
+
+Overestimate this problem, and made an very complex and not working solution.
+When I found this is actually an easy, I solved this quickly. If I met this kind of question in an interview, I think I will be rejected if I offer an over complex solution.

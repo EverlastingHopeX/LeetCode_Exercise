@@ -1,0 +1,6 @@
+Didn't work it out. Tried to use two heaps and sliding window method, spent too much time and gave up.
+
+If completed, this solution will be O(NlogN).
+
+Other's O(N) solution using two deques.
+https://leetcode.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/discuss/609771/JavaC%2B%2BPython-Deques-O(N)

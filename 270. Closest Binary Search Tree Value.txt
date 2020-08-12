@@ -38,3 +38,54 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Closest Binary Search Tree Value.
 Memory Usage: 40.9 MB, less than 10.27% of Java online submissions for Closest Binary Search Tree Value.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    double offset;
+    
+    public int closestValue(TreeNode root, double target) {
+        offset=root.val-target;
+        if(root.left!=null){
+            DFS(root.left,target);
+        }
+        if(root.right!=null){
+            DFS(root.right,target);
+        }
+        return (int)(target+offset);
+    }
+    
+    private void DFS(TreeNode cur, double target){
+        if(cur==null){
+            return;
+        }
+        double t=cur.val-target;
+        if(Math.abs(t)<Math.abs(offset)){
+            offset=t;
+        }
+        if(t==0){
+            offset=0;
+        }
+        else if(t<0){
+            DFS(cur.right,target);
+        }
+        else{
+            DFS(cur.left,target);
+        }
+    }
+}
+
+Actually not DFS, since we will either go left or right, not both.
