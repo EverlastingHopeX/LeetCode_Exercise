@@ -1,0 +1,67 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        List<TreeNode> ans=new ArrayList<>();
+        TreeNode dummy=new TreeNode();
+        dummy.left=root;
+        DFS(dummy,to_delete,ans,true);
+        
+        return ans;
+    }
+    
+    private void DFS(TreeNode cur, int[] to_delete, List<TreeNode> ans,boolean delete){
+        // System.out.println("DFS "+cur.val);
+        if(cur.left!=null){
+            if(needDelete(cur.left,to_delete)){
+                DFS(cur.left,to_delete,ans,true);
+                cur.left=null;
+            }
+            else{
+                if(delete){
+                    ans.add(cur.left);
+                }
+                DFS(cur.left,to_delete,ans,false);
+            }
+        }
+        if(cur.right!=null){
+            if(needDelete(cur.right,to_delete)){
+                DFS(cur.right,to_delete,ans,true);
+                cur.right=null;
+            }
+            else{
+                if(delete && cur.right!=null){
+                    ans.add(cur.right);
+                }
+                DFS(cur.right,to_delete,ans,false);
+            }
+        }
+    }
+    
+    private boolean needDelete(TreeNode cur, int[] to_delete){
+        for(int t:to_delete){
+            if(cur.val==t){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 1 ms, faster than 99.87% of Java online submissions for Delete Nodes And Return Forest.
+Memory Usage: 39.9 MB, less than 82.45% of Java online submissions for Delete Nodes And Return Forest.
+
+The key is to figure out what need to be done in each node.

@@ -1,0 +1,72 @@
+class CombinationIterator {
+    int[] idx;
+    String s;
+    public CombinationIterator(String characters, int combinationLength) {
+        s=characters;
+        idx=new int[combinationLength];
+        for(int i=0;i<idx.length;i++){
+            idx[i]=i;
+        }
+    }
+    
+    public String next() {
+        // System.out.println("next");
+        
+        StringBuilder sb=new StringBuilder("");
+        for(int id:idx){
+            // System.out.println(id);
+            sb.append(s.charAt(id));
+        }
+        String t=sb.toString();
+        // System.out.println(t);
+        
+        // System.out.println("modify");
+        int p=0;
+        while(p<idx.length){
+            // System.out.println("p "+p);
+            if(idx[p]+idx.length-p==s.length()){
+                break;
+            }
+            p++;
+        }
+        // System.out.println("p "+p);
+        if(p==0){
+            idx[0]=-1;
+        }
+        else if(p>=s.length()){
+            idx[idx.length-1]++;
+        }
+        else{
+            idx[p-1]++;
+            for(int i=p;i<idx.length;i++){
+                idx[i]=idx[i-1]+1;
+            }
+        }
+        
+        // System.out.println("---");
+        return t;
+    }
+    
+    public boolean hasNext() {
+        // System.out.print("hasNext ");
+        if(idx[0]==-1){
+            // System.out.println("false");
+            return false;
+        }
+        // System.out.println("true");
+        return true;
+    }
+}
+
+/**
+ * Your CombinationIterator object will be instantiated and called as such:
+ * CombinationIterator obj = new CombinationIterator(characters, combinationLength);
+ * String param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */
+
+Runtime: 11 ms, faster than 86.54% of Java online submissions for Iterator for Combination.
+Memory Usage: 41.3 MB, less than 75.83% of Java online submissions for Iterator for Combination.
+
+I use idx to memorize the index of chars of current combination, and increase the last valid index by one. Index idx[p] is invalid if idx[p]+idx.length-p==s.length(). For example, the input is ("abcd", 3), and current combination is "acd", then idx[1] is invalid since idx[1]+idx.length-1=2+3-1=4==s.length(). So we cannot simply increase idx[2] by one, instead, we need to increase idx[0] by one and the following idx accordingly.
+s

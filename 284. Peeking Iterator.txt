@@ -1,0 +1,46 @@
+// Java Iterator interface reference:
+// https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
+
+class PeekingIterator implements Iterator<Integer> {
+    
+    Integer next;
+    Iterator<Integer> it;
+    
+	public PeekingIterator(Iterator<Integer> iterator) {
+	    // initialize any member here.
+        it=iterator;
+        next=it.next();
+	}
+	
+    // Returns the next element in the iteration without advancing the iterator.
+	public Integer peek() {
+        // System.out.println("peek "+next);
+        return next;
+	}
+	
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	@Override
+	public Integer next() {
+        // System.out.println("next "+next);
+        Integer t=next;
+        if(it.hasNext()){
+            next=it.next();
+        }
+        else{
+            next=null;
+        }
+	    return t;
+	}
+	
+	@Override
+	public boolean hasNext() {
+        // System.out.println("hasNext"+next);
+	    return next!=null;
+	}
+}
+
+Runtime: 4 ms, faster than 99.59% of Java online submissions for Peeking Iterator.
+Memory Usage: 39.2 MB, less than 84.19% of Java online submissions for Peeking Iterator.
+
+The problem is that if we want to peek, we have to retrieve the top element by calling next(). However, the original iterator can not move backwards. So we shouldn't move the iterator when calling peek(). In that case, I store the top element in next, and only update next when calling next(). The Integer next is like a cache for the iterator.
