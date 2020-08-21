@@ -39,3 +39,7 @@ Memory Usage: 37.1 MB, less than 54.90% of Java online submissions for Non-overl
 
 Based on other's solution.
 https://leetcode.com/problems/non-overlapping-intervals/discuss/91713/Java%3A-Least-is-Most
+
+Still cannot solve this problem.
+The idea is the same to find maximum non overlapping intervals, which is the interval scheduling problem.
+First sort the intervals by ending time, and the count the intervals don't conflict. These are the maximum non overlapping intervals.

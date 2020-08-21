@@ -1,0 +1,41 @@
+class Solution {
+    Set<Character> vowels=new HashSet<>();
+    
+    public String toGoatLatin(String S) {
+        init();
+        String[] words=S.split(" ");
+        StringBuilder ap=new StringBuilder("maa");
+        StringBuilder sb=new StringBuilder("");
+        for(String w:words){
+            String t=trans(w);
+            sb.append(t+ap.toString()+" ");
+            ap.append("a");
+        }
+        sb.setLength(sb.length()-1);
+        return sb.toString();
+    }
+    
+    private void init(){
+        vowels.add('a');
+        vowels.add('e');
+        vowels.add('i');
+        vowels.add('o');
+        vowels.add('u');
+        vowels.add('A');
+        vowels.add('E');
+        vowels.add('I');
+        vowels.add('O');
+        vowels.add('U');
+    }
+    
+    private String trans(String w){
+        // System.out.println("trans "+w);
+        if(!vowels.contains(w.charAt(0))){
+            return w.substring(1)+w.charAt(0);
+        }
+        return w;
+    }
+}
+
+Runtime: 9 ms, faster than 36.36% of Java online submissions for First Unique Number.
+Memory Usage: 39.5 MB, less than 49.23% of Java online submissions for First Unique Number.

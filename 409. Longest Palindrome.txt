@@ -1,0 +1,27 @@
+class Solution {
+    public int longestPalindrome(String s) {
+        boolean[] freq=new boolean[52];
+        int len=0;
+        for(char ch:s.toCharArray()){
+            // System.out.println(ch);
+            int idx=ch-'a';
+            if(idx<0){
+                idx=ch-'A'+26;
+            }
+            // System.out.println(idx);
+            freq[idx]=!freq[idx];
+            if(!freq[idx]){
+                len+=2;
+            }
+            // System.out.println("len "+len);
+        }
+        if(len!=s.length()){
+            len++;
+        }
+        return len;
+    }
+}
+
+Didn't realize that I don't have to use all the avaiable occurance of a letter. For example, 'a' occurs 3 times in s, and I can build a palindrome with 0, 1, 2 or 3 'a'.
+
+The idea is to increase len by 2 when we found this letter has been seen once and set it to not seen. And if len is smaller than length of s, it means there are at least one letter with odd occurance.

@@ -1,0 +1,77 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        if(prices.length<2){
+            return 0;
+        }
+        List<Integer> bottom=new ArrayList<>();
+        List<Integer> top=new ArrayList<>();
+        int p=1;
+        while(p<prices.length && prices[p]==prices[p-1]){
+            p++;
+        }
+        if(p==prices.length){
+            return 0;
+        }
+        if(prices[p]>prices[p-1]){
+            bottom.add(p-1);
+        }
+        while(p<prices.length){
+            while(p<prices.length && prices[p]>=prices[p-1]){
+                p++;
+            }
+            // System.out.println("top "+(p-1));
+            top.add(p-1);
+            while(p<prices.length && prices[p]<=prices[p-1]){
+                p++;
+            }
+            // System.out.println("bottom "+(p-1));
+            bottom.add(p-1);
+        }
+        Map<Integer,List<Integer>> toSell=new HashMap<>();
+        Map<Integer, Integer> maxProfit=new HashMap<>();
+        for(int b:bottom){
+            List<Integer> li=new ArrayList<>();
+            int max=0;
+            for(int t:top){
+                if(t<=b){
+                    continue;
+                }
+                max=Math.max(prices[t]-prices[b],max);
+                li.add(t);
+            }
+            toSell.put(b,li);
+            maxProfit.put(b,max);
+        }
+        
+        int ans=0;
+        for(int b:bottom){
+            int total=0;
+            for(int t:toSell.get(b)){
+                int pro1=prices[t]-prices[b];
+                total=Math.max(pro1,total);
+                for(int b2:bottom){
+                    if(b2<=t){
+                        continue;
+                    }
+                    int pro2=maxProfit.get(b2);
+                    total=Math.max(pro1+pro2,total);
+                }
+            }
+            
+            ans=Math.max(ans,total);
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 227 ms, faster than 12.52% of Java online submissions for Best Time to Buy and Sell Stock III.
+Memory Usage: 41.3 MB, less than 38.55% of Java online submissions for Best Time to Buy and Sell Stock III.
+
+The performance is not good.
+The idea is to try every possible combinations.
+Time complexity O(B*T*B). B is the size of bottom, and T is the size of top.
+
+Considered using dp, but didn't figure out the formula.
+Other's DP solution. O(N) time O(1) space.
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/discuss/135704/Detail-explanation-of-DP-solution

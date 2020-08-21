@@ -1,0 +1,44 @@
+class Solution {
+    public int[] numsSameConsecDiff(int N, int K) {
+        if(N==1){
+            int[] ans=new int[10];
+            for(int i=0;i<10;i++){
+                ans[i]=i;
+            }
+            return ans;
+        }
+        List<Integer> li =new ArrayList<>();
+        for(int i=1;i<10;i++){
+            DFS(li,N-1,K,i,i);
+        }
+        int[] ans=new int[li.size()];
+        for(int i=0;i<li.size();i++){
+            ans[i]=li.get(i);
+        }
+        return ans;
+    }
+    
+    private void DFS(List<Integer> li, int res, int K, int digit, int cur){
+        // System.out.println("DFS "+cur+" res "+res);
+        if(res==0){
+            li.add(cur);
+            return;
+        }
+        if(K==0){
+            DFS(li,res-1,K,digit,cur*10+digit);
+            return;
+        }
+        int left=digit-K,right=digit+K;
+        if(left>=0){
+            DFS(li,res-1,K,left,cur*10+left);
+        }
+        if(right<10){
+            DFS(li,res-1,K,right,cur*10+right);
+        }
+    }
+}
+
+Runtime: 1 ms, faster than 99.25% of Java online submissions for First Unique Number.
+Memory Usage: 39.2 MB, less than 71.27% of Java online submissions for First Unique Number.
+
+Easy problem.
