@@ -1,0 +1,70 @@
+class Solution {
+    public int minSumOfLengths(int[] arr, int target) {
+        int[] sum=new int[arr.length+1];
+        int t=0;
+        for(int i=0;i<arr.length;i++){
+            t+=arr[i];
+            sum[i+1]=t;
+        }
+        int[] subs=new int[arr.length];
+        for(int i=0;i<subs.length;i++){
+            subs[i]=biSearch(sum,i,target)-1;
+            // System.out.println("subs "+i+" "+subs[i]);
+        }
+        
+        int[] minAfter=new int[arr.length];
+        Arrays.fill(minAfter,arr.length);
+        int min=arr.length;
+        for(int i=subs.length-1;i>=0;i--){
+            if(subs[i]>=0){
+                min=Math.min(min,subs[i]-i+1);
+            }
+            minAfter[i]=min;
+            // System.out.println("minAfter "+i+" "+minAfter[i]);
+        }
+        
+        min=arr.length+1;
+        for(int i=0;i<subs.length;i++){
+            if(subs[i]<0 || subs[i]>=arr.length-1){
+                continue;
+            }
+            int t1=subs[i]-i+1;
+            int t2=minAfter[subs[i]+1];
+            min=Math.min(min,t1+t2);
+            // System.out.println(i+" "+min);
+        }
+        if(min==arr.length+1){
+            return -1;
+        }
+        return min;
+    }
+    
+    private int biSearch(int[] sum, int start, int target){
+        // System.out.println("biSearch");
+        int left=start,right=sum.length;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            // System.out.println(left+" "+right+" "+(sum[mid]-sum[start]));
+            if(sum[mid]-sum[start]>target){
+                right=mid;
+            }
+            else if(sum[mid]-sum[start]<target){
+                left=mid+1;
+            }
+            else{
+                return mid;
+            }
+        }
+        return 0;
+    }
+}
+
+Runtime: 92 ms, faster than 45.62% of Java online submissions for Find Two Non-overlapping Sub-arrays Each With Target Sum.
+Memory Usage: 49.5 MB, less than 74.50% of Java online submissions for Find Two Non-overlapping Sub-arrays Each With Target Sum.
+
+For the problems about sum of consecutive sub array, presum is probably needed. First, I use the binary search and presum to find the sub array (i,j) with target sum for each index i. Then, I store the minimum size of subarray after i in minAfter[i]. Finally, the min size of two non-overlapping sub arrays can ba computed.
+Computing subs is O(NlogN), computing minAfter is O(N) and finding min is O(N). So the overall time complexity is O(NlogN).
+
+However, sliding window is better for this problem, not presum.
+Other's O(N) sliding window solution.
+https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/discuss/686105/JAVA-or-Sliding-window-with-only-one-array-or-No-HasMap

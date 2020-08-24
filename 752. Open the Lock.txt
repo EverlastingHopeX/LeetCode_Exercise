@@ -1,0 +1,64 @@
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        // System.out.println("target "+target);
+        HashSet<String> visited=new HashSet<>();
+        HashSet<String> dead=new HashSet<>();
+        for(String d:deadends){
+            dead.add(d);
+        }
+        int[] init=new int[target.length()];
+        String si=toString(init);
+        if(dead.contains(si)){
+            return -1;
+        }
+        visited.add(si);
+        Queue<int[]> que=new LinkedList<>();
+        que.offer(init);
+        int ans=0;
+        while(!que.isEmpty()){
+            int size=que.size();
+            // System.out.println(ans);
+            for(int i=0;i<size;i++){
+                int[] t=que.poll();
+                String str=toString(t);
+                // System.out.println(" "+str);
+                if(str.equals(target)){
+                    return ans;
+                }
+                for(int j=0;j<t.length;j++){
+                    int tmp=t[j];
+                    t[j]=tmp+1<=9?tmp+1:0;
+                    String s=toString(t);
+                    if(!visited.contains(s) && !dead.contains(s)){
+                        que.offer(t.clone());
+                        visited.add(s);
+                    }
+                    t[j]=tmp-1>=0?tmp-1:9;
+                    s=toString(t);
+                    if(!visited.contains(s) && !dead.contains(s)){
+                        que.offer(t.clone());
+                        visited.add(s);
+                    }
+                    t[j]=tmp;
+                }
+            }
+            ans++;
+        }
+
+        return -1;
+    }
+    
+    private static String toString(int[] t){
+        StringBuilder sb=new StringBuilder();
+        for(int i:t){
+            sb.append(i);
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 139 ms, faster than 63.64% of Java online submissions for Open the Lock.
+Memory Usage: 47.7 MB, less than 53.83% of Java online submissions for Open the Lock.
+
+At first, I think there may be an optimal solution that we can always try to reach target as soon as possible, then every time we are stuck, we can backtrace. That would be DFS, I don't know would that work, but I assume this kind of greedy algorithm would not work since no one post DFS solution.
+This solution is BFS, and can be improved by using two end BFS. Also, we can just add the deadends to visited at the begining instead of creating a set to hold them.
