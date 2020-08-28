@@ -1,0 +1,50 @@
+class Solution {
+    public int[] findRightInterval(int[][] intervals) {
+        int[][] nInte=new int[intervals.length][3];
+        for(int i=0;i<intervals.length;i++){
+            nInte[i][0]=intervals[i][0];
+            nInte[i][1]=intervals[i][1];
+            nInte[i][2]=i;
+        }
+        Arrays.sort(nInte,(o1,o2)->(o1[0]-o2[0]));
+        int[] ans=new int[intervals.length];
+        for(int i=0;i<nInte.length;i++){
+            // System.out.println(nInte[i][0]+","+nInte[i][1]+" "+nInte[i][2]);
+            ans[nInte[i][2]]=-1;
+            for(int j=i+1;j<nInte.length;j++){
+                // System.out.println(j);
+                if(nInte[j][0]>=nInte[i][1]){
+                    ans[nInte[i][2]]=nInte[j][2];
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 109 ms, faster than 16.44% of Java online submissions for Leftmost Column with at Least a One.
+Memory Usage: 43.7 MB, less than 91.86% of Java online submissions for Leftmost Column with at Least a One.
+
+Better than brute force which is seach whole array for every element.
+However, this is still O(N^2). The sorting is O(NlogN), and the loop is O(N^2). 
+We can use priority queue to make the latter part O(NlogN).
+
+PriorityQueue<int[]> que=new PriorityQueue<>((o1,o2)->(o1[1]-o2[1]));
+for(int i=0;i<nInte.length;i++){
+    // System.out.println(nInte[i][0]+", "+nInte[i][1]+"  "+nInte[i][2]);
+    while(!que.isEmpty()){
+        int[] p=que.peek();
+        if(p[1]<=nInte[i][0]){
+            ans[p[2]]=nInte[i][2];
+            que.poll();
+        }
+        else{
+            break;
+        }
+    }
+    que.offer(nInte[i]);
+    ans[nInte[i][2]]=-1;
+}
+
+Now time is 15 ms which beats 90.94%.

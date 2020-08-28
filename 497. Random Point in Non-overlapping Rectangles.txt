@@ -1,0 +1,54 @@
+class Solution {
+    
+    int[] rectSizes;
+    int total;
+    int[][] rects;
+    Random d;
+    
+    public Solution(int[][] rects) {
+        rectSizes=new int[rects.length];
+        d=new Random();
+        this.rects=rects;
+        total=0;
+        
+        for(int i=0;i<rects.length;i++){
+            int size=(rects[i][2]-rects[i][0]+1)*(rects[i][3]-rects[i][1]+1);
+            total+=size;
+            rectSizes[i]=size;
+            // System.out.println("total "+total);
+        }
+    }
+    
+    public int[] pick() {
+        int idx=d.nextInt(total);
+        // System.out.println("pick "+idx);
+        int i=0,size=0;
+        while(i<rectSizes.length){
+            if(size+rectSizes[i]>idx){
+                break;
+            }
+            size+=rectSizes[i];
+            i++;
+        }
+        idx=idx-size;
+        // System.out.println(idx+" after "+rects[i][0]+","+rects[i][1]);
+        int r=rects[i][0],c=rects[i][1];
+        int len=rects[i][2]-rects[i][0]+1;
+        // System.out.println("len "+len);
+        int t=idx/len;
+        c+=t;
+        r+=idx-len*t;
+        return new int[]{r,c};
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(rects);
+ * int[] param_1 = obj.pick();
+ */
+
+Runtime: 68 ms, faster than 70.40% of Java online submissions for First Unique Number.
+Memory Usage:  46 MB, less than 75.20% of Java online submissions for First Unique Number.
+
+Store the size of each rectangle and generate idx based on that.
