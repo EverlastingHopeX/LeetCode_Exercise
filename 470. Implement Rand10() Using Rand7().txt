@@ -1,0 +1,5 @@
+Didn't work it out.
+This kind of math problem should be hard since it requires a high math basis.
+
+Other's explanation of why choose 40.
+https://leetcode.com/problems/implement-rand10-using-rand7/discuss/322262/Intuition-for-magic-number-40

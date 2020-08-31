@@ -53,3 +53,45 @@ Runtime: 1 ms, faster than 100.00% of Java online submissions for Pancake Sortin
 Memory Usage: 37.8 MB, less than 19.81% of Java online submissions for Pancake Sorting.
 
 Actually stuck here in the second round.
+
+class Solution {
+    public List<Integer> pancakeSort(int[] A) {
+        int[] pos=new int[A.length+1];
+        for(int i=0;i<A.length;i++){
+            pos[A[i]]=i;
+        }
+        List<Integer> ans=new ArrayList<>();
+        for(int k=A.length;k>0;k--){
+            if(pos[k]==k-1){
+                continue;
+            }
+            if(pos[k]>0){
+                ans.add(pos[k]+1);
+            }
+            ans.add(k);
+            for(int i=1;i<pos.length;i++){
+                //A1
+                if(pos[i]<=pos[k]-1){
+                    pos[i]+=k-1-pos[k];
+                }
+                //k
+                else if(pos[i]==pos[k]){
+                    pos[i]=k-1;
+                }
+                //A2
+                else{
+                    pos[i]=k-1-pos[i];
+                }
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Pancake Sorting.
+Memory Usage: 39.5 MB, less than 78.32% of Java online submissions for Pancake Sorting.
+
+Just need to figure out the position transformation.
+The idea is to sort the array from end, put n to 1 on A[n-1] to A[0].
+For an number k, k+1 to n is already sorted, so the array A is like: A1,k,A2,B, B is sorted.
+The indexs of these sub arrays are A1(0,pos[k]-1),k(pos[k]),A2(pos[k]+1,k-1). After the first flip, they will be k(0),A1'(1,pos[k]),A2(pos[k]+1,k-1). Then after the second flip, they will be A2'(0,k-1-pos[k]-1),A1(k-1-pos[k],k-2),k(k-1). The index transformation is clear and easy to implement.

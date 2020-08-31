@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    
+    double max=0.0;
+    
+    public double maximumAverageSubtree(TreeNode root) {
+        helper(root);
+        return max;
+    }
+    //sum, nodes
+    private int[] helper(TreeNode root){
+        if(root==null){
+            return new int[]{0,0};
+        }
+        int[] l=helper(root.left);
+        int[] r=helper(root.right);
+        int sum=l[0]+r[0]+root.val;
+        int num=l[1]+r[1]+1;
+        double avg=sum/(num+0.0);
+        max=Math.max(max,avg);
+        return new int[]{sum,num};
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Maximum Average Subtree.
+Memory Usage: 40.2 MB, less than 47.58% of Java online submissions for Maximum Average Subtree.
+
+Easier than I thought, I thought there will be an test for overflow.
