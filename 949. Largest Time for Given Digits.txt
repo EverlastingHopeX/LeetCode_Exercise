@@ -1,0 +1,58 @@
+class Solution {
+    
+    public String largestTimeFromDigits(int[] A) {
+        int N=4;
+        boolean[] used=new boolean[N];
+        Arrays.sort(A);
+        int[] ans=new int[N];
+        if(!DFS(A,used,ans,0)){
+            return "";
+        }
+        
+        StringBuilder sb=new StringBuilder("");
+        for(int i=0;i<ans.length;i++){
+            sb.append(ans[i]);
+            if(i==1){
+                sb.append(":");
+            }
+        }
+        return sb.toString();
+    }
+    
+    int[] limit=new int[]{2,3,5,9};
+    
+    private boolean DFS(int[] A, boolean[] used, int[] ans, int idx){
+        if(idx>=ans.length){
+            return true;
+        }
+        for(int i=A.length-1;i>=0;i--){
+            if(used[i]){
+                continue;
+            }
+            if(A[i]>limit[idx]){
+                if(idx==1 && ans[0]<2){
+                    ans[idx]=A[i];
+                    used[i]=true;
+                    if(DFS(A,used,ans,idx+1)){
+                        return true;
+                    }
+                    used[i]=false;
+                }
+            }
+            else{
+                ans[idx]=A[i];
+                used[i]=true;
+                if(DFS(A,used,ans,idx+1)){
+                    return true;
+                }
+                used[i]=false;
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 2 ms, faster than 93.49% of Java online submissions for Leftmost Column with at Least a One.
+Memory Usage: 39 MB, less than 58.85% of Java online submissions for Leftmost Column with at Least a One.
+
+Greedy and DFS.

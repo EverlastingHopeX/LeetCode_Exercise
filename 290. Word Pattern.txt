@@ -1,0 +1,29 @@
+class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[] map=new String[26];
+        String[] words=str.split(" ");
+        if(pattern.length()!=words.length){
+            return false;
+        }
+        Set<String> used=new HashSet<>();
+        for(int i=0;i<pattern.length();i++){
+            int idx=pattern.charAt(i)-'a';
+            if(map[idx]==null){
+                if(used.contains(words[i])){
+                    return false;
+                }
+                map[idx]=words[i];
+                used.add(words[i]);
+            }
+            else{
+                if(!map[idx].equals(words[i])){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 0 ms 100.00%
+Memory Usage: 37.2 MB  90.14%

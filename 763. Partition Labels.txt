@@ -81,3 +81,55 @@ class Solution {
 
 Worse solution compared with my previous one.
 There is no need to use hashmap when there are definitive number of entries.
+
+class Solution {
+    public List<Integer> partitionLabels(String S) {
+        int[][] occ=new int[26][2];
+        for(int i=0;i<26;i++){
+            occ[i][0]=-1;
+            occ[i][1]=-1;
+        }
+        for(int i=0;i<S.length();i++){
+            int idx=S.charAt(i)-'a';
+            if(occ[idx][0]==-1){
+                occ[idx][0]=i;
+            }
+            occ[idx][1]=i;
+        }
+        List<Integer> ans=new ArrayList<>();
+        int i=0;
+        while(i<S.length()){
+            int t=expand(S,occ,i);
+            ans.add(t-i+1);
+            i=t+1;
+        }
+        return ans;
+    }
+    
+    private int expand(String S, int[][] occ, int pos){
+        int idx=S.charAt(pos)-'a';
+        // System.out.println("expand "+left+","+right);
+        int p=occ[idx][0];
+        int end=occ[idx][1];
+        boolean[] used=new boolean[26];
+        while(p<end){
+            idx=S.charAt(p)-'a';
+            if(used[idx]){
+                p++;
+                continue;
+            }
+            used[idx]=true;
+            end=Math.max(end,occ[idx][1]);
+            p++;
+        }
+        return end;
+    }
+}
+
+Runtime: 4 ms, faster than 64.73% of Java online submissions for Partition Labels.
+Memory Usage: 39.6 MB, less than 43.88% of Java online submissions for Partition Labels.
+
+Same solution as the first one.
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Partition Labels.
+Memory Usage: 37.7 MB, less than 97.80% of Java online submissions for Partition Labels.
