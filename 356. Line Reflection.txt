@@ -1,0 +1,50 @@
+class Solution {
+    public boolean isReflected(int[][] points) {
+        Map<Integer,Set<Integer>> yMap=new HashMap<>();
+        for(int[] p:points){
+            Set<Integer> set=yMap.getOrDefault(p[1],new HashSet<>());
+            set.add(p[0]);
+            yMap.put(p[1],set);
+        }
+        Double mid=null;
+        for(int y:yMap.keySet()){
+            // System.out.println("y "+y);
+            Set<Integer> set=yMap.get(y);
+            List<Integer> xs=new ArrayList<>();
+            xs.addAll(set);
+            Collections.sort(xs);
+            int left=0,right=xs.size()-1;
+            while(left<right){
+                int d1=xs.get(left+1)-xs.get(left);
+                int d2=xs.get(right)-xs.get(right-1);
+                if(d1!=d2){
+                    // System.out.println("dist not right");
+                    return false;
+                }
+                left++;
+                right--;
+            }
+            // System.out.println(left+" "+right);
+            Double t=(xs.get(left)+xs.get(right))/2.0;
+            // System.out.println("t "+t+" mid "+mid);
+            if(mid==null){
+                mid=t;
+            }
+            else{
+                if(!mid.equals(t)){
+                    // System.out.println("mid not right");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 8 ms, faster than 73.16% of Java online submissions for Line Reflection.
+Memory Usage: 42.5 MB, less than 64.22% of Java online submissions for Line Reflection.
+
+Need to be carefull when comparing non primitive types.
+O(N) time, O(N) space.
+
+Another way to solve this is by storing the pairs in set and search if there is a symetrical point. One way to find the line is to find the min and max x of points, and if the line exists, it should be x=(min+max)/2.

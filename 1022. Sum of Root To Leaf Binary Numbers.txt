@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int sum;
+    public int sumRootToLeaf(TreeNode root) {
+        sum=0;
+        LinkedList<Integer> path=new LinkedList<>();
+        DFS(root,path);
+        return sum;
+    }
+    
+    private void DFS(TreeNode root, LinkedList<Integer> path){
+        path.add(root.val);
+        if(root.left!=null){
+            DFS(root.left,path);
+        }
+        if(root.right!=null){
+            DFS(root.right,path);
+        }
+        if(root.left==null && root.right==null){
+            int t=0;
+            for(int p:path){
+                t=t*2+p;
+            }
+            sum+=t;
+        }
+        path.removeLast();
+    }
+}
+
+Runtime: 1 ms 50.03%
+Memory Usage: 39.2 MB 58.69%
+
+Typical DFS problem. Could be modified into iterative solution with stack.

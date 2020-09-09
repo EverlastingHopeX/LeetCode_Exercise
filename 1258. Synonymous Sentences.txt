@@ -1,0 +1,97 @@
+class Solution {
+    
+    int[] idx;
+    Set<String>[] syns;
+    Map<String,Integer> groups;
+    
+    public List<String> generateSentences(List<List<String>> synonyms, String text) {
+        
+        idx=new int[synonyms.size()];
+        syns=new HashSet[synonyms.size()];
+        groups=new HashMap<>();
+        
+        for(int i=0;i<synonyms.size();i++){
+            idx[i]=i;
+            syns[i]=new HashSet<>();
+            String s1=synonyms.get(i).get(0);
+            String s2=synonyms.get(i).get(1);
+            if(!groups.containsKey(s1)){
+                groups.put(s1,i);
+                syns[i].add(s1);
+            }
+            if(!groups.containsKey(s2)){
+                groups.put(s2,i);
+                syns[i].add(s2);
+            }
+            int p1=find(s1);
+            int p2=find(s2);
+            if(p1!=p2){
+                idx[p2]=p1;
+                syns[p1].addAll(syns[p2]);
+            }
+        }
+        
+        //print syns
+        // for(int i=0;i<idx.length;i++){
+        //     if(idx[i]!=i){
+        //         continue;
+        //     }
+        //     System.out.println("---");
+        //     for(String s:syns[i]){
+        //         System.out.println(s);
+        //     }
+        // }
+        
+        List<String> slist=new ArrayList<>();
+        slist.add("");
+        String[] words=text.split(" ");
+        List<String> tmp=BFS(slist,words,0);
+        List<String> ans=new ArrayList<>();
+        for(String s:tmp){
+            ans.add(s.substring(0,s.length()-1));
+        }
+        Collections.sort(ans);
+        return ans;
+    }
+    
+    private int find(String s){
+        int p=groups.get(s);
+        while(idx[p]!=p){
+            p=idx[p];
+        }
+        return p;
+    }
+    
+    private List<String> BFS(List<String> slist, String[] words, int i){
+        // System.out.println("BFS "+i);
+        if(i>=words.length){
+            return slist;
+        }
+        List<String> nlist=new ArrayList<>();
+        if(!groups.containsKey(words[i])){
+            // System.out.println("not found");
+            for(String s:slist){
+                nlist.add(s+words[i]+" ");
+            }
+            return BFS(nlist,words,i+1);
+        }
+        int p=find(words[i]);
+        // for(String syn:syns[p]){
+        //     System.out.println("syn "+syn);
+        // }
+        for(String s:slist){
+            for(String syn:syns[p]){
+                nlist.add(s+syn+" ");
+            }
+        }
+        // for(String s:nlist){
+        //     System.out.println(s);
+        // }
+        return BFS(nlist,words,i+1);
+    }
+}
+
+Runtime: 5 ms, faster than 65.78% of Java online submissions for Synonymous Sentences.
+Memory Usage: 38.6 MB, less than 66.31% of Java online submissions for Synonymous Sentences.
+
+Simply BFS.
