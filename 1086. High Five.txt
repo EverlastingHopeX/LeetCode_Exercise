@@ -1,0 +1,41 @@
+class Solution {
+    public int[][] highFive(int[][] items) {
+        Map<Integer,PriorityQueue<Integer>> map=new HashMap<>();
+        for(int[] item:items){
+            // System.out.println(item[0]);
+            PriorityQueue<Integer> pq=map.getOrDefault(item[0],new PriorityQueue<>());
+            if(pq.size()<5){
+                pq.offer(item[1]);
+            }
+            else{
+                int min=pq.peek();
+                // System.out.println("min "+min);
+                if(min<item[1]){
+                    pq.poll();
+                    pq.offer(item[1]);
+                }
+            }
+            // System.out.println(pq.size());
+            map.put(item[0],pq);
+        }
+        int[][] avg=new int[map.size()][2];
+        int i=0;
+        for(int id:map.keySet()){
+            avg[i][0]=id;
+            PriorityQueue<Integer> pq=map.get(id);
+            int sum=0;
+            while(!pq.isEmpty()){
+                sum+=pq.poll();
+            }
+            // System.out.println("sum "+sum);
+            avg[i][1]=sum/5;
+            i++;
+        }
+        return avg;
+    }
+}
+
+Runtime: 4 ms, faster than 92.91% of Java online submissions for High Five.
+Memory Usage: 40.3 MB, less than 44.89% of Java online submissions for High Five.
+
+Use priorityqueue to store the top 5 scores.

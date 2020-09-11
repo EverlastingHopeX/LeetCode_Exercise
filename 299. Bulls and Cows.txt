@@ -1,0 +1,31 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+        int bull=0, cow=0;
+        int[] notMatched=new int[10];
+        for(int i=0;i<secret.length();i++){
+            if(secret.charAt(i)==guess.charAt(i)){
+                bull++;
+                continue;
+            }
+            // System.out.println("not matched");
+            int sec=secret.charAt(i)-'0';
+            if(notMatched[sec]<0){
+                cow++;
+            }
+            notMatched[sec]++;
+            int gue=guess.charAt(i)-'0';
+            if(notMatched[gue]>0){
+                cow++;
+            }
+            notMatched[gue]--;
+        }
+        return bull+"A"+cow+"B";
+    }
+}
+
+Runtime: 4 ms, faster than 91.60% of Java online submissions for Bulls and Cows.
+Memory Usage: 39.3 MB, less than 87.41% of Java online submissions for Bulls and Cows.
+
+I first solve this with a two pass solution using hashmap. Then improved it by replace map with array. The two pass solution will store the not exactally matched (bull) digits in secret in the first pass. Then count the cows in the second pass.
+
+The one pass solution is to store the occurence of digits in both secret and guess, the occurence will increase by one if found in secret and decrease by one if found in guess. So if the occurance of a digit in secret is less than 0, it means it already appeared in guess, so there is a cow; if the occurance of a digit in guess is larger than 0, it means it already appeared in secret, so there is also cow.

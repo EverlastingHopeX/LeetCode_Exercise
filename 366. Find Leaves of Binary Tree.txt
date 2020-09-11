@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> findLeaves(TreeNode root) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(root==null){
+            return ans;
+        }
+        Map<Integer,List<Integer>> layers=new HashMap<>();
+        int max=DFS(root,layers);
+        for(int i=0;i<=max;i++){
+            ans.add(layers.get(i));
+        }
+        return ans;
+    }
+    
+    private int DFS(TreeNode root, Map<Integer,List<Integer>> layers){
+        int max=0;
+        if(root.left!=null){
+            max=Math.max(max,1+DFS(root.left,layers));
+        }
+        if(root.right!=null){
+            max=Math.max(max,1+DFS(root.right,layers));
+        }
+        List<Integer> li=layers.getOrDefault(max,new ArrayList<>());
+        li.add(root.val);
+        layers.put(max,li);
+        // System.out.println(root.val+" max "+max);
+        return max;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Find Leaves of Binary Tree.
+Memory Usage: 38 MB, less than 53.95% of Java online submissions for Find Leaves of Binary Tree.
+
+Store the the depth of each node in map. The depth is the maximum length from this node to its leaf children.

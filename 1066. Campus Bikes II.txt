@@ -36,3 +36,8 @@ Memory Usage: 34.4 MB, less than 100.00% of Java online submissions for Campus B
 The DFS solution is quite elementary, so the improvement is really important.
 Other's solution.
 https://leetcode.com/problems/campus-bikes-ii/discuss/305218/DFS-%2B-Pruning-And-DP-Solution
+
+Another dp solution.
+Since we can get the optimal distribution of k+1 workers and k+1 bikes (State k+1) based on k workers and k bikes (State k), we can do this recursively to find the optimal distribution for N workers and N bikes. One problem is that among these calls to DFS, part of them are redundant. For example, we will call multiple times DFS() when bike i and bike j are not taken, but we already know the answer after the first call. So we can just store the answer for this state and use it directly.
+So if the bTaken is [1,1,0,0], and we figure out the min dist for this state, then next time when we find the bTaken is [1,1,0,0], we should directly use it instead of compute it again.
+https://leetcode.com/problems/campus-bikes-ii/discuss/360037/Step-by-Step-solution-from-400ms-to-1ms-(beating-100)
