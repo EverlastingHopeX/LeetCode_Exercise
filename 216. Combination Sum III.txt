@@ -1,0 +1,49 @@
+class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans=new ArrayList<>();
+        boolean[] used=new boolean[10];
+        LinkedList<Integer> path=new LinkedList<>();
+        DFS(ans,used,path,k,n,1);
+        return ans;
+    }
+    
+    private void DFS(List<List<Integer>> ans, boolean[] used, LinkedList<Integer> path, int kRes, int nRes, int min){
+        // System.out.println("DFS k "+kRes+" n "+nRes+" min "+min);
+        if(nRes<0){
+            return;
+        }
+        if(kRes==1){
+            if(nRes>9 || nRes<min){
+                //nRes out of range
+            }
+            else if(!used[nRes]){
+                path.addLast(nRes);
+                List<Integer> li=new ArrayList<>();
+                li.addAll(path);
+                ans.add(li);
+                path.removeLast();
+            }
+            return;
+        }
+        for(int i=min;i<=9;i++){
+            if(used[i]){
+                continue;
+            }
+            //i too large
+            if(i+kRes-1>nRes){
+                break;
+            }
+            used[i]=true;
+            path.addLast(i);
+            DFS(ans,used,path,kRes-1,nRes-i,i+1);
+            used[i]=false;
+            path.removeLast();
+        }
+    }
+}
+
+Runtime: 1 ms
+Memory Usage: 39 MB
+
+I overcomplexed this problem at first. I didn't notice that the numbers in combination should be unique and try to solve this using dp based on memorization.
+This still can be improved by removing array used, since we already have min as boundary. And the early break should be "i*kRes>nRes" instead of "i+kRes-1>nRes", also becourse of min.
