@@ -28,3 +28,27 @@ Memory Usage: 34 MB, less than 100.00% of Java online submissions for House Robb
 
 Didn't complete this solution by myself.
 https://leetcode.com/problems/house-robber/discuss/351417/JAVA-DP-faster-than-100-time-and-memory
+
+class Solution {
+    public int rob(int[] nums) {
+        int N=nums.length;
+        if(N==0){
+            return 0;
+        }
+        else if(N==1){
+            return nums[0];
+        }
+        int[] dp=new int[N];
+        dp[0]=nums[0];
+        dp[1]=Math.max(nums[1],dp[0]);
+        for(int i=2;i<nums.length;i++){
+            dp[i]=Math.max(nums[i]+dp[i-2],dp[i-1]);
+        }
+        return dp[N-1];
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 39.2 MB
+
+Simple dp.

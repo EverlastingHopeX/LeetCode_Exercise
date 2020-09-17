@@ -1,0 +1,68 @@
+class Solution {
+    int max=0;
+    public int maxLength(List<String> arr) {
+        List<Integer>[] dict=new ArrayList[26];
+        int[] resLen=new int[arr.size()];
+        int t=0;
+        boolean[] notUnique=new boolean[arr.size()];
+        for(int i=resLen.length-1;i>=0;i--){
+            resLen[i]=t;
+            t+=arr.get(i).length();
+            int[] freq=new int[26];
+            for(char ch:arr.get(i).toCharArray()){
+                int idx=ch-'a';
+                if(freq[idx]>0){
+                    notUnique[i]=true;
+                    break;
+                }
+                freq[idx]++;
+            }
+            // System.out.println("not unique? "+notUnique[i]);
+            
+        }
+        for(int i=0;i<arr.size();i++){
+            // System.out.println("Start "+i);
+            Set<Character> used=new HashSet<>();
+            DFS(arr,i,used,resLen,notUnique);
+        }
+        return max;
+    }
+    
+    private void DFS(List<String> arr, int idx, Set<Character> used, int[] resLen, boolean[] notUnique){
+        // System.out.println("DFS "+idx);
+        if(idx>=arr.size()){
+            max=Math.max(max,used.size());
+            return ;
+        }
+        DFS(arr,idx+1,used,resLen,notUnique);
+        if(notUnique[idx]){
+            return;
+        }
+        int t=used.size();
+        if(t+arr.get(idx).length()+resLen[idx]<=max){
+            return;
+        }
+        boolean isValid=true;
+        for(char ch:arr.get(idx).toCharArray()){
+            if(used.contains(ch)){
+                isValid=false;
+                break;
+            }
+        }
+        if(isValid){
+            for(char ch:arr.get(idx).toCharArray()){
+                used.add(ch);
+            }
+            DFS(arr,idx+1,used,resLen,notUnique);
+            for(char ch:arr.get(idx).toCharArray()){
+                used.remove(ch);
+            }
+        }
+    }
+}
+
+Runtime: 18 ms, faster than 60.43% of Java online submissions for Maximum Length of a Concatenated String with Unique Characters.
+Memory Usage: 42.7 MB, less than 30.37% of Java online submissions for Maximum Length of a Concatenated String with Unique Characters.
+
+The idea is DFS.
+The resLen is used for early break and notUnique is used for skipping not valid words.
