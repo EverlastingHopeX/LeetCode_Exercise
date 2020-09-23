@@ -1,0 +1,51 @@
+class Solution {
+    int pathCnt=0;
+    
+    public int uniquePathsIII(int[][] grid) {
+        int[] start=new int[2];
+        int cnt=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==-1){
+                    continue;
+                }
+                if(grid[i][j]==1){
+                    start[0]=i;
+                    start[1]=j;
+                }
+                cnt++;
+            }
+        }
+        grid[start[0]][start[1]]=-1;
+        DFS(grid,start[0],start[1],cnt-1);
+        return pathCnt;
+    }
+    int[][] dir=new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+    private void DFS(int[][] grid, int i, int j, int cnt){
+        // System.out.println("DFS "+i+" "+j+" "+cnt);
+        if(grid[i][j]==2){
+            if(cnt==0){
+                pathCnt++;
+            }
+            return;
+        }
+        for(int[] d:dir){
+            int ni=i+d[0],nj=j+d[1];
+            if(ni<0 || ni>=grid.length || nj<0 || nj>=grid[0].length){
+                continue;
+            }
+            if(grid[ni][nj]!=-1){
+                int t=grid[ni][nj];
+                if(grid[ni][nj]!=2)
+                    grid[ni][nj]=-1;
+                DFS(grid,ni,nj,cnt-1);
+                grid[ni][nj]=t;
+            }
+        }
+    }
+}
+
+Runtime: 0 ms	100%
+Memory Usage: 36.5 MB 93.97%
+
+Pretty easy, I thought there could be a better way to solve this instead of DFS. But it seems DFS just works fine.

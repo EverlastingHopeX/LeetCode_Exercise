@@ -1,0 +1,10 @@
+Didn't work it out.
+It is easy to solve this with hashmap, but it does not satisfy the O(1) space requirement.
+
+Other's solution using Boyer-Moore Majority Vote with explanation.
+
+This algorithm maintains a candidate and a counter for candidate. The counter will reduce by one if current number is not the candidate, and increase by one if it is. If the counter is 0, current number will be new candidate and counter is set to be 1. So if there is a majority number, some part of it will be paired with (or offset by) other non majority number, and it will still be the candidate after one pass.
+But the candidate may not be majority number if there is no majority number, so a second pass is needed to verify this candidate. Its freqency will be counted and check if it is majority number.
+For this problem, n/2 is not the measurement for majority number. However, for measurements like n/(k+1), we only need to store k candidates and k counters. I can't understand it fully, hopefully I can understand this better next time.
+
+https://leetcode.com/problems/majority-element-ii/discuss/63520/Boyer-Moore-Majority-Vote-algorithm-and-my-elaboration

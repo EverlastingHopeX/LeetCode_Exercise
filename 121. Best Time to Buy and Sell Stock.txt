@@ -49,3 +49,47 @@ class Solution {
 
 The similar idea as the previous solution but the logic is more clear.
 Pretty easy after dealing with the 53.
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        Stack<Integer> st=new Stack<>();
+        int[] nextLarger=new int[prices.length];
+        for(int i=0;i<prices.length;i++){
+            nextLarger[i]=i;
+            while(!st.isEmpty()){
+                int top=st.peek();
+                if(prices[top]<prices[i]){
+                    st.pop();
+                    nextLarger[top]=i;
+                }
+                else{
+                    break;
+                }
+            }
+            st.push(i);
+        }
+        int max=0;
+        for(int i=0;i<nextLarger.length;i++){
+            int t=findNextMax(nextLarger,i);
+            if(t==i){
+                continue;
+            }
+            max=Math.max(max,prices[t]-prices[i]);
+        }
+        return max;
+    }
+    
+    private int findNextMax(int[] nextLarger, int i){
+        if(nextLarger[i]==i){
+            return i;
+        }
+        int t=findNextMax(nextLarger,nextLarger[i]);
+        nextLarger[i]=t;
+        return t;
+    }
+}
+
+Runtime: 4 ms
+Memory Usage: 39.3 MB
+
+Overcomplexed the problem this time.

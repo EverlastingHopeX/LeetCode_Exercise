@@ -1,0 +1,42 @@
+class Solution {
+    public boolean isRobotBounded(String instructions) {
+        int[][] dirs=new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
+        int[] pos=new int[2];
+        int d=0;
+        int turn=0;
+        for(char ch:instructions.toCharArray()){
+            if(ch=='L'){
+                turn--;
+                d--;
+                if(d<0){
+                    d=3;
+                }
+            }
+            else if(ch=='R'){
+                d++;
+                turn++;
+                if(d>3){
+                    d=0;
+                }
+            }
+            else{
+                pos[0]+=dirs[d][0];
+                pos[1]+=dirs[d][1];
+            }
+        }
+        if(pos[0]==0 && pos[1]==0){
+            return true;
+        }
+        turn=Math.abs(turn)%4;
+        if(turn==0){
+            return false;
+        }
+        return true;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Robot Bounded In Circle.
+Memory Usage: 37.2 MB, less than 78.91% of Java online submissions for Robot Bounded In Circle.
+
+The idea is that if the robot is still at the start position or facing a different direction, then there is a circle that the robot never leaves.
+It is apparent for the situation that robot stays the same position. When it faces a different position, its movement can be regarded as a curve, and will eventually become a circle.

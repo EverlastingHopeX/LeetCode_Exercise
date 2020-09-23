@@ -1,0 +1,36 @@
+class Solution {
+    public List<Integer> sequentialDigits(int low, int high) {
+        String sh=high+"",sl=low+"";
+        int base=sl.length();
+        int len=sh.length()-sl.length();
+        List<Integer> ans=new ArrayList<>();
+        for(int i=0;i<=len;i++){
+            for(int j=1;j<10;j++){
+                DFS(ans,low,high,j,i+base);
+            }
+        }
+        return ans;
+    }
+    
+    private void DFS(List<Integer> ans, int low, int high, int start, int len){
+        System.out.println("DFS "+start+" "+len);
+        int num=0;
+        for(int i=0;i<len;i++){
+            if(start+i>9){
+                return;
+            }
+            num=num*10+start+i;
+            if(num>high){
+                return;
+            }
+        }
+        if(num>=low)
+            ans.add(num);
+    }
+}
+
+Runtime: 4 ms	13.08%
+Memory Usage: 36.9 MB 56.92%
+
+Not hard, but not a good performance.
+However, 4ms is hard to improve.
