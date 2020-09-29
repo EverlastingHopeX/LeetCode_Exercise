@@ -73,3 +73,46 @@ or simply use String's compareTo()
 
 Apart from that, there is not need to skip the leading zeros, since if there is a leading zero, the rest of the s must be zero, otherwise there is an invalid number in nums like "0xxx".
 
+
+class Solution {
+    public String largestNumber(int[] nums) {
+        String[] arr=new String[nums.length];
+        for(int i=0;i<nums.length;i++){
+            arr[i]=nums[i]+"";
+        }
+        Arrays.sort(arr,new Comparator<String>(){
+            @Override
+            public int compare(String s1, String s2){
+                // System.out.println("compare "+s1+" "+s2);
+                for(int i=0;i<s1.length() && i<s2.length();i++){
+                    int t1=s1.charAt(i),t2=s2.charAt(i);
+                    if(t1==t2){
+                        continue;
+                    }
+                    return t2-t1;
+                }
+                if(s1.length()<s2.length()){
+                    String T=s2.substring(s1.length());
+                    return -s2.compareTo(T+s1);
+                }
+                String T=s1.substring(s2.length());
+                return s1.compareTo(T+s2);
+            }
+        });
+        
+        if(arr[0].equals("0")){
+            return "0";
+        }
+        
+        StringBuilder sb=new StringBuilder("");
+        for(String s:arr){
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 9 ms 35.69%
+Memory Usage: 38.9 MB 93.31%
+
+Not much different from the previous solution.

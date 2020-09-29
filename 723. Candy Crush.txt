@@ -1,0 +1,117 @@
+class Solution {
+    public int[][] candyCrush(int[][] board) {
+        boolean crushed=true;
+        while(crushed){
+            crushed=helper(board);
+            // print(board);
+        }
+        return board;
+    }
+    
+    private boolean helper(int[][] board){
+        // System.out.println("***helper***");
+        boolean crushed=false;
+        for(int row=0;row<board.length;row++){
+            // System.out.println("row "+row);
+            int left=0,right=0;
+            while(right<board[0].length){
+                if(board[row][left]==0){
+                    left++;
+                    right++;
+                    continue;
+                }
+                // System.out.println(board[row][right]);
+                if(board[row][right]!=board[row][left]){
+                    // System.out.println("stop "+left+" "+right);
+                    int flag=1;
+                    if(right-left>=3){
+                        flag=-1;
+                        crushed=true;
+                        // System.out.println("crush "+row+" "+left+" to "+right);
+                    }
+                    while(left<right){
+                        board[row][left]=flag*board[row][left];
+                        left++;
+                    }
+                }
+                right++;
+            }
+            int flag=1;
+            if(right-left>=3){
+                flag=-1;
+                crushed=true;
+                // System.out.println("crush "+row+" "+left+" to "+right);
+                while(left<right){
+                    board[row][left]=flag*board[row][left];
+                    left++;
+                }
+            }
+        }
+        // print(board);
+        
+        for(int col=0;col<board[0].length;col++){
+            // System.out.println("col "+col);
+            int left=board.length-1,right=board.length-1;
+            int[] nCol=new int[board.length];
+            int p=board.length-1;
+            while(right>=0){
+                if(board[left][col]==0){
+                    left--;
+                    right--;
+                    continue;
+                }
+                if(board[right][col]==board[left][col] || board[right][col]==-board[left][col]){
+                    right--;
+                }
+                else{
+                    if(left-right>=3){
+                        crushed=true;
+                        left=right;
+                    }
+                    else{
+                        while(left>right){
+                            if(board[left][col]>0){
+                                nCol[p]=board[left][col];
+                                p--;
+                            }
+                            left--;
+                        }
+                    }
+                }
+            }
+            if(left-right>=3){
+                crushed=true;
+                left=right;
+            }
+            else{
+                while(left>right){
+                    if(board[left][col]>0){
+                        nCol[p]=board[left][col];
+                        p--;
+                    }
+                    left--;
+                }
+            }
+            for(int i=board.length-1;i>=0;i--){
+                board[i][col]=nCol[i];
+            }
+        }
+        // print(board);
+        return crushed;
+    }
+    
+    private void print(int[][] board){
+        System.out.println("print");
+        for(int i=0;i<board.length;i++){
+            for(int j=0;j<board[0].length;j++){
+                System.out.print(board[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+}
+
+Runtime: 5 ms, faster than 63.92% of Java online submissions for Candy Crush.
+Memory Usage: 39.8 MB, less than 95.62% of Java online submissions for Candy Crush.
+
+First iterate the board row by row and set the candies to negative if they should be crushed later. After that, iterate the board column by column and store the candies that should not be crushed into new array, then update this column.

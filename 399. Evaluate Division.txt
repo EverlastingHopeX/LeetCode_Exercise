@@ -97,3 +97,92 @@ Runtime: 1 ms, faster than 90.15% of Java online submissions for Evaluate Divisi
 Memory Usage: 34.7 MB, less than 99.72% of Java online submissions for Evaluate Division.
 
 Based on union find.
+
+class Solution {
+
+    class Vari{
+        String current;
+        String parent;
+        double multi;
+        
+        Vari(String c, String p, double m){
+            this.current=c;
+            this.parent=p;
+            this.multi=m;
+        }
+    }
+    
+    Map<String,Vari> parents=new HashMap<>();
+    
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        parents=new HashMap<>();
+        
+        for(int i=0;i<equations.size();i++){
+            String nome=equations.get(i).get(0);
+            String deno=equations.get(i).get(1);
+            union(nome,deno,values[i]);
+        }
+        // for(String var:parents.keySet()){
+        //     Vari t=parents.get(var);
+            // System.out.println(var+": "+t.current+", "+t.parent+", "+t.multi);
+        // }
+        
+        double[] ans=new double[queries.size()];
+        
+        for(int i=0;i<queries.size();i++){
+            String nome=queries.get(i).get(0);
+            String deno=queries.get(i).get(1);
+            // System.out.println(nome+" / "+deno);
+            ans[i]=-1.0;
+            if(!parents.containsKey(nome) || !parents.containsKey(deno)){
+                continue;
+            }
+            Vari pn=find(nome);
+            Vari pd=find(deno);
+            // System.out.println(pn.parent+" "+pd.parent);
+            if(pn.parent.equals(pd.parent)){
+                ans[i]=pd.multi/pn.multi;
+            }
+        }
+        return ans;
+    }
+    
+    private void union(String nome, String deno, double m){
+        // System.out.println("union "+nome+" "+deno);
+        Vari pn=find(nome);
+        Vari pd=find(deno);
+        if(pn.parent.equals(pd.parent)){
+            // System.out.println("dup");
+            return;
+        }
+        Vari t=new Vari(pd.parent,pn.parent,1.0);
+        t.multi=m*pn.multi/pd.multi;
+        parents.put(t.current,t);
+        // System.out.println(t.current+", "+t.parent+", "+t.multi);
+    }
+    
+    private Vari find(String var){
+        // System.out.println("find "+var);
+        Vari t=new Vari(var,var,1.0);
+        if(!parents.containsKey(var)){
+            // System.out.println(t.current+", "+t.parent+", "+t.multi);
+            parents.put(t.current,t);
+            return t;
+        }
+        Vari pv=parents.get(var);
+        while(pv.current!=pv.parent){
+            t.parent=pv.parent;
+            t.multi=t.multi*pv.multi;
+            // System.out.println("get "+pv.parent);
+            pv=parents.get(pv.parent);
+        }
+        // System.out.println(t.current+", "+t.parent+", "+t.multi);
+        return t;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 37.8 MB
+
+Couldn't solve this the second time because I overcomplicated this problem. I asumed that "ab" stands for "a"*"b", which is not the case for this problem.
+Solve this based on the previous solution after I figure out what is the problem.

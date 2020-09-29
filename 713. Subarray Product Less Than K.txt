@@ -2,3 +2,37 @@ Didn't work it out.
 
 Other's solution.
 https://leetcode.com/problems/subarray-product-less-than-k/discuss/108861/JavaC%2B%2B-Clean-Code-with-Explanation
+
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        // System.out.println("len "+nums.length);
+        int cnt=0;
+        int left=0,right=0;
+        int prod=1;
+        while(left<nums.length){
+            // System.out.println(left+" "+right+" "+prod);
+            while(right<nums.length){
+                int t=prod*nums[right];
+                // System.out.println(right+": t "+t);
+                if(t>=k){
+                    break;
+                }
+                prod=t;
+                right++;
+            }
+            cnt+=right-left;
+            // System.out.println(right+" cnt "+cnt+" prod "+prod);
+            prod=prod/nums[left];
+            left++;
+            if(right<left){
+                right=left;
+                prod=1;
+            }
+        }
+        return cnt;
+    }
+}
+
+Runtime: 8 ms	43.56%
+Memory Usage: 49.2 MB 65.18%
+Solve this at the second time. Sliding window.
