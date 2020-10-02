@@ -1,0 +1,49 @@
+class Solution {
+    public List<List<String>> wordSquares(String[] words) {
+        int N=words[0].length();
+        char[][] board=new char[N][N];
+        List<List<String>> ans=new ArrayList<>();
+        // boolean[] used=new boolean[words.length];
+        LinkedList<String> path=new LinkedList<>();
+        DFS(ans,words,0,path);
+        return ans;
+    }
+    
+    private void DFS(List<List<String>> ans, String[] words, int idx,LinkedList<String> path){
+        // System.out.println("DFS "+idx);
+        if(idx>=words[0].length()){
+            List<String> li=new ArrayList<>(path);
+            ans.add(li);
+            return;
+        }
+        
+        for(int i=0;i<words.length;i++){
+            boolean isValid=true;
+            //idx,j -> j, idx
+            for(int j=0;j<words[i].length();j++){
+                if(j<idx && path.get(j).charAt(idx)!=words[i].charAt(j)){
+                    isValid=false;
+                    break;
+                }
+            }
+            if(isValid){
+                path.addLast(words[i]);
+                // System.out.println(words[i]+" at "+idx);
+                DFS(ans,words,idx+1,path);
+                // System.out.println(idx+" reset");
+                path.removeLast();
+            }
+        }
+    }
+}
+
+Runtime: 2726 ms
+Memory Usage: 41.1 MB
+
+DFS is easy to come up with, but the performance is terrible. Using char array to instead of list could be faster, but still a terrible performance.
+Time complexity: O(N^K), N is the number of words, K is the length of square.
+
+Other's DFS solution with Trie.
+Different from my DFS, this DFS is based on diagonal lines while mine is based on row. Although it seems that the time complexity does not change, the search space is actually narrowing down level by level instead of N for all levels, which makes the time complexity much less than O(N^K). It stores the state of each row by using Trie, which makes it easy to check if the current combination is valid.
+
+https://leetcode.com/problems/word-squares/discuss/91354/Java-DFS%2BTrie-54-ms-98-so-far

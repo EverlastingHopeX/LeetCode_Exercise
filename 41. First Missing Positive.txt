@@ -30,3 +30,74 @@ and mark those elements in this range to negative (for example, k is found and w
 in arr[k-1] to negative). So in the last traverse, the first index that we found with positive element is the answer.
 
 https://leetcode.com/problems/first-missing-positive/discuss/17214/Java-simple-solution-with-documentation
+
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        Integer min=null;
+        for(int n:nums){
+            if(n<=0){
+                continue;
+            }
+            if(min==null){
+                min=n;
+            }
+            else{
+                min=Math.min(min,n);
+            }
+        }
+        if(min==null){
+            return 1;
+        }
+        int p=nums.length-1;
+        int max=min+nums.length-1;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]<=0){
+                continue;
+            }
+            int target=nums[i]-min;
+            while(target!=i){
+                if(nums[i]<=0 || nums[i]>max){
+                    break;
+                }
+                //duplicate number
+                if(nums[target]==nums[i]){
+                    break;
+                }
+                swap(nums,i,target);
+                target=nums[i]-min;
+                // if(target<0 || target>=nums.length){
+                //     break;
+                // }
+            }
+        }
+        int t=0;
+        if(nums[0]>1 || nums[0]<0){
+            return 1;
+        }
+        while(t<nums.length){
+            if(nums[t]<=0 || nums[t]>max){
+                break;
+            }
+            //duplicate number
+            if(nums[t]-min!=t){
+                break;
+            }
+            t++;
+        }
+        return nums[t-1]+1;
+    }
+    
+    private void swap(int[] nums, int t1, int t2){
+        // System.out.println("swap "+t1+" "+t2);
+        int t=nums[t1];
+        nums[t1]=nums[t2];
+        nums[t2]=t;
+    }
+}
+
+Runtime: 1 ms	48.58%
+Memory Usage: 36.5 MB	99.40%
+
+Solved this with O(N) time and O(1) extra space.
+If O(1) extra space is required, it normally means that you need to solve this in place.
+My solution could be slower than the solution I mentioned, cause I need to swap numbers instead of marking them by setting them to be negative.

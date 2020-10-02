@@ -136,3 +136,67 @@ Memory Usage: 40.3 MB, less than 5.21% of Java online submissions for Word Break
 
 Also got a TLE at first, even after adding an optimization with stack. Then I realize that the reason why I got TLE is that it will keep tring to start check from one index even if it has already been checked to be impossible to match, so I add a boolean array to memorize this.
 The perfromance difference between this solution and the previous dp solution is tiny, however, the previous one is more concise.
+
+class Solution {
+    class trieNode {
+        trieNode[] children;
+        boolean isEnd;
+        
+        trieNode(){
+            children=new trieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        trieNode root=new trieNode();
+        boolean[] notPossible=new boolean[s.length()];
+        for(String str:wordDict){
+            addTrie(root,str);
+        }
+        
+        return DFS(s,0,root,root,notPossible);
+    }
+    
+    private void addTrie(trieNode root, String str){
+        for(char ch:str.toCharArray()){
+            int idx=ch-'a';
+            if(root.children[idx]==null){
+                root.children[idx]=new trieNode();
+            }
+            root=root.children[idx];
+        }
+        root.isEnd=true;
+    }
+    
+    private boolean DFS(String s, int k,trieNode root, trieNode cur, boolean[] notPossible){
+        // System.out.println("DFS "+k);
+        if(k>=s.length()){
+            if(cur.isEnd){
+                return true;
+            }
+            return false;
+        }
+        int idx=s.charAt(k)-'a';
+        if(cur.children[idx]==null){
+            return false;
+        }
+        cur=cur.children[idx];
+        boolean flag=false;
+        if(cur.isEnd && !notPossible[k]){
+            // System.out.println("break");
+            flag=flag || DFS(s,k+1,root,root,notPossible);
+            if(!flag){
+                // System.out.println("can't break at "+k);
+                notPossible[k]=true;
+            }
+        }
+        flag= flag || DFS(s,k+1,root,cur,notPossible);
+        return flag;
+    }
+}
+
+Runtime: 1 ms	99.29%
+Memory Usage: 38.7 MB	92.33%
+
+A better verison of my second solution. The performance is pretty much the same as DP. The idea is DFS with trie, don't need to traverse from the end to the start.
