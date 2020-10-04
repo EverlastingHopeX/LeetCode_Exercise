@@ -1,0 +1,30 @@
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        Map<Integer,Integer> freq=new HashMap<>();
+        for(int n:nums){
+            int cnt=freq.getOrDefault(n,0);
+            freq.put(n,cnt+1);
+        }
+        Set<Integer> found=new HashSet<>();
+        for(int n:nums){
+            if(found.contains(n)){
+                continue;
+            }
+            int target=n+k;
+            if(target==n){
+                int cnt=freq.get(n);
+                if(cnt>1){
+                    found.add(n);
+                }
+                continue;
+            }
+            if(freq.containsKey(target)){
+                found.add(n);
+            }
+        }
+        return found.size();
+    }
+}
+
+Runtime: 9 ms	59.97%
+Memory Usage: 39.8 MB	79.18%

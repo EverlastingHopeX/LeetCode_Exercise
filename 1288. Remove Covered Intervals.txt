@@ -1,0 +1,26 @@
+class Solution {
+    public int removeCoveredIntervals(int[][] intervals) {
+        int p=0;
+        Arrays.sort(intervals,(o1,o2)->{
+            if(o1[0]==o2[0]){
+                return o2[1]-o1[1];
+            }
+            return o1[0]-o2[0];
+        });
+        int cnt=0;
+        while(p<intervals.length){
+            int t=p+1;
+            while(t<intervals.length && intervals[t][1]<=intervals[p][1]){
+                t++;
+            }
+            p=t;
+            cnt++;
+        }
+        return cnt;
+    }
+}
+
+Runtime: 4 ms	97.46%
+Memory Usage: 39.3 MB	93.91%
+
+O(NlogN) time, O(1) space.

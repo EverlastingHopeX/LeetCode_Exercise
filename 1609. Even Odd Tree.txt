@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        Queue<TreeNode> que=new LinkedList<>();
+        que.offer(root);
+        boolean isEven=true;
+        while(!que.isEmpty()){
+            // System.out.println("---");
+            int size=que.size();
+            
+            TreeNode prev=que.poll();
+            if(isEven){
+                if(prev.val%2==0){
+                    return false;
+                }
+            }
+            else{
+                if(prev.val%2!=0){
+                    return false;
+                }
+            }
+            
+            if(prev.left!=null){
+                que.offer(prev.left);
+            }
+            if(prev.right!=null){
+                que.offer(prev.right);
+            }
+            // System.out.println("cur "+prev.val);
+            for(int i=1;i<size;i++){
+                TreeNode cur=que.poll();
+                // System.out.println("cur "+cur.val);
+                if(isEven){
+                    if(cur.val%2==0 || cur.val<=prev.val){
+                        return false;
+                    }
+                }
+                else{
+                    if(cur.val%2!=0 || cur.val>=prev.val){
+                        return false;
+                    }
+                }
+                if(cur.left!=null){
+                    que.offer(cur.left);
+                }
+                if(cur.right!=null){
+                    que.offer(cur.right);
+                }
+                prev=cur;
+            }
+            
+            isEven=!isEven;
+        }
+        return true;
+    }
+}
+
+Runtime: 9 ms, faster than 50.00% of Java online submissions for Even Odd Tree.
+Memory Usage: 55.8 MB, less than 25.00% of Java online submissions for Even Odd Tree.
+
+BFS.
