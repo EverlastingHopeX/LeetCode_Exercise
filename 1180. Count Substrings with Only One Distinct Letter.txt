@@ -1,0 +1,23 @@
+class Solution {
+    public int countLetters(String S) {
+        List<Integer> subs=new ArrayList<>();
+        int left=0,right=0;
+        char[] chArr=S.toCharArray();
+        int cnt=0;
+        while(left<S.length()){
+            while(right<S.length() && chArr[right]==chArr[left]){
+                right++;
+            }
+            cnt+=count(right-left);
+            left=right;
+        }
+        return cnt;
+    }
+    
+    private int count(int N){
+        return (N*(N+1))/2;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Count Substrings with Only One Distinct Letter.
+Memory Usage: 36.8 MB, less than 87.74% of Java online submissions for Count Substrings with Only One Distinct Letter.

@@ -1,0 +1,106 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int minDist;
+    int minVal;
+    
+    public int findClosestLeaf(TreeNode root, int k) {
+        minDist=-1;
+        minVal=-1;
+        
+        helper(root,k);
+        
+        return minVal;
+    }
+    
+    //return min depth of the tree and the leaf value or dist to target and target value
+    private int[] helper(TreeNode root, int k){
+        if(root==null){
+            return new int[]{0,-1};
+        }
+        
+        int[] tleft=helper(root.left,k), tright=helper(root.right,k);
+        // System.out.println(root.val+": ("+tleft[0]+" "+tleft[1]+"), ("+tright[0]+" "+tright[1]+")");
+        int tdep=1;
+        int tval=root.val;
+        if(tleft[1]!=-1 || tright[1]!=-1){
+            if(tleft[1]==-1){
+                tdep=tright[0];
+                tval=tright[1];
+            }
+            else if(tright[1]==-1){
+                tdep=tleft[0];
+                tval=tleft[1];
+            }
+            else{
+                if(tleft[0]<tright[0]){
+                    tdep=tleft[0];
+                    tval=tleft[1];
+                }
+                else{
+                    tdep=tright[0];
+                    tval=tright[1];
+                }
+            }
+        }
+        
+        // System.out.println("dep "+tdep+" val "+tval);
+        if(root.val==k){
+            // System.out.println("target");
+            int dist=tdep;
+            if(minDist<0 || minDist>dist){
+                minDist=dist;
+                minVal=tval;
+                // System.out.println("new min "+minVal+" "+minDist);
+            }
+            return new int[]{1,k};
+        }
+        
+        //target in left
+        if(tleft[1]==k){
+            // System.out.println("target left");
+            if(tright[1]!=-1){
+                int dist=tleft[0]+tright[0];
+                if(minDist<0 || minDist>dist){
+                    minDist=dist;
+                    minVal=tright[1];
+                    // System.out.println("new min "+minVal+" "+minDist);
+                }
+            }
+            return new int[]{tleft[0]+1,k};
+        }
+        //target in right
+        if(tright[1]==k){
+            // System.out.println("target right");
+            if(tleft[1]!=-1){
+                int dist=tright[0]+tleft[0];
+                if(minDist<0 || minDist>dist){
+                    minDist=dist;
+                    minVal=tleft[1];
+                    // System.out.println("new min "+minVal+" "+minDist);
+                }
+            }
+            return new int[]{tright[0]+1,k};
+        }
+        return new int[]{tdep+1,tval};
+    }
+}
+
+Runtime: 1 ms, faster than 99.88% of Java online submissions for Closest Leaf in a Binary Tree.
+Memory Usage: 38.8 MB, less than 7.79% of Java online submissions for Closest Leaf in a Binary Tree.
+
+DFS. For each node, it need to know whether the target is within the subtree whose root is itself. If the target is not within this subtree, just return its distance to the closest leaf and this leaf node's value. Otherwise, return its distance to the target node and target node's value.
+Based on that, each node can evaluate if there is path from target to the leaf node which contains current root, and get the length of that path. If the path's length is shorter than kept in minDist, then update the minDist and minVal.

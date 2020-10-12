@@ -1,0 +1,28 @@
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points,(o1,o2)->(Integer.compare(o1[0],o2[0])));
+        int left=0,right=0;
+        int cnt=0;
+        while(left<points.length){
+            // System.out.println("left "+points[left][0]+","+points[left][1]);
+            int end=points[left][1];
+            while(right<points.length){
+                // System.out.println("right "+points[right][0]+","+points[right][1]);
+                if(points[right][0]>end){
+                    break;
+                }
+                end=Math.min(end,points[right][1]);
+                right++;
+            }
+            cnt++;
+            left=right;
+        }
+        return cnt;
+    }
+}
+
+Runtime: 15 ms	88.45%
+Memory Usage: 46.6 MB
+
+This is an interval overlap problem. The problem asks to group the overlapping balloons so that there are minimum number of groups.
+I'm used to use o1-o2 in lambda to compare int, but it is better to use Integer.compare() since the overflow may happen.

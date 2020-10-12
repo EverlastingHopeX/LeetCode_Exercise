@@ -1,0 +1,67 @@
+class FizzBuzz {
+    private int n;
+    private Semaphore fSem,bSem,fbSem,sem;
+    
+    public FizzBuzz(int n) {
+        this.n = n;
+        sem=new Semaphore(1);
+        fSem=new Semaphore(0);
+        bSem=new Semaphore(0);
+        fbSem=new Semaphore(0);
+    }
+
+    // printFizz.run() outputs "fizz".
+    public void fizz(Runnable printFizz) throws InterruptedException {
+        for(int i=0;i<n/3-n/15;i++){
+            fSem.acquire();
+            printFizz.run();
+            sem.release();
+            // System.out.println("f release sem");
+        }
+    }
+
+    // printBuzz.run() outputs "buzz".
+    public void buzz(Runnable printBuzz) throws InterruptedException {
+        for(int i=0;i<n/5-n/15;i++){
+            bSem.acquire();
+            printBuzz.run();
+            sem.release();
+            // System.out.println("b release sem");
+        }
+    }
+
+    // printFizzBuzz.run() outputs "fizzbuzz".
+    public void fizzbuzz(Runnable printFizzBuzz) throws InterruptedException {
+        for(int i=0;i<n/15;i++){
+            fbSem.acquire();
+            printFizzBuzz.run();
+            sem.release();
+            // System.out.println("fb release sem");
+        }
+    }
+
+    // printNumber.accept(x) outputs "x", where x is an integer.
+    public void number(IntConsumer printNumber) throws InterruptedException {
+        for(int i=1;i<=n;i++){
+            sem.acquire();
+            if(i%3==0 && i%5==0){
+                fbSem.release();
+            }
+            else if(i%3==0){
+                fSem.release();
+            }
+            else if(i%5==0){
+                bSem.release();
+            }
+            else{
+                printNumber.accept(i);
+                sem.release();
+            }
+        }
+    }
+}
+
+Runtime: 7 ms, faster than 69.03% of Java online submissions for Fizz Buzz Multithreaded.
+Memory Usage: 39.1 MB, less than 68.10% of Java online submissions for Fizz Buzz Multithreaded.
+
+Still not familiar with multithread problems, especially how to debug. My mind is still sequencial, which makes it hard to find the bugs.

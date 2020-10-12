@@ -1,0 +1,46 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        TreeNode ancestor=null,cur=root;
+        while(cur!=null){
+            if(cur.val>p.val){
+                ancestor=cur;
+                cur=cur.left;
+            }
+            else if(cur.val<p.val){
+                cur=cur.right;
+            }
+            else{
+                break;
+            }
+        }
+        if(cur.right!=null){
+            return findLeftMost(cur.right);
+        }
+        return ancestor;
+    }
+    
+    private TreeNode findLeftMost(TreeNode root){
+        TreeNode cur=root;
+        while(cur!=null){
+            if(cur.left==null){
+                break;
+            }
+            cur=cur.left;
+        }
+        return cur;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Inorder Successor in BST.
+Memory Usage: 39.7 MB, less than 93.79% of Java online submissions for Inorder Successor in BST.
+
+The idea is that one node is successor is either the left most node of its right sub tree, or the most recent ancestor that larger than this node.

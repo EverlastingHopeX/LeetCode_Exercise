@@ -1,0 +1,80 @@
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        Map<Integer,Integer> combs=new HashMap<>();
+        combs.put(0,1);
+        for(int i=0;i<nums.length;i++){
+            combs=helper(nums[i],combs);
+        }
+        return combs.getOrDefault(S,0);
+    }
+    
+    private Map<Integer,Integer> helper(int cur, Map<Integer,Integer> combs){
+        // System.out.println("helper ");
+        Map<Integer,Integer> nCombs=new HashMap<>();
+        for(int sum:combs.keySet()){
+            int cnt=combs.get(sum);
+            // System.out.println("sum "+sum+" cnt "+cnt);
+            int nSum=sum+cur;
+            nCombs.put(nSum,cnt+nCombs.getOrDefault(nSum,0));
+            nSum=sum-cur;
+            nCombs.put(nSum,cnt+nCombs.getOrDefault(nSum,0));
+        }
+        return nCombs;
+    }
+}
+
+Runtime: 36 ms, faster than 57.08% of Java online submissions for Target Sum.
+Memory Usage: 38.9 MB, less than 56.54% of Java online submissions for Target Sum.
+
+Solve this with BFS first.
+Can be easily improved by bi-direction BFS.
+
+class Solution {
+    public int findTargetSumWays(int[] nums, int S) {
+        Map<Integer,Integer> combs1=new HashMap<>();
+        combs1.put(0,1);
+        int mid=nums.length/2;
+        for(int i=0;i<mid;i++){
+            combs1=helper(nums[i],combs1);
+        }
+        Map<Integer,Integer> combs2=new HashMap<>();
+        combs2.put(0,1);
+        for(int i=nums.length-1;i>=mid;i--){
+            combs2=helper(nums[i],combs2);
+        }
+        int cnt=0;
+        for(int sum:combs1.keySet()){
+            int comp=S-sum;
+            if(combs2.containsKey(comp)){
+                cnt+=combs1.get(sum)*combs2.get(comp);
+            }
+        }
+        return cnt;
+    }
+    
+    private Map<Integer,Integer> helper(int cur, Map<Integer,Integer> combs){
+        // System.out.println("helper ");
+        Map<Integer,Integer> nCombs=new HashMap<>();
+        for(int sum:combs.keySet()){
+            int cnt=combs.get(sum);
+            // System.out.println("sum "+sum+" cnt "+cnt);
+            int nSum=sum+cur;
+            nCombs.put(nSum,cnt+nCombs.getOrDefault(nSum,0));
+            nSum=sum-cur;
+            nCombs.put(nSum,cnt+nCombs.getOrDefault(nSum,0));
+        }
+        return nCombs;
+    }
+}
+
+Runtime: 14 ms, faster than 66.21% of Java online submissions for Target Sum.
+Memory Usage: 38.7 MB, less than 59.52% of Java online submissions for Target Sum.
+
+However, BFS is O(2^N) or O(2^(N/2)), which is exponential.
+
+Other's DP solution with explanations.
+The idea is that we can find out the formula that 2*sum(P)=target+sum(nums) if sum(P)-sum(N)=target.
+So the problem become to find the number of combinations (P) that satisfy this formula. And this can be solve using DP. The dp is further explained by the comment below.
+
+https://leetcode.com/problems/target-sum/discuss/97334/Java-(15-ms)-C%2B%2B-(3-ms)-O(ns)-iterative-DP-solution-using-subset-sum-with-explanation
+

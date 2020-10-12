@@ -78,3 +78,104 @@ Runtime: 9 ms, faster than 43.75% of Java online submissions for Serialize and D
 Memory Usage: 38.4 MB, less than 100.00% of Java online submissions for Serialize and Deserialize BST.、
 
 Easier than 297, as the node and its children can be determined by their values.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root==null){
+            return ",";
+        }
+        Stack<TreeNode> st=new Stack<>();
+        st.push(root);
+        StringBuilder sb=new StringBuilder("");
+        while(!st.isEmpty()){
+            TreeNode cur=st.pop();
+            sb.append(cur.val+",");
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+        }
+        String str=sb.toString();
+        // System.out.println(str);
+        return str;
+    }
+    
+    class nodeAndIdx{
+        TreeNode node;
+        int idx;
+        
+        nodeAndIdx(){
+            node=null;
+            idx=-1;
+        }
+        
+        nodeAndIdx(TreeNode n, int i){
+            this.node=n;
+            this.idx=i;
+        }
+    }
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] nodes=data.split(",");
+        if(nodes.length==0){
+            return null;
+        }
+        int k=Integer.parseInt(nodes[0]);
+        TreeNode root=new TreeNode(k);
+        nodeAndIdx pair=helper(nodes,1,k);
+        root.left=pair.node;
+        pair=helper(nodes,pair.idx,null);
+        root.right=pair.node;
+        
+        return root;
+    }
+    
+    private nodeAndIdx helper(String[] nodes, int start, Integer max){
+        
+        nodeAndIdx nullNode=new nodeAndIdx(null,start);
+        if(start>=nodes.length){
+            return nullNode;
+        }
+        // System.out.println("helper "+start+"("+nodes[start]+")"+" max "+max);
+        int k=Integer.parseInt(nodes[start]);
+        if(max!=null && k>max){
+            // System.out.println("null");
+            return nullNode;
+        }
+        TreeNode root=new TreeNode(k);
+        nodeAndIdx pair=helper(nodes,start+1,k);
+        root.left=pair.node;
+        
+        pair=helper(nodes,pair.idx,max);
+        root.right=pair.node;
+        
+        pair=new nodeAndIdx(root,pair.idx);
+        return pair;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// String tree = ser.serialize(root);
+// TreeNode ans = deser.deserialize(tree);
+// return ans;
+
+Runtime: 11 ms	44.24%
+Memory Usage: 39.7 MB
+
+Time is O(N) instead of O(NlogN), but actual runtime is slower. my guess is that the boundary values are still gonna be visited for multiple times.
+There is a queue solution, however, there is still multiple peek() for one element, so the time should be similar.

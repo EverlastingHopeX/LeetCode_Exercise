@@ -1,0 +1,49 @@
+class Solution {
+    int cnt=0;
+    
+    public int countUnivalSubtrees(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        helper(root);
+        return cnt;
+    }
+    
+    //return uni-value tree's value
+    //return null if not uni-value tree
+    private Integer helper(TreeNode root){
+        // System.out.println("helper "+root.val);
+        if(root.left==null && root.right==null){
+            // System.out.println("leave");
+            cnt++;
+            return root.val;
+        }
+        
+        int l=root.val;
+        if(root.left!=null){
+            Integer t=helper(root.left);
+            if(t==null || t!=root.val){
+                l--;
+            }
+        }
+        
+        int r=root.val;
+        if(root.right!=null){
+            Integer t=helper(root.right);
+            if(t==null || t!=root.val){
+                r--;
+            }
+        }
+        // System.out.println(root.val+" "+l+" "+r);
+        if(root.val==r && root.val==l){
+            cnt++;
+            return root.val;
+        }
+        // System.out.println(root.val+" return null");
+        return null;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Count Univalue Subtrees.
+Memory Usage: 36.7 MB, less than 99.81% of Java online submissions for Count Univalue Subtrees
+
