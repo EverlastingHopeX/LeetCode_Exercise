@@ -56,3 +56,61 @@ class Solution {
 
 Runtime: 3 ms, faster than 97.48% of Java online submissions for Sort List.
 Memory Usage: 40.3 MB, less than 82.46% of Java online submissions for Sort List.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null){
+            return head;
+        }
+        ListNode slow=head, fast=head.next;
+        while(fast!=null && fast.next!=null){
+            // System.out.println(slow.val+" "+fast.val);
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode t=slow.next;
+        slow.next=null;
+        ListNode p1=sortList(head);
+        ListNode p2=sortList(t);
+        return merge(p1,p2);
+    }
+    
+    private ListNode merge(ListNode p1, ListNode p2){
+        ListNode dummy=new ListNode();
+        ListNode cur=dummy;
+        while(p1!=null && p2!=null){
+            if(p1.val<p2.val){
+                cur.next=p1;
+                p1=p1.next;
+            }
+            else{
+                cur.next=p2;
+                p2=p2.next;
+            }
+            cur=cur.next;
+        }
+        if(p1!=null){
+            cur.next=p1;
+        }
+        if(p2!=null){
+            cur.next=p2;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 3 ms	97.54%
+Memory Usage: 41 MB
+
+Elementary merge sort.
+Not really O(1) space when stack frame is needed to store the local variable for recursive functions. Can be O(1) using the bottom up solution.

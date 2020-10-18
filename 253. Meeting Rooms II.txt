@@ -58,3 +58,32 @@ Memory Usage: 39.7 MB, less than 28.92% of Java online submissions for Meeting R
 I learned the interval coloring algorithm in the algorithm course, however, I don't remember what the professor said about it.
 So I ended up with this solution, which is O(N^2), in the worst case which all intervals are overlapped with each other, it would be 1+2+...+n=(n^2+n)/2.
 However, by using priorityqueue to store the rooms instead of an int array, we can get the avaiable room in O(1) time, and maintaining this priorityqueue will cost O(logN) for each interval. So it is O(NlogN), which is the algorithm given by the professor.
+
+class Solution {
+    public int minMeetingRooms(int[][] intervals) {
+        Arrays.sort(intervals,(o1,o2)->(Integer.compare(o1[0],o2[0])));
+        PriorityQueue<int[]> pq=new PriorityQueue<>((o1,o2)->(Integer.compare(o1[1],o2[1])));
+        int max=0;
+        for(int[] cur:intervals){
+            pq.offer(cur);
+            while(!pq.isEmpty()){
+                int[] t=pq.peek();
+                if(t[1]<=cur[0]){
+                    pq.poll();
+                }
+                else{
+                    break;
+                }
+            }
+            // System.out.println("pq "+pq.size());
+            max=Math.max(max,pq.size());
+        }
+        return max;
+    }
+}
+
+Runtime: 6 ms	75.26%
+Memory Usage: 38.9 MB
+
+I solve this with pq this time.
+Here is another solution using two arrays instead of pq. The time complexity is still O(NlogN) but it is faster.

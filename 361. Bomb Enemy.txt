@@ -1,0 +1,88 @@
+class Solution {
+    public int maxKilledEnemies(char[][] grid) {
+        if(grid.length==0 || grid[0].length==0){
+            return 0;
+        }
+        int R=grid.length,C=grid[0].length;
+        int[][] rowCnt=new int[R][C], colCnt=new int[R][C];
+        
+        // System.out.println("row");
+        for(int r=0;r<R;r++){
+            // System.out.println(r);
+            int left=0;
+            while(left<C){
+                if(grid[r][left]=='W'){
+                    left++;
+                    continue;
+                }
+                int right=left;
+                int cnt=0;
+                while(right<C && grid[r][right]!='W'){
+                    if(grid[r][right]=='E'){
+                        cnt++;
+                    }
+                    right++;
+                }
+                // System.out.println(left+", "+right+": "+cnt);
+                while(left<right){
+                    rowCnt[r][left]=cnt;
+                    left++;
+                }
+                if(left<C){
+                    rowCnt[r][left]=-1;
+                }
+            }
+        }
+        
+        // System.out.println("col");
+        for(int c=0;c<C;c++){
+            // System.out.println(c);
+            int top=0;
+            while(top<R){
+                // System.out.println("top "+top);
+                if(grid[top][c]=='W'){
+                    // System.out.println("wall");
+                    top++;
+                    continue;
+                }
+                int bottom=top;
+                int cnt=0;
+                while(bottom<R && grid[bottom][c]!='W'){
+                    // System.out.println("bottom "+bottom);
+                    if(grid[bottom][c]=='E'){
+                        cnt++;
+                    }
+                    bottom++;
+                }
+                // System.out.println(top+", "+bottom+": "+cnt);
+                while(top<bottom){
+                    colCnt[top][c]=cnt;
+                    top++;
+                }
+                if(top<R){
+                    colCnt[top][c]=-1;
+                }
+            }
+        }
+        
+        int max=0;
+        
+        for(int r=0;r<R;r++){
+            for(int c=0;c<C;c++){
+                if(grid[r][c]!='0'){
+                    continue;
+                }
+                // System.out.println(r+", "+c+" "+rowCnt[r][c]+"+"+colCnt[r][c]);
+                max=Math.max(max,rowCnt[r][c]+colCnt[r][c]);
+            }
+        }
+        
+        return max;
+    }
+}
+
+Runtime: 4 ms, faster than 98.07% of Java online submissions for Bomb Enemy.
+Memory Usage: 45 MB, less than 15.43% of Java online submissions for Bomb Enemy.
+
+Basically brute force, and it works fine.
+O(R*C)
