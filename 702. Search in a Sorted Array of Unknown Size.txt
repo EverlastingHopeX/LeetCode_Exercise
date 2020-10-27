@@ -24,3 +24,45 @@ Runtime: 2 ms, faster than 100.00% of Java online submissions for Search in a So
 Memory Usage: 40 MB, less than 100.00% of Java online submissions for Search in a Sorted Array of Unknown Size.
 
 Better than first round.
+
+/**
+ * // This is ArrayReader's API interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface ArrayReader {
+ *     public int get(int index) {}
+ * }
+ */
+
+class Solution {
+    public int search(ArrayReader reader, int target) {
+        int MAX=10000;
+        int lo=0,hi=MAX+1;
+        while(lo<hi){
+            int mid=lo+(hi-lo)/2;
+            // System.out.println(lo+" "+hi+": "+mid);
+            int k=reader.get(mid);
+            if(k>MAX){
+                // System.out.println("out of boundary");
+                hi=mid;
+                continue;
+            }
+            
+            if(k>target){
+                hi=mid;
+            }
+            else if(k<target){
+                lo=mid+1;
+            }
+            else{
+                return mid;
+            }
+        }
+        return -1;
+    }
+}
+
+Runtime: 1 ms	100%
+Memory Usage: 40.4 MB
+
+Pretty easy. 
+I guess they've changed the array size after my last submission.

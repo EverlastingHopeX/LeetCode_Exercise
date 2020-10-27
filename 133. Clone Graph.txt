@@ -34,3 +34,60 @@ class Solution {
 
 Runtime: 1 ms, faster than 100.00% of Java online submissions for Clone Graph.
 Memory Usage: 32.5 MB, less than 97.65% of Java online submissions for Clone Graph.
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+class Solution {
+    public Node cloneGraph(Node node) {
+        if(node==null){
+            return null;
+        }
+        Map<Integer,Node> nodeMap=new HashMap<>();
+        Node root=new Node(node.val);
+        nodeMap.put(root.val,root);
+        
+        Queue<Node> que=new LinkedList<>();
+        que.offer(node);
+        while(que.size()>0){
+            Node oldNode=que.poll();
+            Node newNode=nodeMap.get(oldNode.val);
+            for(Node nei:oldNode.neighbors){
+                if(!nodeMap.containsKey(nei.val)){
+                    que.offer(nei);
+                    nodeMap.put(nei.val,new Node(nei.val));
+                }
+                Node t=nodeMap.get(nei.val);
+                newNode.neighbors.add(t);
+            }
+        }
+        
+        return root;
+    }
+}
+
+Runtime: 24 ms	99.60%
+Memory Usage: 39.4 MB
+
+It seems to be much slower than firt version, but it is because of the online judgement. It will be 25 ms if I submit the previous version again.
+The time complexity are both O(N), N is the number of edges.

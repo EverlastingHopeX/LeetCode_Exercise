@@ -1,0 +1,48 @@
+class Solution {
+    public boolean winnerSquareGame(int n) {
+        List<Integer> picks=getPicks(n);
+        //firstWin[k] is true if the person pick first will win if k stones remain
+        boolean[] firstWin=new boolean[n+1];
+        for(int i=0;i<=n;i++){
+            if(firstWin[i]){
+                continue;
+            }
+            // System.out.println("remain "+i);
+            for(int p:picks){
+                if(p+i>n){
+                    break;
+                }
+                firstWin[i+p]=true;
+            }
+            // System.out.println("first wins? "+firstWin[i]);
+        }
+        
+        return firstWin[n];
+    }
+    
+    private List<Integer> getPicks(int n){
+        List<Integer> picks=new ArrayList<>();
+        for(int i=1;i<=n;i++){
+            int t=i*i;
+            if(t>n){
+                break;
+            }
+            picks.add(t);
+            // System.out.println("picks "+t);
+        }
+        return picks;
+    }
+}
+
+Runtime: 19 ms	59.64%
+Memory Usage: 36.6 MB
+
+First step is to realize this can be solved by DP.
+Then figure out the correct transition formula.
+I got my first ac solution after the steps above, but the performance is not good enough.
+For each i, I tried each p from picks and see if firstWin[i-p] is false.
+This will be O(N^(3/2)).
+Then I improved by setting firstWin[i+p] to be true if firstWin[i] is false, which makes it better but still not O(N).
+I can't find any O(N) solution, so I guess this is the optimal time complexity we can get.
+The transition formula is that firstWin[i] is true if there is p from picks that firstWin[i-p] is false. That means if we cannot win if we pick first when there are (i-p) stones remaining, then when there are i stones left, we can win if we pick p stones first.
+This took me some time to implement it correctly, not sure if I can do this in interview.

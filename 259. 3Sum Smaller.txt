@@ -1,0 +1,38 @@
+class Solution {
+    public int threeSumSmaller(int[] nums, int target) {
+        if(nums.length<3){
+            return 0;
+        }
+        
+        Map<Integer,Integer> twoSum=new HashMap<>();
+        twoSum.put(nums[0]+nums[1],1);
+        int ans=0;
+        for(int i=2;i<nums.length;i++){
+            
+            for(int t:twoSum.keySet()){
+                if(nums[i]+t<target){
+                    ans+=twoSum.get(t);
+                }
+            }
+            
+            for(int j=0;j<i;j++){
+                int sum=nums[i]+nums[j];
+                int cnt=twoSum.getOrDefault(sum,0);
+                twoSum.put(sum,cnt+1);
+            }
+        }
+        
+        return ans;
+    }
+}
+
+Runtime: 28 ms, faster than 5.64% of Java online submissions for 3Sum Smaller.
+Memory Usage: 38.6 MB, less than 19.25% of Java online submissions for 3Sum Smaller.
+
+It looks like O(N^2), but since the size of twoSum is O(N^2), so it is still O(N^3).
+
+Can be improved by add sort() and break early when sum+nums[i]>=target.
+
+Other's O(N^2) solution.
+For each i, it tests whether the sum of i, left and right is smaller than target. If so, then the sum of i, left and each elements from left+1 to right will be smaller than target, it add the count and increase left by one. Otherwise, it decrease right by one. This is O(N^2) since there is only two loop, each is O(N).
+https://leetcode.com/problems/3sum-smaller/discuss/68817/Simple-and-easy-understanding-O(n2)-JAVA-solution

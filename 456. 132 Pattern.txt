@@ -25,3 +25,54 @@ Acceptable performance. O(n^2).
 
 Other's O(n) solution.
 https://leetcode.com/problems/132-pattern/discuss/94089/Java-solutions-from-O(n3)-to-O(n)-for-%22132%22-pattern-(updated-with-one-pass-slution)
+
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        if(nums.length<3){
+            return false;
+        }
+        int N=nums.length;
+        Integer maxSec=null;
+        Stack<Integer> st=new Stack<>();
+        st.push(nums[N-1]);
+        for(int i=N-2;i>=0;i--){
+            // System.out.println(nums[i]);
+            if(nums[i]<nums[i+1]){
+                // System.out.println("decrease");
+                if(maxSec!=null && nums[i]<maxSec){
+                    // System.out.println("found");
+                    return true;
+                }
+            }
+            else if(nums[i]>nums[i+1]){
+                // System.out.println("increase");
+                while(!st.isEmpty()){
+                    int top=st.pop();
+                    if(top>nums[i]){
+                        st.push(top);
+                        break;
+                    }
+                    if(maxSec==null || (top>maxSec && top<nums[i])){
+                        maxSec=top;
+                        // System.out.println("maxSec "+maxSec);
+                    }
+                }
+            }
+            else{
+                continue;
+            }
+            // System.out.println("push");
+            st.push(nums[i]);
+            
+        }
+        return false;
+    }
+}
+
+Runtime: 4 ms	92.07%
+Memory Usage: 39 MB
+
+Took me a while to figure out this O(N) solution.
+I tried to solve this by traverse the array from start to end at the beginning. However, I realize that I will have to store the intervals representing pairs of (nums[i],nums[j]) so I can determine whether the current element is within one of these ranges and return true. This will be O(NlogN).
+Then I reverse my thinking (just as Phoenix Wright!). Instead of checking each element to see if it can be k, I traverse the array from end to start and check each element to see if it can be the i I want. If we want to find a proper k, then nums[k] has to be larger than nums[i] and smaller than nums[j], but if we want to find a proper i, nums[i] only needs to be smaller than nums[k] (which means that I don't have to consider j or store ranges).
+So, first, I check each element to see the trend. If it is decreasing, then it could the the i I want if it is smaller than maxSec. MaxSec is the secondary largest element in (i-1,N-1). If it is increasing, then I may need to update the maxSec since nums[i] could be the maximum number in [i,N-1).

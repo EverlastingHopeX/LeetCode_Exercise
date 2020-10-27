@@ -45,3 +45,5 @@ Runtime: 0 ms, faster than 100.00% of Java online submissions for Minimum Depth 
 Memory Usage: 39.3 MB, less than 96.88% of Java online submissions for Minimum Depth of Binary Tree.
 
 BFS and stop when meet leaf node.
+
+I solved this with DFS recursive solution at the second time. It is more concise, but cost more time since it will visit each node. While using BFS can be much faster, it is at most as slow as DFS.

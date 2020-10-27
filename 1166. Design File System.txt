@@ -1,0 +1,76 @@
+class FileSystem {
+    class Directory{
+        Map<String,Directory> subs;
+        int value;
+        
+        Directory(){
+            subs=new HashMap<>();
+            value=0;
+        }
+        
+        Directory(int v){
+            subs=new HashMap<>();
+            value=v;
+        }
+    }
+    
+    Directory root;
+    
+    public FileSystem() {
+        root=new Directory();
+    }
+    
+    public boolean createPath(String path, int value) {
+        String[] dirs=path.split("/");
+        Directory cur=root;
+        for(int i=0;i<dirs.length-1;i++){
+            //skip leading empty string
+            if(dirs[i].length()==0){
+                continue;
+            }
+            if(!cur.subs.containsKey(dirs[i])){
+                return false;
+            }
+            cur=cur.subs.get(dirs[i]);
+        }
+        String last=dirs[dirs.length-1];
+        if(cur.subs.containsKey(last)){
+            return false;
+        }
+        Directory t=new Directory(value);
+        cur.subs.put(last,t);
+        return true;
+    }
+    
+    public int get(String path) {
+        String[] dirs=path.split("/");
+        Directory cur=root;
+        for(String dir:dirs){
+            //skip leading empty string
+            if(dir.length()==0){
+                continue;
+            }
+            // System.out.println(dir);
+            if(!cur.subs.containsKey(dir)){
+                // System.out.println("no such path");
+                return -1;
+            }
+            cur=cur.subs.get(dir);
+        }
+        return cur.value;
+    }
+}
+
+/**
+ * Your FileSystem object will be instantiated and called as such:
+ * FileSystem obj = new FileSystem();
+ * boolean param_1 = obj.createPath(path,value);
+ * int param_2 = obj.get(path);
+ */
+
+Runtime: 97 ms, faster than 32.62% of Java online submissions for Design File System.
+Memory Usage: 49.1 MB, less than 6.46% of Java online submissions for Design File System.
+
+Pretty easy, similar to Trie.
+But the performance is not that great.
+This feels easier than OOD, since the requirement is quite simple.

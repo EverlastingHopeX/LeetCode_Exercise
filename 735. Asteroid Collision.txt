@@ -40,3 +40,48 @@ Runtime: 6 ms, faster than 41.33% of Java online submissions for Asteroid Collis
 Memory Usage: 45.1 MB, less than 14.47% of Java online submissions for Asteroid Collision.
 
 Pretty easy with stack.
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> st=new Stack<>();
+        for(int a:asteroids){
+            if(a>0 || st.isEmpty()){
+                st.push(a);
+                continue;
+            }
+            while(!st.isEmpty() && a!=0){
+                int prev=st.peek();
+                //same direction
+                if(prev<0){
+                    break;
+                }
+                
+                //collide
+                int rem=a;
+                if(a+prev>=0){
+                    // System.out.println(a+" explode");
+                    rem=0;
+                }
+                if(a+prev<=0){
+                    // System.out.println(prev+" explode");
+                    st.pop();
+                }
+                a=rem;
+            }
+            if(a!=0){
+                st.push(a);
+            }
+        }
+        
+        int[] ans=new int[st.size()];
+        for(int i=ans.length-1;i>=0;i--){
+            ans[i]=st.pop();
+        }
+        return ans;
+    }
+}
+
+Runtime: 5 ms	68.35%
+Memory Usage: 40.4 MB
+
+Clearer code compared with last one.
