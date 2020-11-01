@@ -50,6 +50,8 @@ Memory Usage: 47 MB, less than 5.01% of Java online submissions for Path Sum III
 
 Other's solution.
 Use prefix just like two sum.
-It uses hashmap's key to store the sum of path from root, and the value is the number of paths available. For example, we are in node j, and we want to find node i that "(sum of path to j) - target = (sum of path to i)", then path from i to j is the path we want. We will increase the number of avaiable path whose sum is current sum by one. And after we finishing one node (the node will not be in the availble path anymore), we need to decrease the number of available paths by one.
+It uses hashmap's key to store the sum of path from root, and the value is the number of paths available. For example, we are in node j, and we want to find node i that "(sum of path to j) - (sum of path to i) = target", then path from i to j is the path we want. We will increase the number of avaiable path whose sum is current sum by one. And after we finishing one node (the node will not be in the availble path anymore), we need to decrease the number of available paths by one.
 
 https://leetcode.com/problems/path-sum-iii/discuss/91878/17-ms-O(n)-java-Prefix-sum-method
+
+Still couldn't come up with the prefix solution at the second time. The solution is pretty much the same as previous.

@@ -1,0 +1,49 @@
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int sum=0;
+        int maxDiv=1;
+        for(int n:nums){
+            sum+=n;
+            maxDiv=Math.max(maxDiv,n);
+        }
+        int minDiv=sum/threshold;
+        if(minDiv==0){
+            minDiv=1;
+        }
+        while(minDiv<maxDiv){
+            // System.out.println(minDiv+" - "+maxDiv);
+            int mid=minDiv+(maxDiv-minDiv)/2;
+            int t=helper(nums,mid);
+            //t too large 
+            //mid too small
+            if(t>threshold){
+                minDiv=mid+1;
+            }
+            //mid too high or just fine
+            else{
+                maxDiv=mid;
+            }
+        }
+        return maxDiv;
+    }
+    
+    private int helper(int[] nums, int div){
+        // System.out.println("div "+div);
+        int sum=0;
+        for(int n:nums){
+            int t=n/div;
+            if(t*div!=n){
+                t++;
+            }
+            // System.out.println(n+" "+t);
+            sum+=t;
+        }
+        // System.out.println("sum "+sum);
+        return sum;
+    }
+}
+
+Runtime: 7 ms, faster than 86.46% of Java online submissions for Find the Smallest Divisor Given a Threshold.
+Memory Usage: 41.3 MB, less than 92.80% of Java online submissions for Find the Smallest Divisor Given a Threshold.
+
+For the binary search problem, the most important thing is to update the boundaries properly, and be aware of which boundary will be the final answer.

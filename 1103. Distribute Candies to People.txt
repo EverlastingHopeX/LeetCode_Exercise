@@ -1,0 +1,21 @@
+class Solution {
+    public int[] distributeCandies(int candies, int num_people) {
+        int[] dist=new int[num_people];
+        int sum=0;
+        int p=0;
+        int k=1;
+        while(sum<candies){
+            sum+=k;
+            dist[p]+=k;
+            if(sum>candies){
+                dist[p]-=sum-candies;
+            }
+            p++;
+            k++;
+            if(p==num_people){
+                p=0;
+            }
+        }
+        return dist;
+    }
+}

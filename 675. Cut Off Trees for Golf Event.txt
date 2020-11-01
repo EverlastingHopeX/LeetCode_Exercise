@@ -1,0 +1,70 @@
+class Solution {
+    public int cutOffTree(List<List<Integer>> forest) {
+        PriorityQueue<int[]> pq=new PriorityQueue<int[]>((o1,o2)->(o1[0]-o2[0]));
+        int R=forest.size(), C=forest.get(0).size();
+        for(int i=0;i<R;i++){
+            for(int j=0;j<C;j++){
+                if(forest.get(i).get(j)<=1){
+                    continue;
+                }
+                pq.add(new int[]{forest.get(i).get(j),i,j});
+            }
+        }
+        
+        int[] pos=new int[]{0,0};
+        int ans=0;
+        while(!pq.isEmpty()){
+            int[] dst=pq.poll();
+            boolean[][] visited=new boolean[R][C];
+            int dist=findPath(pos,dst,visited,forest);
+            if(dist==-1){
+                return -1;
+            }
+            ans+=dist;
+            pos[0]=dst[1];
+            pos[1]=dst[2];
+        }
+        return ans;
+    }
+    
+    private int findPath(int[] pos, int[] dst, boolean[][] visited, List<List<Integer>> forest){
+        // System.out.println("find path "+pos[0]+","+pos[1]+" to "+dst[1]+","+dst[2]);
+        int[][] dirs=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        int R=forest.size(), C=forest.get(0).size();
+        Queue<int[]> que=new LinkedList<>();
+        que.offer(pos);
+        int dist=0;
+        while(!que.isEmpty()){
+            int size=que.size();
+            // System.out.println("que size "+size);
+            for(int i=0;i<size;i++){
+                int[] cur=que.poll();
+                // System.out.println("cur "+cur[0]+","+cur[1]);
+                if(cur[0]==dst[1] && cur[1]==dst[2]){
+                    return dist;
+                }
+                for(int[] d:dirs){
+                    int[] npos=new int[]{cur[0]+d[0],cur[1]+d[1]};
+                    if(npos[0]<0 || npos[0]>=R ||npos[1]<0 || npos[1]>=C || forest.get(npos[0]).get(npos[1])==0){
+                        continue;
+                    }
+                    if(visited[npos[0]][npos[1]]){
+                        continue;
+                    }
+                    que.add(npos);
+                    visited[npos[0]][npos[1]]=true;
+                }
+            }
+            dist++;
+        }
+        return -1;
+    }
+}
+
+Runtime: 725 ms, faster than 19.13% of Java online submissions for Cut Off Trees for Golf Event.
+Memory Usage: 178.3 MB, less than 5.29% of Java online submissions for Cut Off Trees for Golf Event.
+
+The idea of using PriorityQueue and BFS is very easy to come up with. But need to implement carefully to avoid TLE.
+However, even if my solution passed, the performance is still not satisfying.
+The posts in the discussion are mostly the same idea. Some of them claimed to beat 90%. So I guess this is due to the unreliable online judgement.
+Time complexity O(R^2*C^2)

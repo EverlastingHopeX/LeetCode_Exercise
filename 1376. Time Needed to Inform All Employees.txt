@@ -1,0 +1,33 @@
+class Solution {
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        Map<Integer,List<Integer>> subs=new HashMap<>();
+        for(int i=0;i<manager.length;i++){
+            int m=manager[i];
+            List<Integer> sub=subs.getOrDefault(m,new ArrayList<>());
+            sub.add(i);
+            subs.put(m,sub);
+        }
+        return DFS(subs,informTime,headID,0);
+    }
+    
+    private int DFS(Map<Integer,List<Integer>> subs, int[] informTime, int id, int time){
+        // System.out.println("DFS "+id+" time "+time);
+        if(!subs.containsKey(id)){
+            return time;
+        }
+        List<Integer> sub=subs.get(id);
+        int max=0;
+        for(int s:sub){
+            max=Math.max(max,DFS(subs,informTime,s,time+informTime[id]));
+        }
+        return max;
+    }
+}
+
+Runtime: 225 ms, faster than 15.00% of Java online submissions for Time Needed to Inform All Employees.
+Memory Usage: 138.8 MB, less than 10.66% of Java online submissions for Time Needed to Inform All Employees.
+
+I use DFS to find the longest path. At first I used hashmap to store subs, but since there is only definite number of entries in subs, I use list array instead. That improve the performance to become 101 ms and also save spaces.
+
+Other's bottom up DFS.
+https://leetcode.com/problems/time-needed-to-inform-all-employees/discuss/532560/JavaC%2B%2BPython-DFS

@@ -64,3 +64,55 @@ Memory Usage: 36.4 MB, less than 100.00% of Java online submissions for Maximum 
 O(n) solution. The time complexity is acceptable, but not concise, and not good enough compared with others'
 O(n) solution.
 https://leetcode.com/problems/maximum-product-subarray/discuss/48230/Possibly-simplest-solution-with-O(n)-time-complexity
+
+class Solution {
+    public int maxProduct(int[] nums) {
+        int max=nums[0];
+        int start=0,end=0;
+        while(end<nums.length){
+            while(end<nums.length && nums[end]!=0){
+                // max=Math.max(max,nums[end]);
+                end++;
+            }
+            if(end<nums.length){
+                max=Math.max(max,0);
+            }
+            max=Math.max(max,maxProduct(nums,start,end));
+            end++;
+            start=end;
+        }
+        return max;
+    }
+    
+    private int maxProduct(int[] nums, int start, int end){
+        // System.out.println("maxProduct "+start+" "+end);
+        int pos=nums[start];
+        int[] neg=new int[2];
+        int prod=1;
+        for(int i=start;i<end;i++){
+            prod=prod*nums[i];
+            // System.out.println("prod "+i+" "+prod);
+            if(prod<0){
+                if(neg[0]==0){
+                    neg[0]=prod;
+                }
+                else{
+                    neg[1]=prod;
+                }
+            }
+            else{
+                pos=prod;
+            }
+        }
+        // System.out.println(pos+" "+neg[0]+" "+neg[1]);
+        if(neg[1]!=0){
+            pos=Math.max(pos,neg[1]/neg[0]);
+        }
+        return pos;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 39.5 MB
+
+Faster than last time. Still O(N), but should save more space as well.

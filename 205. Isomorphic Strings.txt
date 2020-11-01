@@ -1,0 +1,29 @@
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        String s1=getPattern(s);
+        String s2=getPattern(t);
+        if(s1.equals(s2)){
+            return true;
+        }
+        return false;
+    }
+    
+    private String getPattern(String s){
+        int p=0;
+        StringBuilder pattern=new StringBuilder("");
+        Map<Character,Integer> seen=new HashMap<>();
+        for(char ch:s.toCharArray()){
+            if(!seen.containsKey(ch)){
+                pattern.append(p);
+                seen.put(ch,p++);
+            }
+            else{
+                pattern.append(seen.get(ch));
+            }
+        }
+        return pattern.toString();
+    }
+}
+
+Runtime: 9 ms, faster than 55.06% of Java online submissions for Isomorphic Strings.
+Memory Usage: 40.2 MB, less than 25.16% of Java online submissions for Isomorphic Strings.

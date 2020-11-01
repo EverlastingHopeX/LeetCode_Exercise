@@ -1,0 +1,38 @@
+class Solution {
+    public int findMaxLength(int[] nums) {
+        int len=0;
+        Map<Integer,Integer> diffMap=new HashMap<>();
+        int zCnt=0, oCnt=0;
+        diffMap.put(0,0);
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0){
+                zCnt++;
+            }
+            else{
+                oCnt++;
+            }
+            
+            int diff=zCnt-oCnt;
+            if(diffMap.containsKey(diff)){
+                int first=diffMap.get(diff);
+                // System.out.println("found "+(i+1)+" "+first);
+                if(i-first>len){
+                    len=i-first;
+                }
+            }
+            else{
+                diffMap.put(diff,i+1);
+            }
+        }
+        if(len==0){
+            return 0;
+        }
+        return len+1;
+    }
+}
+
+Runtime: 20 ms, faster than 80.92% of Java online submissions for Contiguous Array.
+Memory Usage: 49.1 MB, less than 60.66% of Java online submissions for Contiguous Array.
+
+I used presum method at first, which is O(N^2). It passed but the perfromance is not good.
+This solution is O(N). The idea is that if the differences of zero counter and one counter for index i and j are the same. It means that there are equal number of zeros and ones from i to j.

@@ -1,0 +1,34 @@
+class Solution {
+    public int compress(char[] chars) {
+        int p=0;
+        int start=0;
+        while(start<chars.length){
+            int end=find(chars,start);
+            // only 1
+            chars[p]=chars[start];
+            p++;
+            if(end>start+1){
+                String time=end-start+"";
+                for(char ch:time.toCharArray()){
+                    chars[p++]=ch;
+                }
+            }
+            start=end;
+        }
+        return p;
+    }
+    
+    private int find(char[] chars,int start){
+        int end=start+1;
+        while(end<chars.length && chars[end]==chars[start]){
+            end++;
+        }
+        return end;
+    }
+}
+
+Runtime: 5 ms, faster than 33.16% of Java online submissions for String Compression.
+Memory Usage: 39.1 MB, less than 59.99% of Java online submissions for String Compression.
+
+Pretty easy, sliding window.
+According to discussion section, this problem was once easy. I would agree this should be a medium since sliding window is a method that easy to figure out for starters.

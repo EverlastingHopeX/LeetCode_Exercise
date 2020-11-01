@@ -1,0 +1,79 @@
+class StreamChecker {
+    class TrieNode{
+        TrieNode[] children;
+        boolean isEnd;
+        
+        TrieNode(){
+            children=new TrieNode[26];
+            isEnd=false;
+        }
+    }
+    
+    TrieNode root;
+    List<TrieNode> caches;
+    
+    public StreamChecker(String[] words) {
+        root=new TrieNode();
+        for(String w:words){
+            TrieNode p=root;
+            for(char ch:w.toCharArray()){
+                int idx=ch-'a';
+                if(p.children[idx]==null){
+                    p.children[idx]=new TrieNode();
+                }
+                p=p.children[idx];
+            }
+            p.isEnd=true;
+        }
+        caches=new LinkedList<>();
+    }
+    
+    public boolean query(char letter) {
+        // System.out.println("query "+letter);
+        int idx=letter-'a';
+        boolean found=false;
+        
+        for(int i=caches.size()-1;i>=0;i--){
+            TrieNode t=caches.get(i);
+            if(t.children[idx]!=null){
+                t=t.children[idx];
+                if(t.isEnd){
+                    found=true;
+                }
+                caches.set(i,t);
+                // System.out.println("cache set");
+            }
+            else{
+                // System.out.println(i+ " not match");
+                caches.remove(i);
+            }
+        }
+        
+        if(root.children[idx]!=null){
+            TrieNode t=root.children[idx];
+            if(t.isEnd){
+                found=true;
+            }
+            caches.add(t);
+            // System.out.println("cache add");
+        }
+        
+        // System.out.println("found "+found);
+        return found;
+    }
+}
+
+/**
+ * Your StreamChecker object will be instantiated and called as such:
+ * StreamChecker obj = new StreamChecker(words);
+ * boolean param_1 = obj.query(letter);
+ */
+
+This should work, however, I got a TLE.
+One thing I learned from this problem is that there are two remove() in List, one is remove(Object) and the other is remove(int). I need to make sure the parameter I pass is an int, not Integer.
+
+Other's trie solution.
+He stored the word backwards and search the word from end for every query.
+So for each query, its time is O(k), k is the length of longest word. While for my solution, its time is O(s), s is the length of caches, which is at most k. But I call set() and remove() for multiple times for each query, set() is O(1) and remove() is O(s). Considering that, my solution is actually O(s^2) which is much worse than O(k).
+
+https://leetcode.com/problems/stream-of-characters/discuss/278769/Java-Trie-Solution

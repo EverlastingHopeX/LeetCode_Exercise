@@ -16,3 +16,26 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Length of Last Word.
 Memory Usage: 39 MB, less than 7.57% of Java online submissions for Length of Last Word.
+
+class Solution {
+    public int lengthOfLastWord(String s) {
+        char[] chArr=s.toCharArray();
+        int end=chArr.length-1;
+        while(end>=0){
+            if(Character.isLetter(chArr[end])){
+               break; 
+            }
+            end--;
+        }
+        int start=end;
+        while(start>=0){
+            if(!Character.isLetter(chArr[start])){
+                break;
+            }
+            start--;
+        }
+        return end-start;
+    }
+}
+
+Pretty much the same solution.

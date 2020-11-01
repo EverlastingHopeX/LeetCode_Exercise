@@ -1,0 +1,31 @@
+class Solution {
+    public int bagOfTokensScore(int[] tokens, int P) {
+        Arrays.sort(tokens);
+        int left=0,right=tokens.length-1;
+        int score=0,power=P;
+        while(left<=right){
+            if(power<tokens[left] && score>0){
+                // System.out.println("buy power "+tokens[right]);
+                power+=tokens[right];
+                score--;
+                right--;
+            }
+            // System.out.println("buy score "+tokens[left]);
+            if(power<tokens[left]){
+                break;
+            }
+            power-=tokens[left];
+            score++;
+            left++;
+            // System.out.println("power "+power+" score "+score);
+        }
+        return score;
+    }
+}
+
+Runtime: 3 ms	89.30%
+Memory Usage: 38.9 MB
+
+Greedy.
+The target is to get maximum score, so we don't want to turn token down for power unless it can let us get more than 1 score. If we want to trade score for power, the best option is to buy the token with highest power without doubt. And when we want to trade power for 1 score, the best option is to buy the token with lowest power. The process is similar to buying and selling stock.
+So I will keep buying the token with lowest cost until I have not enough power, then I will trade for more power with 1 score. The process will end if there is no more tokens left.

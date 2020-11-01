@@ -1,0 +1,72 @@
+class Solution {
+    int[][] dirs=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+    public int shortestBridge(int[][] A) {
+        int k=2;
+        Queue<int[]> que=new LinkedList<>();
+        for(int i=0;i<A.length;i++){
+            for(int j=0;j<A[0].length;j++){
+                if(A[i][j]==0){
+                    continue;
+                }
+                mark(A,k,i,j);
+                k++;
+                que.offer(new int[]{i,j});
+            }
+        }
+
+        //BFS
+        int[][] dist=new int[A.length][A[0].length];
+        while(!que.isEmpty()){
+            int size=que.size();
+            int ans=-1;
+            // System.out.println("layer "+cnt+": "+size+"/"+(A.length*A[0].length));
+            for(int i=0;i<size;i++){
+                int[] cur=que.poll();
+                // System.out.println("cur "+r+" "+c);
+                for(int[] d:dirs){
+                    int nr=cur[0]+d[0];
+                    int nc=cur[1]+d[1];
+                    // System.out.println("next "+nr+","+nc);
+                    if(nr<0 || nr>=A.length || nc<0 || nc>=A.length || A[nr][nc]==A[cur[0]][cur[1]]){
+                        continue;
+                    }
+                    if(A[nr][nc]!=0){
+                        // System.out.println(r+" "+c+" meet "+nr+" "+nc);
+                        if(ans==-1){
+                            ans=dist[cur[0]][cur[1]]+dist[nr][nc];
+                        }
+                        else{
+                            ans=Math.min(ans,dist[cur[0]][cur[1]]+dist[nr][nc]);
+                        }
+                    }
+                    que.offer(new int[]{nr,nc});
+                    A[nr][nc]=A[cur[0]][cur[1]];
+                    dist[nr][nc]=dist[cur[0]][cur[1]]+1;
+                }
+            }
+            if(ans!=-1){
+                return ans;
+            }
+        }
+
+        return 0;
+    }
+    
+    private void mark(int[][] A, int k, int i, int j){
+        if(i<0 || i>=A.length || j<0 || j>=A.length ||A[i][j]!=1){
+            return;
+        }
+        A[i][j]=k;
+        for(int[] d:dirs){
+            mark(A,k,i+d[0],j+d[1]);
+        }
+    }
+}
+
+Runtime: 10 ms, faster than 59.91% of Java online submissions for Shortest Bridge.
+Memory Usage: 41.3 MB, less than 5.40% of Java online submissions for Shortest Bridge.
+
+It is typical to use BFS to find the minimum path, so this part is not that hard.
+But implementing the algorithm and handling the end condition need more time. Can be improved by only marking the first island and only adding the boundary cells into queue. Using two queues instead of one can also make it easier to find the proper value to return.
+
+Time complexity O(R*C).

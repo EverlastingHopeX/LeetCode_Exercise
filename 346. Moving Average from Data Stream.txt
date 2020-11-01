@@ -1,0 +1,37 @@
+class MovingAverage {
+    int sum;
+    int contain;
+    int[] vals;
+    int p;
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        vals=new int[size];
+        contain=0;
+        sum=0;
+        p=0;
+    }
+    
+    public double next(int val) {
+        sum=sum-vals[p]+val;
+        vals[p]=val;
+        p++;
+        if(p>=vals.length){
+            p=0;
+        }
+        if(contain<vals.length){
+            contain++;
+        }
+        return sum/(contain+0.0);
+    }
+}
+
+/**
+ * Your MovingAverage object will be instantiated and called as such:
+ * MovingAverage obj = new MovingAverage(size);
+ * double param_1 = obj.next(val);
+ */
+
+Runtime: 41 ms 62.17%
+Memory Usage: 44 MB 60.08%
+
+O(1) time, O(N) space.

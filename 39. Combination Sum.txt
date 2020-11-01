@@ -36,3 +36,51 @@ Brute force solution. Using stack instead of list won't bring much improvement, 
 Other's dp solution. I knew there can be a DP solution, but didn't work it out. However, I start to know which kinds of problems can be solved by DP, it is a big progress for me.
 
 https://leetcode.com/problems/combination-sum/discuss/16509/Iterative-Java-DP-solution
+
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>>[] dp=new ArrayList[target+1];
+        Arrays.sort(candidates);
+        for(int cand:candidates){
+            if(cand>target){
+                break;
+            }
+            dp[cand]=new ArrayList<>();
+            List<Integer> li=new ArrayList<>();
+            li.add(cand);
+            dp[cand].add(li);
+        }
+        for(int i=1;i<=target;i++){
+            if(dp[i]==null){
+                dp[i]=new ArrayList<>();
+            }
+            for(int cand:candidates){
+                int t=i-cand;
+                if(t<=0){
+                    break;
+                }
+                if(dp[t]==null){
+                    continue;
+                }
+                for(List<Integer> list:dp[t]){
+                    if(list.get(list.size()-1)>cand){
+                        continue;
+                    }
+                    List<Integer> nlist=new ArrayList<>(list);
+                    nlist.add(cand);
+                    dp[i].add(nlist);
+                }
+            }
+        }
+        return dp[target];
+    }
+}
+
+Runtime: 5 ms	45.17%
+Memory Usage: 39.3 MB	93.77%
+
+Solve this with dp easily this time. The transition is clear so it naturally comes to DP.
+Didn't sort the array at first, then sort it for early breaks.
+
+

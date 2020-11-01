@@ -1,0 +1,53 @@
+class Leaderboard {
+    Map<Integer, Integer> scores;
+    
+    public Leaderboard() {
+        scores=new HashMap<>();
+    }
+    
+    public void addScore(int playerId, int score) {
+        score+=scores.getOrDefault(playerId,0);
+        scores.put(playerId,score);
+    }
+    
+    public int top(int K) {
+        PriorityQueue<Integer> pq=new PriorityQueue<>((o1,o2)->(Integer.compare(o1,o2)));
+        int sum=0;
+        for(int id:scores.keySet()){
+            int score=scores.get(id);
+            if(pq.size()<K){
+                pq.offer(score);
+                sum+=score;
+                continue;
+            }
+            int min=pq.peek();
+            if(score<min){
+                continue;
+            }
+            sum+=score;
+            pq.offer(score);
+            if(pq.size()>K){
+                sum-=pq.poll();
+            }
+        }
+        return sum;
+    }
+    
+    public void reset(int playerId) {
+        scores.remove(playerId);
+    }
+}
+
+/**
+ * Your Leaderboard object will be instantiated and called as such:
+ * Leaderboard obj = new Leaderboard();
+ * obj.addScore(playerId,score);
+ * int param_2 = obj.top(K);
+ * obj.reset(playerId);
+ */
+
+Runtime: 17 ms, faster than 48.98% of Java online submissions for Design A Leaderboard.
+Memory Usage: 39.8 MB, less than 5.93% of Java online submissions for Design A Leaderboard.
+
+Pretty easy with hashmap and bucket sort.
+Can be improved with TreeMap or TreeSet.

@@ -1,0 +1,42 @@
+class Solution {
+    public boolean isNStraightHand(int[] hand, int W) {
+        int k=hand.length/W;
+        if(k*W!=hand.length){
+            return false;
+        }
+        
+        int[] val=new int[k];
+        Arrays.fill(val,-1);
+        int[] size=new int[k];
+        Arrays.sort(hand);
+        for(int h:hand){
+            for(int i=0;i<k;i++){
+                if(size[i]==W){
+                    continue;
+                }
+                if(val[i]==-1 || val[i]==h-1){
+                    val[i]=h;
+                    size[i]++;
+                    break;
+                }
+            }
+        }
+        for(int s:size){
+            if(s!=W){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 132 ms, faster than 5.91% of Java online submissions for Hand of Straights.
+Memory Usage: 40.3 MB, less than 74.89% of Java online submissions for Hand of Straights.
+
+Not a good performance. Time complexity O(NlogN+N*k).
+
+Other's O(MlogM+N) solution. M is the number of different cards.
+The queue "start" store the number of straight groups started for each card number, so when the size of start reach M, it means some groups (the number of the groups is the top of "start") are full, so we decrease the number of open groups accordingly. If there are opened groups and current card number is larger than last number plus 1, then the current groups cannot be full; if the number of current card is less than opened groups, then at least one group will not be full.
+
+https://leetcode.com/problems/hand-of-straights/discuss/135598/C%2B%2BJavaPython-O(MlogM)-Complexity
+

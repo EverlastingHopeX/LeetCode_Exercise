@@ -58,3 +58,78 @@ class MinStack {
 
 Runtime: 5 ms, faster than 80.93% of Java online submissions for Min Stack.
 Memory Usage: 40 MB, less than 34.06% of Java online submissions for Min Stack.
+
+class MinStack {
+
+    class Node{
+        int val;
+        Node next;
+        
+        Node(int val){
+            this.val=val;
+            next=null;
+        }
+    }
+    
+    Node top;
+    Node min;
+    
+    /** initialize your data structure here. */
+    public MinStack() {
+        top=null;
+        min=null;
+    }
+    
+    public void push(int x) {
+        Node p=new Node(x);
+        p.next=top;
+        top=p;
+        if(min==null){
+            min=p;
+        }
+        else{
+            if(p.val<min.val){
+                min=p;
+            }
+        }
+    }
+    
+    public void pop() {
+        if(min==top){
+            min=null;
+        }
+        if(top!=null){
+            top=top.next;
+        }
+        Node p=top;
+        min=top;
+        while(p!=null){
+            if(p.val<min.val){
+                min=p;
+            }
+            p=p.next;
+        }
+    }
+    
+    public int top() {
+        return top.val;
+    }
+    
+    public int getMin() {
+        return min.val;
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
+
+Runtime: 4 ms, faster than 94.81% of Java online submissions for Min Stack.
+Memory Usage: 41.4 MB, less than 16.86% of Java online submissions for Min Stack.
+
+I use Node to represent the stack this time, the time complexity is pretty much the same as the previous solution.

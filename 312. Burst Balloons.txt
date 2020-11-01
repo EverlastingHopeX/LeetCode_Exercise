@@ -1,0 +1,14 @@
+Tried to solve this with dp.
+I got the transition how to compute the coins n+1 balloons can get based on the coins n balloons can get. However, I have to know the sequence of the balloons' indexes, which is hard to maintain.
+
+Other's solution.
+This solution is pretty clean and concise.
+Different from my idea, which is to maximum coins we can get when there is n+1 balloons left based on the result we had for n balloons, this one compute the maximum coins we can get when we burst n+1 balloons based on the result we had for n balloons. And it uses 2d array to memorize the results based on the boundary of balloons.
+For this solution, when k=2, it computes the coins when only 1 balloon left to burst.
+dp[left][i]+nums[left]*nums[i]*nums[right]+dp[i][right] represents a condition that burst i after the balloons (left,i) and (i,right). So by setting i to numbers between left and right, we can get the maximum coins we can get from bursting balloons (left+1,right-1), which is dp[left][right]. We don't need to know how balloons (left+1,i-1) or (i+1,right-1) burst, only need to know the maximum coins we will get from bursting them. 
+
+https://leetcode.com/problems/burst-balloons/discuss/76228/Share-some-analysis-and-explanations
+
+Here is a good explanation.
+
+https://leetcode.com/problems/burst-balloons/discuss/76229/For-anyone-that-is-still-confused-after-reading-all-kinds-of-explanations...

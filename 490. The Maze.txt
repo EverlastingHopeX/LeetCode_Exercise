@@ -96,3 +96,89 @@ Runtime: 2 ms, faster than 97.22% of Java online submissions for The Maze.
 Memory Usage: 45.7 MB, less than 91.67% of Java online submissions for The Maze.
 
 This one needs considering a lot of corner cases.
+
+class Solution {
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        // Set<String> visited=new HashSet<>();
+        boolean[][] visited=new boolean[maze.length][maze[0].length];
+        visited[start[0]][start[1]]=true;
+        int[][] dirs=new int[][]{{1,0},{0,1},{0,-1},{-1,0}};
+        
+        //DFS
+        // Stack<int[]> st=new Stack<>();
+        // st.push(start);
+        // while(!st.isEmpty()){
+        //     int[] cur=st.pop();
+        //     // System.out.println(cur[0]+" "+cur[1]);
+        //     if(cur[0]==destination[0] && cur[1]==destination[1]){
+        //         return true;
+        //     }
+        //     for(int[] d:dirs){
+        //         int[] next=findDest(maze, cur,d);
+        //         if(!visited[next[0]][next[1]]){
+        //             st.push(next);
+        //             visited[next[0]][next[1]]=true;
+        //         }
+        //     }
+        // }
+        
+        //BFS
+        Queue<int[]> que=new LinkedList<>();
+        que.offer(new int[]{start[0],start[1],-1});
+        while(!que.isEmpty()){
+            int size=que.size();
+            // System.out.println("---");
+            for(int i=0;i<size;i++){
+                int[] cur=que.poll();
+                // System.out.println(cur[0]+" "+cur[1]);
+                if(cur[0]==destination[0] && cur[1]==destination[1]){
+                    return true;
+                }
+                
+                // for(int[] d:dirs){
+                //     int[] next=findDest(maze, cur,d);
+                //     // String s=Arrays.toString(next);
+                //     if(!visited[next[0]][next[1]]){
+                //         que.offer(next);
+                //         visited[next[0]][next[1]]=true;
+                //     }
+                // }
+                
+                for(int j=0;j<dirs.length;j++){
+                    if(j==cur[2] || j+cur[2]==3){
+                        continue;
+                    }
+                    int[] next=findDest(maze,cur,dirs[j]);
+                    if(!visited[next[0]][next[1]]){
+                        que.offer(new int[]{next[0],next[1],j});
+                        visited[next[0]][next[1]]=true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private int[] findDest(int[][] maze, int[] cur, int[] d){
+        // System.out.println("findDest "+cur[0]+","+cur[1]+" dir "+d[0]+","+d[1]);
+        int[] p=cur.clone();
+        while(true){
+            int r=p[0]+d[0], c=p[1]+d[1];
+            //meet end
+            if(r<0 || r>=maze.length || c<0 || c>=maze[0].length || maze[r][c]==1){
+                break;
+            }
+            p[0]=r;
+            p[1]=c;
+        }
+        return p;
+    }
+}
+
+Runtime: 7 ms, faster than 37.88% of Java online submissions for The Maze.
+Memory Usage: 40.2 MB, less than 80.16% of Java online submissions for The Maze.
+
+I tried both BFS and DFS this time. Their performance is similar, and both of them are worse than the previous solution. I improved my solution by using array instead of set and store the direction to avoid hitting the wall twice or go back, but it is still worse than the first time solution. However, it is more concise and readable compared with the previous one. Apart from that, we can alter maze instead of creating another visited array or set.
+
+The time complexity is O(R*C), since we will at most pass one point twice (vertically or horizontally).

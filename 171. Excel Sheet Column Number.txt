@@ -14,3 +14,5 @@ Memory Usage: 38.4 MB, less than 59.32% of Java online submissions for Excel She
 
 Much easier than 168.
 Although the performance only beats 20.66%, most of them are 1 ms, and it is probably because of the instable performance of online judgement.
+
+Exactly the same solution at the second time.

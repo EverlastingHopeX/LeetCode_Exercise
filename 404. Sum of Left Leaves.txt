@@ -1,0 +1,47 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int sum=0;
+    
+    public int sumOfLeftLeaves(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        DFS(root,false);
+        
+        return sum;
+    }
+    
+    private void DFS(TreeNode cur, boolean isLeft){
+        int cnt=0;
+        if(cur.left!=null){
+            DFS(cur.left,true);
+            cnt++;
+        }
+        if(cur.right!=null){
+            DFS(cur.right,false);
+            cnt++;
+        }
+        if(cnt==0 && isLeft){
+            sum+=cur.val;
+        }
+    }
+}
+
+Runtime: 0 ms, faster than 100% of Java online submissions for Web Crawler.
+Memory Usage: 39.4 MB, less than 16.48% of Java online submissions for Web Crawler.
+
+Pretty easy. Using iterative DFS instead of recursive may save some space.

@@ -1,0 +1,44 @@
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length<2){
+            if(nums.length==0){
+                return 0;
+            }
+            return nums[0];
+        }
+        
+        int[] dp=new int[nums.length+2];
+        int[] dp2=new int[nums.length+2];
+        
+        for(int i=0;i<nums.length;i++){
+            dp[i+2]=helper(dp,i+2,nums[i]);
+            
+            if(i>0){
+                dp2[i+2]=helper(dp2,i+2,nums[i]);
+            }
+            //print
+            // System.out.println(i+" "+dp[i+2]+" "+dp2[i+2]);
+        }
+        int N=nums.length+1;
+        //dp[N] rob both first and last
+        if(dp[N]!=dp2[N] && dp[N]!=dp[N-1]){
+            //dont rob last or first
+            dp[N]=Math.max(dp[N-1],dp[N]-nums[0]);
+        }
+        return Math.max(dp[N],dp2[N]);
+    }
+    
+    private int helper(int[] dp, int i, int curVal){
+        int robThis=dp[i-2]+curVal;
+        if(robThis>dp[i-1]){
+            return robThis;
+        }
+        return dp[i-1];
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 36.1 MB
+
+It is easy to see that this is a dp problem and find out the transition formula.
+However, it takes some time to solve the case that when dp[N] robs both first house and last house since the houses form a circle.

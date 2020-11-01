@@ -1,0 +1,43 @@
+class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        int left=0,right=0;
+        int sum=0;
+        //expand
+        while(right<nums.length && sum<s){
+            sum+=nums[right];
+            right++;
+        }
+        //shrink, left is the largest index that sum [left,right) >= s
+        while(left<nums.length && sum-nums[left]>=s){
+            sum-=nums[left];
+            left++;
+        }
+        //there is no sum that not smaller than s
+        if(sum<s){
+            return 0;
+        }
+        
+        while(right<nums.length){
+            System.out.println(left+", "+right+": "+sum);
+            
+            //slide
+            sum+=nums[right]-nums[left];
+            right++;
+            left++;
+            
+            //shrink
+            while(sum-nums[left]>=s){
+                sum-=nums[left];
+                left++;
+            }
+        }
+        
+        return right-left;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Minimum Size Subarray Sum.
+Memory Usage: 38.9 MB, less than 96.25% of Java online submissions for Minimum Size Subarray Sum.
+
+It is always easier to solve a problem with a clearer mind instead of trying to fix it based on instinction.
+The idea is sliding window.

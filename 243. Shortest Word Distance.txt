@@ -1,0 +1,25 @@
+class Solution {
+    public int shortestDistance(String[] words, String word1, String word2) {
+        int i1=-1,i2=-1;
+        int min=words.length;
+        for(int i=0;i<words.length;i++){
+            if(words[i].equals(word1)){
+                i1=i;
+            }
+            if(words[i].equals(word2)){
+                i2=i;
+            }
+            if(i1<0 || i2<0){
+                continue;
+            }
+            min=Math.min(min,Math.abs(i1-i2));
+        }
+        
+        return min;
+    }
+}
+
+Runtime: 1 ms, faster than 99.70% of Java online submissions for Shortest Word Distance.
+Memory Usage: 39.4 MB, less than 75.36% of Java online submissions for Shortest Word Distance.
+
+Solved this with an O(N^2) solution at first. It is not that easy if you follow the wrong direction. I used map to memorize each word's index, then find the min distance based on the indexs of word1 and word2.

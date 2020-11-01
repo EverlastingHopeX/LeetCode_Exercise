@@ -1,0 +1,23 @@
+class Solution {
+    public int bitwiseComplement(int N) {
+        if(N==0){
+            return 1;
+        }
+        int ans=0;
+        int base=1;
+        while(N>0){
+            int t=N/2;
+            //1
+            if(N==2*t){
+                ans+=base;
+            }
+            N=t;
+            base*=2;
+            // System.out.println(N+" "+ans);
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms	100.0%
+Memory Usage: 35.7 MB 96.49%

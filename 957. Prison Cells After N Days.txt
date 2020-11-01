@@ -51,3 +51,46 @@ Memory Usage: 36.6 MB, less than 97.62% of Java online submissions for Prison Ce
 It becomes easier when I know there has to be a cycle, as there can only be limited states.
 One mistake I made was assuming day 0 is also part of the cycle. Actually, it is not always true.
 Because cell 0 and cell 7 cannot become 1 again.
+
+class Solution {
+    List<int[]> stateList=new ArrayList<>();
+    Set<String> stateSet=new HashSet<>();
+    
+    public int[] prisonAfterNDays(int[] cells, int N) {
+        int[] t=helper(cells,N);
+        if(t==null){
+            int k=(N-1)%stateList.size();
+            // System.out.println("loop "+stateList.size()+" k "+k);
+            return stateList.get(k);
+        }
+        return t;
+    }
+    
+    private int[] helper(int[] cells, int N){
+        // System.out.println("N "+N);
+        if(N==0){
+            return cells;
+        }
+        StringBuilder sb=new StringBuilder("0");
+        int[] t=new int[cells.length];
+        for(int i=1;i<cells.length-1;i++){
+            if(cells[i-1]==cells[i+1]){
+                t[i]=1;
+                sb.append("1");
+            }
+            else{
+                sb.append("0");
+            }
+        }
+        sb.append("0");
+        String str=sb.toString();
+        if(stateSet.contains(str)){
+            return null;
+        }
+        stateSet.add(str);
+        stateList.add(t);
+        return helper(t,N-1);
+    }
+}
+
+The algorithm is not much different from the previous solution.

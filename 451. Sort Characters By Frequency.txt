@@ -1,0 +1,27 @@
+class Solution {
+    public String frequencySort(String s) {
+        Map<Integer,Integer> freq=new HashMap<>();
+        for(char ch:s.toCharArray()){
+            int k=(int)ch;
+            int cnt=freq.getOrDefault(k,0);
+            // System.out.println(ch+" "+cnt);
+            freq.put(k,cnt+1);
+        }
+        PriorityQueue<int[]> pq=new PriorityQueue<>((o1,o2)->(o2[1]-o1[1]));
+        for(int key:freq.keySet()){
+            pq.offer(new int[]{key,freq.get(key)});
+        }
+        StringBuilder sb=new StringBuilder("");
+        while(!pq.isEmpty()){
+            int[] t=pq.poll();
+            char ch=(char)t[0];
+            for(int i=0;i<t[1];i++){
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 10 ms, faster than 88.39% of Java online submissions for Sort Characters By Frequency.
+Memory Usage: 40.3 MB, less than 84.48% of Java online submissions for Sort Characters By Frequency.

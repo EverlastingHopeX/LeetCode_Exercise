@@ -1,0 +1,112 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    public Node insert(Node head, int insertVal) {
+        Node t=new Node(insertVal);
+        t.next=t;
+        if(head==null){
+            return t;
+        }
+        //insert val > head.val
+        //insert after head
+        if(insertVal>head.val){
+            Node cur=head.next,prev=head;
+            while(insertVal>cur.val){
+                // System.out.println("cur "+cur.val);
+                if(cur.val<prev.val || cur==head){
+                    break;
+                }
+                prev=cur;
+                cur=cur.next;
+            }
+            prev.next=t;
+            t.next=cur;
+        }
+        //insert val < head.val
+        //insert before head
+        else{
+            Node cur=head.next,prev=head;
+            while(cur.val>=prev.val && cur!=head){
+                // System.out.println("cur "+cur.val);
+                prev=cur;
+                cur=cur.next;
+            }
+            while(insertVal>cur.val){
+                // System.out.println("cur "+cur.val);
+                prev=cur;
+                cur=cur.next;
+            }
+            prev.next=t;
+            t.next=cur;
+        }
+        return head;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Insert into a Sorted Circular Linked List.
+Memory Usage: 39.1 MB, less than 74.01% of Java online submissions for Insert into a Sorted Circular Linked List.
+
+Not hard, but the corner cases are tricky.
+
+
+class Solution {
+    public Node insert(Node head, int insertVal) {
+        Node t=new Node(insertVal);
+        t.next=t;
+        if(head==null){
+            return t;
+        }
+        Node prev=head, cur=head.next;
+        //insert after head
+        if(head.val<=insertVal){
+            while(cur.val>=head.val && cur.val<insertVal){
+                // System.out.println("cur "+cur.val);
+                prev=cur;
+                cur=cur.next;
+                if(cur==head){
+                    break;
+                }
+            }
+            prev.next=t;
+            t.next=cur;
+        }
+        //insert before head
+        else{
+            while(cur.val>=head.val){
+                // System.out.println("cur "+cur.val);
+                prev=cur;
+                cur=cur.next;
+                if(cur==head){
+                    break;
+                }
+            }
+            while(cur.val<insertVal){
+                // System.out.println("cur "+cur.val);
+                prev=cur;
+                cur=cur.next;
+            }
+            prev.next=t;
+            t.next=cur;
+        }
+        return head;
+    }
+}
+
+Basically the same solution.

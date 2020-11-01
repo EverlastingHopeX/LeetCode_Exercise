@@ -28,3 +28,32 @@ class Solution {
 
 Runtime: 1 ms, faster than 95.20% of Java online submissions for Generate Parentheses.
 Memory Usage: 40.1 MB, less than 16.13% of Java online submissions for Generate Parentheses.
+
+
+class Solution {
+    public List<String> generateParenthesis(int n) {
+        List<String> ans=new ArrayList<>();
+        DFS(ans,new StringBuilder(""),n,n);
+        return ans;
+    }
+    
+    private void DFS(List<String> ans,StringBuilder sb, int left, int right){
+        // System.out.println(left+" "+right);
+        if(left>0){
+            sb.append('(');
+            DFS(ans,sb,left-1,right);
+            sb.setLength(sb.length()-1);
+        }
+        if(right==0){
+            ans.add(sb.toString());
+            return;
+        }
+        if(right>left){
+            sb.append(')');
+            DFS(ans,sb,left,right-1);
+            sb.setLength(sb.length()-1);
+        }
+    }
+}
+
+pretty much the same solution as previous, the logic is a bit better.

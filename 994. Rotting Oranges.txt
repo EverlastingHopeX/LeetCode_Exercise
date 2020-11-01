@@ -48,3 +48,54 @@ class Solution {
 
 Runtime: 2 ms, faster than 90.53% of Java online submissions for Rotting Oranges.
 Memory Usage: 40.6 MB, less than 60.84% of Java online submissions for Rotting Oranges.
+
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        Queue<int[]> rotten=new LinkedList<>();
+        int cnt=0;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                if(grid[i][j]==2){
+                    rotten.offer(new int[]{i,j});
+                }
+                else if(grid[i][j]==1){
+                    cnt++;
+                }
+            }
+        }
+        if(cnt==0){
+            return 0;
+        }
+        int t=-1;
+        int[][] dirs=new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+        while(!rotten.isEmpty()){
+            // System.out.println(t);
+            int size=rotten.size();
+            for(int i=0;i<size;i++){
+                int[] pos=rotten.poll();
+                for(int[] d:dirs){
+                    int[] next=new int[]{pos[0]+d[0],pos[1]+d[1]};
+                    if(next[0]<0 || next[0]>=grid.length || next[1]<0 || next[1]>=grid[0].length){
+                        continue;
+                    }
+                    if(grid[next[0]][next[1]]!=1){
+                        continue;
+                    }
+                    grid[next[0]][next[1]]=2;
+                    cnt--;
+                    rotten.offer(next);
+                }
+            }
+            t++;
+        }
+        if(cnt!=0){
+            return -1;
+        }
+        return t;
+    }
+}
+
+Runtime: 3 ms, faster than 82.33% of Java online submissions for Rotting Oranges.
+Memory Usage: 39.2 MB, less than 64.47% of Java online submissions for Rotting Oranges.
+
+BFS.

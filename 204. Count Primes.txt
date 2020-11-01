@@ -1,0 +1,4 @@
+Tried to solve this by storing the non primes which is the product of primes in hashset, but this is actually slower than using boolean array.
+
+Other's solution.
+https://leetcode.com/problems/count-primes/discuss/57588/My-simple-Java-solution

@@ -1,0 +1,75 @@
+class Solution {
+    int hashsize;
+    public double champagneTower(int poured, int query_row, int query_glass) {
+        Map<Integer,Double> flowMap=new HashMap<>();
+        hashsize=query_row;
+        int top=hash(0,0);
+        flowMap.put(top,(double)poured);
+        for(int row=1;row<=query_row;row++){
+            int k=query_row-row;
+            for(int idx=query_glass-k;idx<=row && idx<=query_glass;idx++){
+                int l=hash(row-1,idx-1);
+                double leftLeak=flowMap.getOrDefault(l,0.0)-1;
+                if(leftLeak<0){
+                    leftLeak=0;
+                }
+                int r=hash(row-1,idx);
+                double rightLeak=flowMap.getOrDefault(r,0.0)-1;
+                if(rightLeak<0){
+                    rightLeak=0;
+                }
+                double sum=(leftLeak+rightLeak)/2;
+                int cur=hash(row,idx);
+                flowMap.put(cur,sum);
+            }
+        }
+        int s=hash(query_row,query_glass);
+        double flow=flowMap.getOrDefault(s,0.0);
+        return flow>1.0?1.0:flow;
+    }
+    
+    private int hash(int r, int i){
+        return r*hashsize+i;
+    }
+}
+
+Runtime: 14 ms	10.74%
+Memory Usage: 40.5 MB
+
+DP.
+The champagne flow through glass (r,i) is half of champagne leak from its top left glass and top right glass. This is the transition formula.
+
+I used string as key, which is very slow because of string combination. Then I improved this by using query_row to hash. This is still slow. Since we only use the flow from previous level, there is not need to use map, we only need to use array to store, and hash is not longer needed.
+after improvement:
+
+public double champagneTower(int poured, int query_row, int query_glass) {
+    // Map<Integer,Double> flowMap=new HashMap<>();
+    double[] flow=new double[query_glass+1];
+    flow[0]=poured+0.0;
+    for(int row=1;row<=query_row;row++){
+        // System.out.println("row "+row);
+        double[] nflow=new double[query_glass+1];
+        int offset=query_row-row;
+        int start=Math.max(0,query_glass-offset);
+        // System.out.println("k "+k);
+        for(int idx=start;idx<=row && idx<=query_glass;idx++){
+            // System.out.println(idx);
+            double leftLeak=0;
+            if(idx>0 && flow[idx-1]>1){
+                leftLeak=flow[idx-1]-1;
+            }
+            double rightLeak=0;
+            if(flow[idx]>1){
+                rightLeak=flow[idx]-1;
+            }
+            double sum=(leftLeak+rightLeak)/2;
+            nflow[idx]=sum;
+        }
+        flow=nflow;
+    }
+    double t=flow[query_glass];
+    return t>1.0?1.0:t;
+}
+
+Runtime: 1 ms 100.0%
+Memory Usage: 38.7 MB

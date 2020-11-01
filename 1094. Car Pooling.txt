@@ -1,0 +1,35 @@
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        Arrays.sort(trips,(o1,o2)->(o1[1]-o2[1]));
+        int cnt=0;
+        int k=0;
+        PriorityQueue<int[]> pq=new PriorityQueue<>((o1,o2)->(o1[2]-o2[2]));
+        while(k<trips.length){
+            while(!pq.isEmpty()){
+                int[] t=pq.peek();
+                if(t[2]>trips[k][1]){
+                    break;
+                }
+                cnt-=t[0];
+                pq.poll();
+            }
+            pq.offer(trips[k]);
+            cnt+=trips[k][0];
+            // System.out.println(trips[k][1]+"-"+trips[k][2]+": "+cnt);
+            if(cnt>capacity){
+                return false;
+            }
+            k++;
+        }
+        return true;
+    }
+}
+
+Runtime: 5 ms	66.03%
+Memory Usage: 39.4 MB	47.65%
+
+Typical interval coloring problem.
+O(NlogN).
+Since there can be at most 1000 stops, there is a O(N) solution.
+This is actually O(N+1001), which means it may not run well if there are unlimited stops.
+https://leetcode.com/problems/car-pooling/discuss/317611/C%2B%2BJava-O(n)-Thousand-and-One-Stops

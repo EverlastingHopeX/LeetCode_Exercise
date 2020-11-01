@@ -1,0 +1,35 @@
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        for(int len=1;len<s.length();len++){
+            if(helper(s,len)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private boolean helper(String s, int len){
+        if(s.length()%len!=0){
+            return false;
+        }
+        for(int i=0;i<len;i++){
+            char ch=s.charAt(i);
+            int j=i+len;
+            while(j<s.length()){
+                char tmp=s.charAt(j);
+                if(tmp!=ch){
+                    return false;
+                }
+                j+=len;
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 8 ms, faster than 86.79% of Java online submissions for Repeated Substring Pattern.
+Memory Usage: 39.7 MB, less than 91.71% of Java online submissions for Repeated Substring Pattern.
+
+Test every possible repeating substring.
+I thought I could solve this with binary search, but actually I cannot determine whether to shrink size or expand size after each test.

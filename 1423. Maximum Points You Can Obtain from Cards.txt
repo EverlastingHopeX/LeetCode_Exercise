@@ -1,0 +1,28 @@
+class Solution {
+    
+    public int maxScore(int[] cardPoints, int k) {
+        int[] lsum=new int[k+1];
+        int[] rsum=new int[k+1];
+        int sum=0;
+        for(int i=1;i<=k;i++){
+            sum+=cardPoints[i-1];
+            lsum[i]=sum;
+        }
+        sum=0;
+        for(int i=1;i<=k;i++){
+            int j=cardPoints.length-i;
+            sum+=cardPoints[j];
+            rsum[i]=sum;
+        }
+        int max=0;
+        for(int i=0;i<=k;i++){
+            max=Math.max(max,lsum[i]+rsum[k-i]);
+        }
+        return max;
+    }
+}
+
+Runtime: 1 ms, faster than 100.00% of Java online submissions for Maximum Points You Can Obtain from Cards.
+Memory Usage: 47.2 MB, less than 96.23% of Java online submissions for Maximum Points You Can Obtain from Cards.
+
+Tried DFS first, got TLE. Then I realize that the order of the numbers does not matter, I only need to pick t number from left and k-t number from right.

@@ -1,0 +1,23 @@
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        for(int i=0;i<nums.length;i++){
+            for(int j=i+1;j<nums.length && j<=i+k;j++){
+                if(nums[j]>=(long)nums[i]-t && nums[j]<=(long)nums[i]+t){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 469 ms, faster than 13.17% of Java online submissions for Contains Duplicate III.
+Memory Usage: 40.1 MB, less than 69.29% of Java online submissions for Contains Duplicate III.
+
+This is the brute force solution. O(k*t).
+Tried to solve this using minHeap and maxHeap, but this problem is talking about the difference "at most" t, so there is no reason to calculate the max difference within a section.
+
+Other's O(N) bucket solution. 
+Well explained. By maintaining k buckets each with t depth, we can check if the difference of two elements are within t.
+
+https://leetcode.com/problems/contains-duplicate-iii/discuss/61639/JavaPython-one-pass-solution-O(n)-time-O(n)-space-using-buckets

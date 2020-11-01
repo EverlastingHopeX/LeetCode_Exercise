@@ -57,3 +57,106 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Delete Node in a BST.
 Memory Usage: 40.1 MB, less than 17.24% of Java online submissions for Delete Node in a BST.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        TreeNode dummy=new TreeNode();
+        dummy.left=root;
+        TreeNode parent=DFS(dummy,key);
+        if(parent==null){
+            return dummy.left;
+        }
+        // System.out.println(parent.val);
+        remove(parent, key);
+        return dummy.left;
+    }
+    
+    private TreeNode DFS(TreeNode cur, int key){
+        if(cur==null){
+            return null;
+        }
+        if(cur.left!=null){
+            if(cur.left.val==key){
+                return cur;
+            }
+            else{
+                TreeNode lnode=DFS(cur.left,key);
+                if(lnode!=null){
+                    return lnode;
+                }
+            }
+        }
+        if(cur.right!=null){
+            if(cur.right.val==key){
+                return cur;
+            }
+            else{
+                TreeNode rnode=DFS(cur.right,key);
+                if(rnode!=null){
+                    return rnode;
+                }
+            }
+        }
+        return null;
+    }
+    
+    private void remove(TreeNode parent, int key){
+        TreeNode target=null;
+        if(parent.left!=null && parent.left.val==key){
+            target=parent.left;
+            if(target.right==null){
+                parent.left=target.left;
+                return;
+            }
+            else{
+                TreeNode t=findLeftMost(target.right);
+                t.left=target.left;
+                parent.left=target.right;
+            }
+        }
+        if(parent.right!=null && parent.right.val==key){
+            target=parent.right;
+            if(target.right==null){
+                parent.right=target.left;
+                return;
+            }
+            else{
+                TreeNode t=findLeftMost(target.right);
+                t.left=target.left;
+                parent.right=target.right;
+            }
+        }
+        
+    }
+    
+    private TreeNode findLeftMost(TreeNode root){
+        if(root==null){
+            return null;
+        }
+        TreeNode cur=root;
+        while(cur.left!=null){
+            cur=cur.left;
+        }
+        return cur;
+    }
+    
+    
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Delete Node in a BST.
+Memory Usage: 47.3 MB, less than 9.97% of Java online submissions for Delete Node in a BST.

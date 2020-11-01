@@ -45,3 +45,97 @@ class Solution {
 
 Runtime: 1 ms, faster than 100.00% of Java online submissions for Reorder List.
 Memory Usage: 39.3 MB, less than 100.00% of Java online submissions for Reorder List.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        
+        // useList(head);
+        useReverse(head);
+        
+    }
+    
+    private void useReverse(ListNode head){
+        if(head==null || head.next==null){
+            return;
+        }
+        ListNode slow=head,fast=head;
+        while(fast!=null && fast.next!=null){
+            // System.out.println(slow.val+" "+fast.val);
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        ListNode p1=slow,p2=slow.next;
+        slow.next=null;
+        while(p2!=null){
+            ListNode t=p2.next;
+            p2.next=p1;
+            p1=p2;
+            p2=t;
+        }
+        p2=p1;
+        p1=head;
+        ListNode dummy=new ListNode();
+        ListNode cur=dummy;
+        while(p1!=null && p2!=null){
+            cur.next=p1;
+            p1=p1.next;
+            cur=cur.next;
+            cur.next=p2;
+            p2=p2.next;
+            cur=cur.next;
+        }
+        cur.next=null;
+        
+        // cur=dummy.next;
+        // while(cur!=null){
+        //     System.out.println(cur.val);
+        //     cur=cur.next;
+        // }
+    }
+    
+    private void useList(ListNode head){
+        List<ListNode> li=new ArrayList<>();
+        ListNode p=head;
+        while(p!=null){
+            li.add(p);
+            p=p.next;
+        }
+        
+        int i1=0,i2=li.size()-1;
+        ListNode dummy=new ListNode();
+        ListNode cur=dummy;
+        int k=li.size()/2;
+        while(i1<=k && i2>=k){
+            // System.out.println(i1+" "+i2);
+            cur.next=li.get(i1);
+            cur=cur.next;
+            // System.out.println(cur.val);
+            cur.next=li.get(i2);
+            cur=cur.next;
+            // System.out.println(cur.val);
+            i1++;
+            i2--;
+        }
+        cur.next=null;
+        
+        // cur=dummy.next;
+        // while(cur!=null){
+        //     System.out.println(cur.val);
+        //     cur=cur.next;
+        // }
+    }
+}
+
+Can be solved by using extra list or reverse the half of the list.
+Extra list would take O(N) space while using reverse will only take O(1) space.
+The time complexities are both O(N). 

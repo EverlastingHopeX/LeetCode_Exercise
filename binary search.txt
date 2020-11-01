@@ -1,0 +1,11 @@
+https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problem
+
+1. left<right
+if condition
+	right=mid
+else
+	left=mid+1
+return left
+
+left is the minimal element that satisfies condition
+

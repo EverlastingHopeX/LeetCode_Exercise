@@ -41,3 +41,38 @@ these stations and start from k. If no break point are met, then k is the soluti
 we can continually exclude stations until we reach last station.
 these points to reach k than 0.
 https://leetcode.com/problems/gas-station/discuss/42568/Share-some-of-my-ideas.
+
+Solve this at the second time.
+
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int N=gas.length;
+        int sum=0;
+        int start=0;
+        int min=0;
+        for(int i=0;i<N;i++){
+            sum+=gas[i]-cost[i];
+            // System.out.println("sum "+sum);
+            if(sum<min){
+                min=sum;
+                start=i+1;
+            }
+        }
+        
+        if(sum<0){
+            return -1;
+        }
+        // System.out.println("start "+start);
+        return start%N;
+    }
+}
+
+Runtime: 0 ms	100%
+Memory Usage: 40 MB	43.61%
+
+First solve this with O(N^2) solution, which is DFS.
+Then, I realize that there can only be several stops that gas is less than cost. If there are consecutive stops that lack of gas or have more gas than cost, they can be regarded as a single stop (surplus stop or lack stop). 
+If the overall gas is more than cost, then there must be a way to travel around the circuit. If it can't, it means that there is a lack stop that cannot be offset by its previous surplus stops, which means the overall gas is less than cost. 
+The surplus stop that can offset its next lack stop is a candidate, and I need to find the candidate whose previous surplus stop is not a candidate.
+However, I didn't implement that. When I visualize the variation of gas sum, I realize that the curve never change, it just move up or down based on the starting point. for example, if gas  = [1,2,3,4,5] cost = [3,4,5,1,2], then the variation of sum is [-2,-4,-6,-3,0]. And if we start at 3, it will be [4,2,0,3,6]. Apparently, if we start from the stop with minimum sum, then sum will always greater or equal to zero.
+This is my O(N) solution.

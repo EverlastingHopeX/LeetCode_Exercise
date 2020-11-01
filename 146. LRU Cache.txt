@@ -1,0 +1,59 @@
+Can't work it out.
+At first, I tried to maintain a linkedlist as queue to store the cache, and got a TLE. Then I tried to improve it by allowing duplicate keys in queue, and only removing the duplicate keys in put(). I still got a TLE.
+
+Other's solution.
+I guess it will be faster to remove a node in random position in a double linked list. It also uses a hashtable to store the key and corresponding node instead of value, which makes it easier to modify the list.
+
+https://leetcode.com/problems/lru-cache/discuss/45911/Java-Hashtable-%2B-Double-linked-list-(with-a-touch-of-pseudo-nodes)
+
+class LRUCache {
+    Queue<Integer> que=new LinkedList<>();
+    Map<Integer,Integer> cache=new HashMap<>();
+    Map<Integer,Integer> cnt=new HashMap<>();
+    int cap=0;
+    
+    public LRUCache(int capacity) {
+        this.cap=capacity;
+        
+    }
+    
+    public int get(int key) {
+        // System.out.println("get "+key);
+        if(!cache.containsKey(key)){
+            return -1;
+        }
+        que.offer(key);
+        cnt.put(key,cnt.get(key)+1);
+        return cache.get(key);
+    }
+    
+    public void put(int key, int value) {
+        // System.out.println("put "+key);
+        cache.put(key,value);
+        cnt.put(key,cnt.getOrDefault(key,0)+1);
+        que.offer(key);
+        int size=cache.size();
+        while(size>cap){
+            int p=que.poll();
+            // System.out.println(p);
+            int t=cnt.get(p);
+            cnt.put(p,t-1);
+            if(t==1){
+                // System.out.println("remove "+p);
+                cnt.remove(p);
+                cache.remove(p);
+                size--;
+            }
+        }
+    }
+    
+}
+
+Runtime: 42 ms, faster than 15.15% of Java online submissions for LRU Cache.
+Memory Usage: 62.4 MB, less than 5.00% of Java online submissions for LRU Cache.
+
+Finally solve it this time.
+Took me a lot of time to debug a very stupid problem: I added the nonexist key to queue when calling get(). Should have solve this faster. One lesson I learned this time is that I should not rely on getOrDefault() too much.
+It is not O(1) solution as double linked list. And I still think the double linked list is the best solution. However, it should be easier for me to come up with this solution.
+Here is my post.
+https://leetcode.com/problems/lru-cache/discuss/850284/Java-solution-using-Queue-and-HashMap-with-explanation.-O(N)-put()-O(1)-get()

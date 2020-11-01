@@ -1,0 +1,38 @@
+class Solution {
+    public List<String> fizzBuzz(int n) {
+        int k=3;
+        Set<Integer> Fizz=new HashSet<>();
+        while(k<=n){
+            Fizz.add(k);
+            k+=3;
+        }
+        k=5;
+        Set<Integer> Buzz=new HashSet<>();
+        while(k<=n){
+            Buzz.add(k);
+            k+=5;
+        }
+        List<String> ans=new ArrayList<>();
+        for(int i=1;i<=n;i++){
+            if(Fizz.contains(i) || Buzz.contains(i)){
+                String str="";
+                if(Fizz.contains(i)){
+                    str+="Fizz";
+                }
+                if(Buzz.contains(i)){
+                    str+="Buzz";
+                }
+                ans.add(str);
+            }
+            else{
+                ans.add(i+"");
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 7 ms, faster than 16.64% of Java online submissions for First Unique Number.
+Memory Usage: 41.1 MB, less than 45.86% of Java online submissions for First Unique Number.
+
+Easy to solve. However, I thought using hashset instead of % will be faster, but the runtime is actually longer, that may be caused by the overhead of hashset.

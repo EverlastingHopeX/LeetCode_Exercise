@@ -1,0 +1,65 @@
+class Solution {
+    public int numKLenSubstrNoRepeats(String S, int K) {
+        if(K>S.length()){
+            return 0;
+        }
+        // Map<Character,Integer> freq=new HashMap<>();
+        int[] freq=new int[26];
+        int left=0,right=0;
+        int dup=0;
+        while(right<K){
+            // char ch=S.charAt(right);
+            int idx=S.charAt(right)-'a';
+            // int cnt=freq.getOrDefault(ch,0);
+            // if(cnt>0){
+            if(freq[idx]>0){
+                dup++;
+            }
+            // freq.put(ch,cnt+1);
+            freq[idx]++;
+            right++;
+        }
+        int norepeats=0;
+        if(dup==0){
+            norepeats++;
+        }
+        // System.out.println("dup "+dup+" "+norepeats);
+        while(right<S.length()){
+            // System.out.println(left+" "+right);
+            //add right
+            // char ch=S.charAt(right);
+            int idx=S.charAt(right)-'a';
+            // int cnt=freq.getOrDefault(ch,0);
+            if(freq[idx]>0){
+            // if(cnt>0){
+                dup++;
+            }
+            // freq.put(ch,cnt+1);
+            freq[idx]++;
+            //remove left
+            // ch=S.charAt(left);
+            idx=S.charAt(left)-'a';
+            // cnt=freq.get(ch);
+            if(freq[idx]>1){
+            // if(cnt>1){
+                dup--;
+            }
+            // freq.put(ch,cnt-1);
+            freq[idx]--;
+            //check
+            if(dup==0){
+                norepeats++;
+            }
+            // System.out.println("dup "+dup+" "+norepeats);
+            left++;
+            right++;
+        }
+        
+        return norepeats;
+    }
+}
+
+Runtime: 4 ms, faster than 87.79% of Java online submissions for Find K-Length Substrings With No Repeated Characters.
+Memory Usage: 37.2 MB, less than 99.46% of Java online submissions for Find K-Length Substrings With No Repeated Characters.
+
+Sliding window.

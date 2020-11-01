@@ -20,3 +20,44 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Flood Fill.
 Memory Usage: 46.8 MB, less than 31.58% of Java online submissions for Flood Fill.
+
+
+class Solution {
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        if(image.length==0 || image[0].length==0 || image[sr][sc]==newColor){
+            return image;
+        }
+        int[][] dirs=new int[][]{{1,0},{-1,0},{0,1},{0,-1}};
+        Queue<int[]> que=new LinkedList<>();
+        que.offer(new int[]{sr,sc});
+        int R=image.length, C=image[0].length;
+        // System.out.println(R+" "+C);
+        int oldColor=image[sr][sc];
+        image[sr][sc]=newColor;
+        while(!que.isEmpty()){
+            int size=que.size();
+            for(int i=0;i<size;i++){
+                int[] cur=que.poll();
+                // System.out.println("cur "+cur[0]+","+cur[1]);
+                for(int[] d:dirs){
+                    int[] next=new int[]{cur[0]+d[0],cur[1]+d[1]};
+                    if(next[0]<0 || next[0]>=R || next[1]<0 || next[1]>=C){
+                        continue;
+                    }
+                    // System.out.println("next "+next[0]+","+next[1]);
+                    if(image[next[0]][next[1]]!=oldColor){
+                        continue;
+                    }
+                    image[next[0]][next[1]]=newColor;
+                    que.offer(next);
+                }
+            }
+        }
+        return image;
+    }
+}
+
+Runtime: 2 ms, faster than 21.96% of Java online submissions for Flood Fill.
+Memory Usage: 40 MB, less than 89.06% of Java online submissions for Flood Fill.
+
+Slightly slower than my previous solution. My previous solution is actually DFS, This solution is BFS. 

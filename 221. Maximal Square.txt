@@ -1,0 +1,56 @@
+class Solution {
+    public int maximalSquare(char[][] matrix) {
+        if(matrix==null || matrix.length==0 || matrix[0].length==0){
+            return 0;
+        }
+        //consecutive 1s before i,j in row i
+        int[][] pre=new int[matrix.length][matrix[0].length];
+        for(int i=0;i<matrix.length;i++){
+            int t=0;
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]=='1'){
+                    t++;
+                    pre[i][j]=t;
+                }
+                else{
+                    t=0;
+                }
+                // System.out.println(i+", "+j+" "+pre[i][j]);
+            }
+        }
+        int max=0;
+        for(int col=pre[0].length-1;col>=0;col--){
+            int k=pre.length;
+            while(k>max){
+                int t=0;
+                for(int row=0;row<pre.length;row++){
+                    if(pre[row][col]>=k){
+                        t++;
+                    }
+                    else{
+                        t=0;
+                    }
+                    if(t>=k){
+                        max=k;
+                        break;
+                    }
+                }
+                k--;
+            }
+            // System.out.println(col+" "+max);
+        }
+        return max*max;
+    }
+}
+
+Runtime: 21 ms, faster than 5.02% of Java online submissions for Maximal Square.
+Memory Usage: 42 MB, less than 98.92% of Java online submissions for Maximal Square.
+
+O(R^2*C) time complexity.
+Use 2D array pre to store the consecutive 1. Then find the maximum square for each column.
+Not a good performance.
+
+Other's DP solution.
+This is typical dp. It use dp[i][j] to store the square whose bottom right corner is (i,j). Thus dp[i][j]=min(dp[i][j-1],dp[i-1][j-1],dp[i-1][j])+1.
+To solve problems with dp, I need to first find the equation, then can I find out how to solve this step by step. This is not easy to do.
+https://leetcode.com/problems/maximal-square/discuss/61802/Extremely-Simple-Java-Solution-%3A)

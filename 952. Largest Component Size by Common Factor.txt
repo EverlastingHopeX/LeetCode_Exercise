@@ -1,0 +1,8 @@
+I tried to find the prime factors for all elements first, then store them in set and test whether two elements have common factors. After that, I use union find to find the connected elements and the size of connected elements. It got TLE, so I improve it by storing the elements which have same factors in map whose keys are factors. It passed one more test but still TLE.
+
+Other's solution.
+He also used uion find and hashmap. But he does not calculate the prime factors, and the map only store the first element which has the factor k. 
+I modified my solution accordingly, but the runtime is way slower. After a few test, I found that it is whether merge i to j or merge j to i in union() which cause this difference. That seems to be related to the low level mechanism of Java.
+
+
+https://leetcode.com/problems/largest-component-size-by-common-factor/discuss/200959/Simplest-Solution-(Union-Find-only)-No-Prime-Calculation

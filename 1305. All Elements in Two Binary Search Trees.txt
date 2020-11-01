@@ -1,0 +1,73 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        List<Integer> li1=new ArrayList<>();
+        DFS(root1,li1);
+        // for(int t:li1){
+        //     System.out.println(t+" ");
+        // }
+        List<Integer> li2=new ArrayList<>();
+        DFS(root2,li2);
+        // for(int t:li2){
+        //     System.out.println(t+" ");
+        // }
+        return merge(li1,li2);
+    }
+    
+    private void DFS(TreeNode root, List<Integer> li){
+        if(root==null){
+            return;
+        }
+        DFS(root.left,li);
+        li.add(root.val);
+        DFS(root.right,li);
+    }
+    
+    private List<Integer> merge(List<Integer> li1, List<Integer> li2){
+        // System.out.println("merge");
+        List<Integer> ans=new ArrayList<>();
+        int p1=0,p2=0;
+        while(p1<li1.size() && p2<li2.size()){
+            // System.out.println(p1+" "+li1.get(p1)+", "+p2+" "+li2.get(p2));
+            while(p1<li1.size() && li1.get(p1)<=li2.get(p2)){
+                ans.add(li1.get(p1));
+                p1++;
+            }
+            if(p1>=li1.size()){
+                break;
+            }
+            while(p2<li2.size() && li2.get(p2)<=li1.get(p1)){
+                ans.add(li2.get(p2));
+                p2++;
+            }
+        }
+        while(p1<li1.size()){
+            ans.add(li1.get(p1));
+            p1++;
+        }
+        while(p2<li2.size()){
+            ans.add(li2.get(p2));
+            p2++;
+        }
+        return ans;
+    }
+}
+
+15 ms 71.07%
+42.1 MB 90.69%
+
+O(N). Still can be improved by using iterative inorder traverse.

@@ -34,3 +34,40 @@ Memory Usage: 37 MB, less than 98.06% of Java online submissions for Read N Char
 
 Confusing description.
 Sometimes the logic bugs in a simple solution is harder to find out, as you may think you have full understanding of your code.
+
+/**
+ * The read4 API is defined in the parent class Reader4.
+ *     int read4(char[] buf4);
+ */
+
+public class Solution extends Reader4 {
+    /**
+     * @param buf Destination buffer
+     * @param n   Number of characters to read
+     * @return    The number of actual characters read
+     */
+    public int read(char[] buf, int n) {
+        char[] buf4=new char[4];
+        int sum=0;
+        int p=0;
+        while(sum<n){
+            int k=read4(buf4);
+            if(k==0){
+                break;
+            }
+            int t=k;
+            if(sum+k>n){
+                t=n-sum;
+            }
+            for(int i=0;i<t;i++){
+                buf[p]=buf4[i];
+                p++;
+            }
+            sum+=t;
+        }
+        return sum;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Read N Characters Given Read4.
+Memory Usage: 37。4 MB, less than 73.71% of Java online submissions for Read N Characters Given Read4.

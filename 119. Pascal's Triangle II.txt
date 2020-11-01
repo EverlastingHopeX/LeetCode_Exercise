@@ -1,0 +1,38 @@
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> ans=new ArrayList<>();
+        if(rowIndex==0){
+            ans.add(1);
+            return ans;
+        }
+        int n=rowIndex/2+1;
+        int[] A=new int[n];
+        A[0]=1;
+        boolean isEven=false;
+        for(int i=1;i<=rowIndex;i++){
+            int k=i/2+1;
+            for(int j=k-1;j>0;j--){
+                A[j]=A[j-1]+A[j];
+            }
+            if(isEven){
+                A[k-1]=2*A[k-1];
+            }
+            isEven=!isEven;
+        }
+        for(int i=0;i<A.length;i++){
+            ans.add(A[i]);
+        }
+        if(isEven){
+            ans.add(A[A.length-1]);
+        }
+        for(int i=A.length-2;i>=0;i--){
+            ans.add(A[i]);
+        }
+        return ans;
+    }
+}
+
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Pascal's Triangle II.
+Memory Usage: 37.4 MB, less than 44.53% of Java online submissions for Pascal's Triangle II.
+
+Last time I solve this problem, I was using C++. It costed much less memory but I think that's just because it is C++, since it use two vector.

@@ -1,0 +1,24 @@
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<String> found=new HashSet<>();
+        Set<String> set=new HashSet<>();
+        for(int i=0;i<=s.length()-10;i++){
+            // System.out.println(i);
+            String t=s.substring(i,i+10);
+            if(found.contains(t)){
+                set.add(t);
+            }
+            else{
+                found.add(t);
+            }
+        }
+        List<String> ans=new ArrayList<>();
+        ans.addAll(set);
+        return ans;
+    }
+}
+
+Runtime: 16 ms	77.68%
+Memory Usage: 47.9 MB
+
+Pretty easy.

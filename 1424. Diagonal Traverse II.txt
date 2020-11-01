@@ -1,0 +1,39 @@
+class Solution {
+    public int[] findDiagonalOrder(List<List<Integer>> nums) {
+        int R=0;
+        int cnt=0;
+        for(int i=0;i<nums.size();i++){
+            cnt+=nums.get(i).size();
+            R=Math.max(R,i+nums.get(i).size()-1);
+        }
+        
+        Stack<Integer>[] diags=new Stack[R+1];
+        for(int i=0;i<=R;i++){
+            diags[i]=new Stack<>();
+        }
+        
+        for(int i=0;i<nums.size();i++){
+            List<Integer> row=nums.get(i);
+            for(int j=0;j<row.size();j++){
+                Stack<Integer> st=diags[i+j];
+                st.push(row.get(j));
+            }
+        }
+        
+        int[] ans=new int[cnt];
+        int p=0;
+        for(Stack<Integer> st:diags){
+            while(!st.isEmpty()){
+                ans[p++]=st.pop();
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 24 ms, faster than 91.63% of Java online submissions for Diagonal Traverse II.
+Memory Usage: 63.5 MB, less than 89.21% of Java online submissions for Diagonal Traverse II.
+
+At first, I tried to solve this with brute force, which is traverse the nums diagonally. The time complexity is Omega(N), it will fill the nums to make it a rectangle. A large portion of time is wasted in the worst case, in which the first row is extremely long. it got TLE.
+
+So I improved it by using stack and traverse the nums row by row and store each cell in its corresponding row (a stack). This is O(N) since I only visit each cell once.

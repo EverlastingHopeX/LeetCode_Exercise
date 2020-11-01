@@ -74,3 +74,64 @@ This solution based on DFS. BFS solution will be accepted.
 
 One BFS solution.
 https://leetcode.com/problems/bus-routes/discuss/122712/Simple-Java-Solution-using-BFS
+
+Solved this with BFS.
+class Solution {
+    public int numBusesToDestination(int[][] routes, int S, int T) {
+        if(S==T){
+            return 0;
+        }
+        Map<Integer,Set<Integer>> stops=new HashMap<>();
+        Queue<Integer> busQue=new LinkedList<>();
+        Set<Integer> visitedBus=new HashSet<>();
+        Set<Integer> visitedStop=new HashSet<>();
+        for(int i=0;i<routes.length;i++){
+            for(int d:routes[i]){
+                Set<Integer> buses=stops.getOrDefault(d,new HashSet<>());
+                buses.add(i);
+                stops.put(d,buses);
+                if(d==S){
+                    busQue.add(i);
+                    visitedBus.add(i);
+                }
+            }
+        }
+        if(busQue.size()==0){
+            return -1;
+        }
+        visitedStop.add(S);
+        int cnt=1;
+        while(!busQue.isEmpty()){
+            // System.out.println("cnt "+cnt);
+            int size=busQue.size();
+            for(int i=0;i<size;i++){
+                int bus=busQue.poll();
+                // System.out.println("bus "+bus);
+                for(int d:routes[bus]){
+                    if(visitedStop.contains(d)){
+                        continue;
+                    }
+                    visitedStop.add(d);
+                    if(d==T){
+                        // System.out.println("found");
+                        return cnt;
+                    }
+                    for(int nextBus:stops.get(d)){
+                        if(visitedBus.contains(nextBus)){
+                            continue;
+                        }
+                        visitedBus.add(nextBus);
+                        busQue.offer(nextBus);
+                    }
+                }
+            }
+            cnt++;
+        }
+        return -1;
+    }
+}
+
+Runtime: 283 ms, faster than 17.92% of Java online submissions for Bus Routes.
+Memory Usage: 84.1 MB, less than 30.70% of Java online submissions for Bus Routes.
+
+Using only visitedStop will be faster than using only visitedBus, which is 839 ms instead of 1523 ms. And combining them will make it even faster.

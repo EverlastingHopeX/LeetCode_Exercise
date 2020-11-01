@@ -1,0 +1,24 @@
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ans=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            while(nums[i]>0 && nums[i]-1!=i){
+                int target=nums[i]-1;
+                if(nums[target]==-1){
+                    ans.add(nums[i]);
+                    nums[i]=0;
+                    break;
+                }
+                //mark target;
+                nums[i]=nums[target];
+                nums[target]=-1;
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 5 ms, faster than 94.78% of Java online submissions for Find All Duplicates in an Array.
+Memory Usage: 48.1 MB, less than 93.16% of Java online submissions for Find All Duplicates in an Array.
+
+Didn't notice that the range of nums[i]. For this kind of question which requires no extra space, it must be solved in place. If there is not limitation for the range of elements, it is hard to match its value to unique place, which leads to extra space. So, normally, if the question need no extra space, there is a restriction for each of its values to hash to a unique index.

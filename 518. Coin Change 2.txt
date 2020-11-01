@@ -1,0 +1,48 @@
+class Solution {
+    public int change(int amount, int[] coins) {
+        if(amount==0){
+            return 1;
+        }
+        if(coins.length==0){
+            return 0;
+        }
+        Arrays.sort(coins);
+        if(amount<coins[0]){
+            return 0;
+        }
+        int[][] dp=new int[amount+1][coins.length];
+        for(int i=1;i<=amount;i++){
+            for(int j=0;j<coins.length;j++){
+                int c=coins[j];
+                if(i-c<0){
+                    continue;
+                }
+                else if(i-c==0){
+                    dp[i][j]=1;
+                    // System.out.println(i+","+j+": "+dp[i][j]);
+                    continue;
+                }
+                for(int t=0;t<=j;t++){
+                    dp[i][j]+=dp[i-c][t];
+                }
+                // System.out.println(i+","+j+": "+dp[i][j]);
+            }
+        }
+        int sum=0;
+        for(int k:dp[amount]){
+            sum+=k;
+        }
+        return sum;
+    }
+}
+
+Runtime: 160 ms, faster than 5.04% of Java online submissions for Coin Change 2.
+Memory Usage: 42.6 MB, less than 46.46% of Java online submissions for Coin Change 2.
+
+Pretty natural to come up with a dp solution since the transition formula is easy to find out.
+However, the transition formula is related to the time complexity. My solution is O(amount*C^2), C is the length of coins, because my dp[i][j] stores the number of combinations to reach amount i using previous j coins while the jth coins is used. There is no need to limit that jth coins has to be used, the third loop is required because of this unnecessary limit.
+Apart from that, since dp[i][j] only relies on dp[i][j-1] and dp[i-c][j], this can be solved with 1d array, if we store dp[i][j-1] in dp[i] and update it to be dp[i][j]. To do this, the two loops need to be reversed. The reason is that if keep the two loops this order, dp[i]+=dp[i-c] is actually dp[i][j]+=dp[i-c][C].
+The time complexity does not change, it is still O(amount*C), while the space becomes O(amount).
+
+Other's O(amount*C) solution.
+https://leetcode.com/problems/coin-change-2/discuss/99212/Knapsack-problem-Java-solution-with-thinking-process-O(nm)-Time-and-O(m)-Space

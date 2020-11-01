@@ -1,0 +1,58 @@
+/**
+ * // This is the robot's control interface.
+ * // You should not implement it, or speculate about its implementation
+ * interface Robot {
+ *     // Returns true if the cell in front is open and robot moves into the cell.
+ *     // Returns false if the cell in front is blocked and robot stays in the current cell.
+ *     public boolean move();
+ *
+ *     // Robot will stay in the same cell after calling turnLeft/turnRight.
+ *     // Each turn will be 90 degrees.
+ *     public void turnLeft();
+ *     public void turnRight();
+ *
+ *     // Clean the current cell.
+ *     public void clean();
+ * }
+ */
+
+class Solution {
+    public void cleanRoom(Robot robot) {
+        Set<String> visited=new HashSet<>();
+        DFS(visited,robot,0,0,0);
+    }
+    //up, left, down, right
+    int[][] dirs=new int[][]{{0,1},{-1,0},{0,-1},{1,0}};
+    String[] sd=new String[]{"up","left","down","right"};
+    
+    private void DFS(Set<String> visited, Robot robot,int x, int y,int d){
+        // System.out.println("DFS "+x+", "+y+" d "+sd[d]);
+        robot.clean();
+        visited.add(x+","+y);
+        int nd=d;
+        for(int i=0;i<4;i++){
+            // System.out.println(x+" "+y+" to "+sd[d]);
+            int nx=x+dirs[d][0],ny=y+dirs[d][1];
+            String s=nx+","+ny;
+            if(!visited.contains(s) && robot.move()){
+                DFS(visited,robot,nx,ny,d);
+            }
+            robot.turnLeft();
+            d++;
+            if(d>=dirs.length){
+                d=0;
+            }
+        }
+        robot.turnLeft();
+        robot.turnLeft();
+        robot.move();
+        robot.turnLeft();
+        robot.turnLeft();
+        // System.out.println(x+", "+y+" go back");
+    }
+}
+
+Runtime: 12 ms, faster than 55.90% of Java online submissions for Robot Room Cleaner.
+Memory Usage: 40.8 MB, less than 45.92% of Java online submissions for Robot Room Cleaner.
+
+Didn't solve this. I checked the discussion topics and realized that recursive DFS is suitable for this. I didn't add another two turnLeft() after move back, which makes the direction messed up.

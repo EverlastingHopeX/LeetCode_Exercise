@@ -104,3 +104,60 @@ Runtime: 4 ms, faster than 100.00% of Java online submissions for Design Tic-Tac
 Memory Usage: 47.2 MB, less than 21.43% of Java online submissions for Design Tic-Tac-Toe.
 
 Nothing hard but just tiring to consider every case.
+
+class TicTacToe {
+
+    class Player{
+        int[] rows;
+        int[] cols;
+        int[] dias;
+        Player(int n){
+            rows=new int[n];
+            cols=new int[n];
+            dias=new int[2];
+        }
+    }
+    
+    Player[] players;
+    int N;
+    /** Initialize your data structure here. */
+    public TicTacToe(int n) {
+        players=new Player[2];
+        players[0]=new Player(n);
+        players[1]=new Player(n);
+        N=n;
+    }
+    
+    /** Player {player} makes a move at ({row}, {col}).
+        @param row The row of the board.
+        @param col The column of the board.
+        @param player The player, can be either 1 or 2.
+        @return The current winning condition, can be either:
+                0: No one wins.
+                1: Player 1 wins.
+                2: Player 2 wins. */
+    public int move(int row, int col, int player) {
+        // System.out.println("move "+row+","+col+" player "+player);
+        Player p=players[player-1];
+        p.rows[row]++;
+        p.cols[col]++;
+        if(row==col){
+            p.dias[0]++;
+        }
+        if(row+col==N-1){
+            p.dias[1]++;
+        }
+        if(p.rows[row]==N || p.cols[col]==N || p.dias[0]==N || p.dias[1]==N){
+            return player;
+        }
+        return 0;
+    }
+}
+
+/**
+ * Your TicTacToe object will be instantiated and called as such:
+ * TicTacToe obj = new TicTacToe(n);
+ * int param_1 = obj.move(row,col,player);
+ */
+
+More concise than previous one, the previous solution looks a little confusing for me now.

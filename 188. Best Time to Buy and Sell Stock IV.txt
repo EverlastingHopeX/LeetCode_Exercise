@@ -1,0 +1,33 @@
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+        if(prices.length<=1 || k<1){
+            return 0;
+        }
+        int N=prices.length;
+        int[] dp=new int[N];
+        for(int i=0;i<k;i++){
+            // System.out.println("max Trans "+(i+1));
+            int max=-prices[0];
+            int prev=dp[N-1];
+            for(int end=1;end<N;end++){
+                // System.out.println("end "+end);
+                max=Math.max(max,dp[end]-prices[end]);
+                dp[end]=Math.max(dp[end-1],prices[end]+max);
+                // System.out.println("dp "+end+": "+dp[end]);
+            }
+            if(dp[N-1]==prev){
+                break;
+            }
+        }
+        return dp[prices.length-1];
+    }
+}
+
+Runtime: 58 ms	14.99%
+Memory Usage: 38.5 MB
+
+My first solution is O(k*N^2) with DP. I had the correct transition formula, however, I got TLE. The formula is that dp[end][tTrans] = max(dp[start][tTrans-1]+prices[end]-prices[start]).
+It can be improved by using "max" to store the temperal max difference between dp and price for each day, so we only need prices[end] and "max" to compute dp[end][tTrans] instead of iterating 0 to end again to compute max again.
+This got TLE again. Another improvement is to break early when dp[N-1][tTrans] equals dp[N-1][tTrans-1], since in this case, the whole dp will stays the same. If there is an increase in an index p of dp, then max will increase, and all the following dp shoud increase as well.
+
+The time performance is not good enough. That's because there are test cases with k>=N/2, and in this case, there is no need to dp. Apparently, we can trade every day if we want since there is no limit in this case, we can just trade everytime when this day's prices is higher than the previous day. There is no difference between buying on day i then sellling on day i+2 and buying on day i, selling on day i+1, buying on day i+1 and selling on day i+2.

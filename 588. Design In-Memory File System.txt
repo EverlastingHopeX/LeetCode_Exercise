@@ -1,0 +1,122 @@
+class FileSystem {
+
+    class Directory{
+        Map<String,String> files;
+        Map<String,Directory> subDirs;
+        
+        Directory(){
+            files=new HashMap<>();
+            subDirs=new HashMap<>();
+        }
+    }
+    
+    Directory home;
+    
+    public FileSystem() {
+        home=new Directory();
+    }
+    
+    public List<String> ls(String path) {
+        // System.out.println("ls "+path);
+        String[] dirs=path.split("/");
+        List<String> ans=new ArrayList<>();
+        if(dirs.length==0){
+            dirs=new String[]{""};
+        }
+        Directory cur=home;
+        for(int i=0;i<dirs.length-1;i++){
+            if(cur.subDirs.containsKey(dirs[i])){
+                cur=cur.subDirs.get(dirs[i]);
+            }
+            else{
+                // System.out.println("wrong dir");
+            }
+        }
+        String last=dirs[dirs.length-1];
+        if(cur.files.containsKey(last)){
+            ans.add(last);
+        }
+        else if(cur.subDirs.containsKey(last)){
+            cur=cur.subDirs.get(last);
+            ans.addAll(cur.files.keySet());
+            ans.addAll(cur.subDirs.keySet());
+        }
+        else{
+            // System.out.println("wrong dir");
+        }
+        Collections.sort(ans);
+        return ans;
+    }
+    
+    public void mkdir(String path) {
+        // System.out.println("mkdir "+path);
+        String[] dirs=path.split("/");
+        // System.out.println(dirs.length);
+        Directory cur=home;
+        for(String d:dirs){
+            // System.out.println(d);
+            if(!cur.subDirs.containsKey(d)){
+                cur.subDirs.put(d,new Directory());
+            }
+            cur=cur.subDirs.get(d);
+        }
+    }
+    
+    public void addContentToFile(String filePath, String content) {
+        // System.out.println("add "+filePath+" "+content);
+        String[] dirs=filePath.split("/");
+        if(dirs.length==0){
+            // System.out.println("wrong dir");
+            return;
+        }
+        Directory cur=home;
+        for(int i=0;i<dirs.length-1;i++){
+            if(!cur.subDirs.containsKey(dirs[i])){
+                cur.subDirs.put(dirs[i],new Directory());
+            }
+            cur=cur.subDirs.get(dirs[i]);
+        }
+        String last=dirs[dirs.length-1];
+        if(!cur.files.containsKey(last)){
+            cur.files.put(last,"");
+        }
+        cur.files.put(last,cur.files.get(last)+content);
+    }
+    
+    public String readContentFromFile(String filePath) {
+        // System.out.println("read "+filePath);
+        String[] dirs=filePath.split("/");
+        if(dirs.length==0){
+            // System.out.println("wrong dir");
+            return null;
+        }
+        Directory cur=home;
+        for(int i=0;i<dirs.length-1;i++){
+            if(!cur.subDirs.containsKey(dirs[i])){
+                // System.out.println("wrong dir");
+                return null;
+            }
+            cur=cur.subDirs.get(dirs[i]);
+        }
+        String last=dirs[dirs.length-1];
+        // if(!cur.files.containsKey(last)){
+        //     System.out.println("wrong dir");
+        // }
+        return cur.files.get(last);
+    }
+}
+
+/**
+ * Your FileSystem object will be instantiated and called as such:
+ * FileSystem obj = new FileSystem();
+ * List<String> param_1 = obj.ls(path);
+ * obj.mkdir(path);
+ * obj.addContentToFile(filePath,content);
+ * String param_4 = obj.readContentFromFile(filePath);
+ */
+
+Runtime: 43 ms, faster than 44.66% of Java online submissions for Design In-Memory File System.
+Memory Usage: 40.4 MB, less than 79.76% of Java online submissions for Design In-Memory File System.
+
+Not too hard since I know trie now.
+Can be further improved from design level, such as use class with boolean isFile, so we only need one hashmap. Also there are some common methods that can be extracted from these functions, so we should add these common methods into Directory class instead of repeating them, which is very important in OOD.

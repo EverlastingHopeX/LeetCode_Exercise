@@ -45,3 +45,11 @@ This solution's time complexity should be O(M+N), not O(log(M+N)) as required.
 
 This link is the solution with O(log(min(M,N))).
 https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn)))-solution-with-explanation
+
+Couldn't solve this at the second time. 
+Spent a lot of time trying to figure out a O(logN) solution based on binary search, didn't work it out. Then tried to figure out O(N), also didn't work it out.
+
+Another Java O(logN) binary search solution.
+My idea is kind of similar to this one, however, the hardest part is not to find the math basis for the algorithm, but to handle the boundary properly. Understanding the mechanism of this solution is not that hard for me, but I doubt that I can implement it correctly in an interview.
+
+https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2496/Concise-JAVA-solution-based-on-Binary-Search

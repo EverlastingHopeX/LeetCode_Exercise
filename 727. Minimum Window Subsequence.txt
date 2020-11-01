@@ -1,0 +1,12 @@
+Didn't solve this.
+Tried to solve this with BFS.
+
+Other's DP solution.
+dp[si][ti]: T's substring (0,ti) is subsequence of S's substring (dp[si][ti],si). (if dp[si][ti]=0, it means T(0,ti) cannot be subsequence of S(0,si))
+For dp[si+1][ti+1] if S[si+1] == T[ti+1] then T(0,ti+1) is subsequence of S(dp[si][ti],si+1). Otherwise, T(0,ti+1) is subsequence of S(dp[si][ti+1],si+1).
+
+https://leetcode.com/problems/minimum-window-subsequence/discuss/109362/Java-Super-Easy-DP-Solution-(O(mn))
+
+Two pointer solution.
+
+https://leetcode.com/problems/minimum-window-subsequence/discuss/109356/JAVA-two-pointer-solution-(12ms-beat-100)-with-explaination

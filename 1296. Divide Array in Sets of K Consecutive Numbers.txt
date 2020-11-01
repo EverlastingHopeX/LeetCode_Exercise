@@ -1,0 +1,36 @@
+class Solution {
+    public boolean isPossibleDivide(int[] nums, int k) {
+        Arrays.sort(nums);
+        Queue<Integer> newGroup=new LinkedList<>();
+        int opened=0;
+        int p=0;
+        while(p<nums.length){
+            // System.out.println("opened "+opened);
+            if(opened>0 && nums[p]!=nums[p-1]+1){
+                return false;
+            }
+            int t=p;
+            while(t<nums.length && nums[t]==nums[p]){
+                t++;
+            }
+            int n=t-p-opened;
+            if(n<0){
+                return false;
+            }
+            opened+=n;
+            newGroup.offer(n);
+            if(newGroup.size()>=k){
+                int closed=newGroup.poll();
+                opened-=closed;
+            }
+            p=t;
+        }
+        return opened==0;
+    }
+}
+
+Runtime: 40 ms, faster than 93.46% of Java online submissions for Divide Array in Sets of K Consecutive Numbers.
+Memory Usage: 57.1 MB, less than 37.34% of Java online submissions for Divide Array in Sets of K Consecutive Numbers.
+
+The same problem as 846. Hand of straights. I solved 846 by using the brute force, and read other's solution using queue, so I try to solve this using queue this time. However, the solution I use this time is not the same as 846. Lee215 solved it by using map, which makes the time complexity O(MlogM+N); my solution is O(NlogN).
+There is also an O(N) solution in discussion.

@@ -1,0 +1,56 @@
+class Solution {
+    public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+        List<Double> maxD=new ArrayList<>();
+        int cnt=0;
+        int p=0;
+        for(List<Integer> point:points){
+            int y=point.get(1)-location.get(1);
+            int x=point.get(0)-location.get(0);
+            if(y==0 && x==0){
+                cnt++;
+                continue;
+            }
+            double t=Math.toDegrees(Math.atan2(y,x))+180;
+            maxD.add(t);
+        }
+        Collections.sort(maxD);
+        int left=0,right=1;
+        while(left<maxD.size()){
+            // System.out.println("left "+left);
+            double view=maxD.get(left)+angle;
+            if(right<=left){
+                view-=360;
+            }
+            while(maxD.get(right)<=view){
+                // System.out.println("right "+right);
+                right++;
+                if(right>=maxD.size()){
+                    right=0;
+                    view-=360;
+                }
+            }
+            // System.out.println(left+", "+right+" "+maxD.get(left)+", "+maxD.get(right));
+            left++;
+            right++;
+            if(right>=maxD.size()){
+                right=0;
+            }
+        }
+        // System.out.println(left+", "+right);
+        if(right==0){
+            return points.size();
+        }
+        return cnt+right;
+    }
+}
+
+Runtime: 102 ms, faster than 18.18% of Java online submissions for Maximum Number of Visible Points.
+Memory Usage: 78.3 MB, less than 100.00% of Java online submissions for Maximum Number of Visible Points.
+
+I used atan() at first, and it failed, the reason seem to be accuracy of return value since it only takes a double y/x as parameter. Then I use atan2() whose input is two double, y and x, and it passed that test case.
+
+I also failed to realize that I need to reset right when it reaches maxD.length(), since it is possible that we will observe max points when facing west (left is larger than right).
+
+Here is a similar solution that add duplicate points to avoid reset right. The performance is pretty much close to mine.
+
+https://leetcode.com/problems/maximum-number-of-visible-points/discuss/877845/JAVA-Sliding-Window

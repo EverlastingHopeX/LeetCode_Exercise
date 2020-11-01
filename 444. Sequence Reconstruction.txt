@@ -1,0 +1,93 @@
+class Solution {
+    public boolean sequenceReconstruction(int[] org, List<List<Integer>> seqs) {
+        if(seqs.size()==0){
+            return false;
+        }
+        int N=org.length;
+        Set<Integer>[] after=new HashSet[N+1];
+        for(List<Integer> s:seqs){
+            if(s.get(0)<1 || s.get(0)>N){
+                return false;
+            }
+            for(int i=1;i<s.size();i++){
+                int s1=s.get(i-1), s2=s.get(i);
+                if(s2==s1){
+                    return false;
+                }
+                if(s2<1 || s2>N){
+                    return false;
+                }
+                if(after[s1]==null){
+                    after[s1]=new HashSet<>();
+                }
+                after[s1].add(s2);
+            }
+        }
+        
+//         for(int i=1;i<after.length;i++){
+//             System.out.println("after "+i);
+//             if(after[i]==null){
+//                 continue;
+//             }
+//             for(int j:after[i]){
+//                 System.out.println(j);
+//             }
+//         }
+        
+        int[] cnt=new int[N+1];
+        Arrays.fill(cnt,-1);
+        for(int i=1;i<=N;i++){
+            // System.out.println("main count "+i);
+            count(after,cnt,i);
+        }
+        int[] order=new int[N];
+        for(int i=1;i<cnt.length;i++){
+            // System.out.println("cnt["+i+"]: "+cnt[i]);
+            if(cnt[i]<0 || order[cnt[i]]!=0){
+                return false;
+            }
+            order[cnt[i]]=i;
+        }
+        for(int i=0;i<org.length;i++){
+            int j=org.length-1-i;
+            if(org[i]!=order[j]){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private void count(Set<Integer>[] after, int[] cnt, int i){
+        // System.out.println("count "+i);
+        if(cnt[i]!=-1){
+            // System.out.println("counted");
+            return;
+        }
+        if(after[i]==null){
+            // System.out.println("empty");
+            cnt[i]=0;
+            return;
+        }
+        cnt[i]=-2;
+        for(int j:after[i]){
+            //cycle
+            if(cnt[j]==-2){
+                return;
+            }
+            count(after,cnt,j);
+            cnt[i]=Math.max(cnt[i],cnt[j]+1);
+        }
+    }
+}
+
+Runtime: 79 ms, faster than 34.70% of Java online submissions for Sequence Reconstruction.
+Memory Usage: 88.2 MB, less than 23.07% of Java online submissions for Sequence Reconstruction.
+
+The idea is for each number, we count the number of numbers after it. If there is one unique sequence that can be reconstructed, then each cnt[i] should be unique can should be 0 ~ (n-1) seperately. Based on that, we can reconstruct the sequence and compare it to origin sequence.
+I also set cnt[i] to -2 to mark the visited number for cycle detection.
+
+The time complexity should be O(K+N). K is the number of numbers in seqs.
+
+Other's solution based on the same idea.
+But different from my method, it tests whether seqs is valid based on org.
+https://leetcode.com/problems/sequence-reconstruction/discuss/92611/Java-O(n)-timeO(n)-space-AC-solution-14ms-like-count-sort

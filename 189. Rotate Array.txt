@@ -53,3 +53,34 @@ The O(1) solution with good performance. It requires three steps of reverse. Rev
 Divide the array into three parts: [A0, A1, B]. The length of A0 and B are both k. Then the first two reverse make the array become [rA1, rA0, rB]. Finally, the third reverse makes the array become [B, A0, A1], which is the desired result.
 
 https://leetcode.com/problems/rotate-array/discuss/54252/Java-O(1)-space-solution-of-Rotate-Array.
+
+
+class Solution {
+    public void rotate(int[] nums, int k) {
+        if(nums.length<=1){
+            return;
+        }
+        k=k%nums.length;
+        if(k==0){
+            return;
+        }
+        reverse(nums,0,nums.length-1);
+        reverse(nums,0,k-1);
+        reverse(nums,k,nums.length-1);
+    }
+    
+    private void reverse(int[] nums, int start, int end){
+        while(start<end){
+            int t=nums[start];
+            nums[start]=nums[end];
+            nums[end]=t;
+            start++;
+            end--;
+        }
+    }
+}
+
+Runtime: 0 ms	100.0%
+Memory Usage: 39.5 MB
+
+Pretty easy for me now. I somehow remember I can solve this by divide it into three parts and reverse, guess that's stored in my subconsciousness.
