@@ -49,3 +49,108 @@ Got TLE first time, and the solution provided by other mentioned that there is m
 
 Other's solution.
 https://leetcode.com/problems/two-sum-iii-data-structure-design/discuss/52005/Trade-off-in-this-problem-should-be-considered
+
+class TwoSum {
+    class Node{
+        int val;
+        int cnt;
+        Node left=null,right=null;
+        Node parent=null;
+        
+        Node(){
+            val=-1;
+            cnt=0;
+        }
+        
+        Node(int v){
+            val=v;
+            cnt=1;
+        }
+    }
+    
+    Node BSTroot;
+    
+    /** Initialize your data structure here. */
+    public TwoSum() {
+        Node BSTroot=null;
+    }
+    
+    /** Add the number to an internal data structure.. */
+    public void add(int number) {
+        addNode(number);
+    }
+    
+    /** Find if there exists any pair of numbers which sum is equal to the value. */
+    public boolean find(int value) {
+        if(BSTroot==null){
+            return false;
+        }
+        Stack<Node> st=new Stack<>();
+        st.push(BSTroot);
+        while(!st.isEmpty()){
+            Node cur=st.pop();
+            cur.cnt--;
+            if(findOne(value-cur.val)){
+                cur.cnt++;
+                return true;
+            }
+            cur.cnt++;
+            if(cur.right!=null){
+                st.push(cur.right);
+            }
+            if(cur.left!=null){
+                st.push(cur.left);
+            }
+        }
+        return false;
+    }
+    
+    private boolean findOne(int value){
+        Node cur=BSTroot;
+        while(cur!=null){
+            if(cur.val<value){
+                cur=cur.right;
+            }
+            else if(cur.val>value){
+                cur=cur.left;
+            }
+            else{
+                return cur.cnt>0;
+            }
+        }
+        return false;
+    }
+    
+    private void addNode(int number){
+        if(BSTroot==null){
+            BSTroot=new Node(number);
+            return;
+        }
+        Node cur=BSTroot,prev=null;
+        while(cur!=null){
+            prev=cur;
+            if(cur.val<number){
+                cur=cur.right;
+            }
+            else if(cur.val>number){
+                cur=cur.left;
+            }
+            else{
+                cur.cnt++;
+                return;
+            }
+        }
+        if(number<prev.val){
+            prev.left=new Node(number);
+        }
+        else{
+            prev.right=new Node(number);
+        }
+    }
+}
+
+Runtime: 95 ms	60.66%
+Memory Usage: 44.3 MB	99.23%
+
+Can't remember why I thought I should use binary search for this. Apparently, it is better to use hashmap since its add() is O(1) and find() is O(N), while they are O(logN) and O(NlogN) for this solution (with another balance function I haven't implemented). Withouth the balance function, the time complexity is actually O(N) and O(N^2) since the worst case is when the tree is a straight line.
+However, this is not TLE, so it is better than nothing. 
