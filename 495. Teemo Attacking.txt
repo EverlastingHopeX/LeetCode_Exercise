@@ -1,0 +1,23 @@
+class Solution {
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int cnt=0;
+        int end=-1;
+        for(int t:timeSeries){
+            // System.out.println("t "+t);
+            if(t>end){
+                // System.out.println("add "+duration);
+                cnt+=duration;
+            }
+            else{
+                int dur=duration-(end-t+1);
+                // System.out.println("add "+dur);
+                cnt+=dur;
+            }
+            end=t+duration-1;
+        }
+        return cnt;
+    }
+}
+
+Runtime: 1 ms
+Memory Usage: 41.3 MB

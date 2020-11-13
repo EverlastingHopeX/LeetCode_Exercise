@@ -47,3 +47,70 @@ Memory Usage: 39.7 MB, less than 80.77% of Java online submissions for Recover B
 
 The straight forward solution cause less space and more time.
 However, Morris Traversal doesn't seem to be something practical in real life.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    // TreeNode p1=null,p2=null;
+    int k=0;
+    public void recoverTree(TreeNode root) {
+        int N=count(root);
+        TreeNode[] nodes=new TreeNode[N];
+        DFS(nodes,root);
+        int p1=-1,p2=-1;
+        for(int i=0;i<N;i++){
+            if(p1==-1){
+                if(nodes[i].val>nodes[i+1].val){
+                    p1=i;
+                }
+            }
+            if(i>0){
+                if(nodes[i].val<nodes[i-1].val){
+                    p2=i;
+                }
+            }
+        }
+        int t=nodes[p1].val;
+        nodes[p1].val=nodes[p2].val;
+        nodes[p2].val=t;
+    }
+    
+    private int count(TreeNode root){
+        if(root==null){
+            return 0;
+        }
+        int cnt=1;
+        cnt+=count(root.left)+count(root.right);
+        return cnt;
+    }
+    
+    private void DFS(TreeNode[] nodes, TreeNode root){
+        if(root==null){
+            return;
+        }
+        DFS(nodes,root.left);
+        nodes[k++]=root;
+        DFS(nodes,root.right);
+    }
+}
+
+Runtime: 2 ms	84.13%
+Memory Usage: 39.6 MB
+
+O(N) space is pretty easy. Using array would cost less time compared with my first solution.
+And the improvement is kind of obvious, since I'm using in-order, I can just use global variables to find the previous node instead of array. However, this is still O(N) considering function stack.
+
+Morris traversal would be real O(1) space.
