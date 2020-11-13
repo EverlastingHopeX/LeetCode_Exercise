@@ -1,0 +1,27 @@
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int left=-1,right=0;
+        int max=0;
+        while(left<seats.length){
+            right=left+1;
+            while(right<seats.length && seats[right]==0){
+                right++;
+            }
+            max=Math.max(max,helper(seats.length,left,right));
+            left=right;
+        }
+        return max;
+    }
+    
+    private int helper(int length, int left, int right){
+        if(left<0 || right>=length){
+            return right-left-1;
+        }
+        return (right-left)/2;
+    }
+}
+
+Runtime: 2 ms	76.05%
+Memory Usage: 41.1 MB
+
+Easy two pointer problem.

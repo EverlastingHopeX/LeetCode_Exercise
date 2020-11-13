@@ -1,0 +1,50 @@
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        Map<Integer,Integer> seqMap=new HashMap<>();
+        Map<Integer,Integer> seqCnt=new HashMap<>();
+        int mLen=0,mCnt=0;
+        for(int n:nums){
+            // System.out.println("n "+n);
+            int maxLen=1,maxCnt=1;
+            for(int m:seqMap.keySet()){
+                if(n>m){
+                    // System.out.println("m "+m);
+                    int len=seqMap.get(m);
+                    int cnt=seqCnt.get(m);
+                    if(len+1>maxLen){
+                        maxLen=len+1;
+                        maxCnt=cnt;
+                    }
+                    else if(len+1==maxLen){
+                        maxCnt+=cnt;
+                    }
+                    // System.out.println("maxLen "+maxLen+" maxCnt "+maxCnt);
+                }
+            }
+            if(seqMap.getOrDefault(n,-1)==maxLen){
+                maxCnt+=seqCnt.getOrDefault(n,0);
+            }
+            seqMap.put(n,maxLen);
+            seqCnt.put(n,maxCnt);
+            // System.out.println(n+" maxLen "+maxLen+" maxCnt "+maxCnt);
+            mLen=Math.max(mLen,maxLen);
+        }
+        for(int n:seqMap.keySet()){
+            if(seqMap.get(n)==mLen){
+                mCnt+=seqCnt.get(n);
+            }
+        }
+        
+        return mCnt;
+    }
+}
+
+Runtime: 104 ms
+Memory Usage: 39.9 MB
+
+This is O(N^2). Pretty bad perfromance.
+
+Others' solutions are also O(N^2). One is pretty similar to mine.
+I guess it's because of the overhead of hashmap.
+
+https://leetcode.com/problems/number-of-longest-increasing-subsequence/discuss/916524/Java-Bottom-UP-or-Top-Down-DP-Code

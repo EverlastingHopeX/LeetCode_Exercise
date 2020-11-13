@@ -38,3 +38,68 @@ Memory Usage: 40.5 MB, less than 34.33% of Java online submissions for Permutati
 Integer and null is quite convenient to use compared with int which doesn't have an legal invalid value.
 
 The performance is acceptable.
+
+class Solution {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        Arrays.sort(nums);
+        Integer[] perm=new Integer[nums.length];
+        List<Integer[]> perms=new ArrayList<>();
+        perms.add(perm);
+        List<List<Integer>> ans=new ArrayList<>();
+        fill(ans,perms,nums,0);
+        return ans;
+    }
+    
+    private void fill(List<List<Integer>> ans,List<Integer[]> perms, int[] nums, int start){
+        if(start>=nums.length){
+            for(Integer[] p:perms){
+                ans.add(arrayToList(p));
+            }
+            return;
+        }
+        int end=start+1;
+        while(end<nums.length && nums[end]==nums[start]){
+            end++;
+        }
+        List<Integer[]> nperms=new ArrayList<>();
+        for(Integer[] perm:perms){
+            DFS(perm,0,nums[start],end-start,nperms);
+        }
+        fill(ans,nperms,nums,end);
+    }
+    
+    private void DFS(Integer[] perm, int idx, int num, int res,List<Integer[]> nperms){
+        if(res==0){
+            Integer[] nperm=new Integer[perm.length];
+            for(int i=0;i<nperm.length;i++){
+                nperm[i]=perm[i];
+            }
+            nperms.add(nperm);
+            return;
+        }
+        if(idx>=perm.length){
+            return;
+        }
+        DFS(perm,idx+1,num,res,nperms);
+        if(perm[idx]==null){
+            perm[idx]=num;
+            DFS(perm,idx+1,num,res-1,nperms);
+            perm[idx]=null;
+        }
+    }
+    
+    private List<Integer> arrayToList(Integer[] p){
+        List<Integer> li=new ArrayList<>();
+        for(Integer i:p){
+            li.add(i);
+        }
+        return li;
+    }
+}
+
+Runtime: 2 ms	54.79%
+Memory Usage: 39.5 MB
+
+Came up with DFS with hashset solution first, the redundant path is visited and eliminated by hashset. The performance is bad because of redundancy.
+Then I use this solution which is still both BFS and DFS. It uses DFS to find the possible positions for each unique number, and use BFS to solve this problem number by number.
+However, I would say the solution I used last time is better. It is more concise, it just avoid use the same number at the same position by checking prev.

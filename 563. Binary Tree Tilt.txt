@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int sum=0;
+    public int findTilt(TreeNode root) {
+        if(root==null){
+            return 0;
+        }
+        DFS(root);
+        return sum;
+    }
+    
+    private int DFS(TreeNode root){
+        int left=0,right=0;
+        if(root.left!=null){
+            left=DFS(root.left);
+        }
+        if(root.right!=null){
+            right=DFS(root.right);
+        }
+        // System.out.println(root.val+": "+left+", "+right);
+        sum+=Math.abs(left-right);
+        return left+right+root.val;
+    }
+}
+
+Runtime: 0 ms	100.00%
+Memory Usage: 39.2 MB

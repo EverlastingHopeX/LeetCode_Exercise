@@ -48,3 +48,72 @@ class Solution {
 
 Runtime: 7 ms, faster than 12.93% of Java online submissions for Add Two Numbers II.
 Memory Usage: 45.6 MB, less than 58.82% of Java online submissions for Add Two Numbers II.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        int n1=getLen(l1),n2=getLen(l2);
+        if(n1<n2){
+            ListNode tl=l1;
+            l1=l2;
+            l2=tl;
+            int tn=n1;
+            n1=n2;
+            n2=tn;
+        }
+        int[] nums=new int[n1+1];
+        int offset=n1-n2;
+        for(int i=1;i<=n1;i++){
+            nums[i]+=l1.val;
+            l1=l1.next;
+            if(i>offset){
+                nums[i]+=l2.val;
+                l2=l2.next;
+            }
+        }
+        for(int i=nums.length-1;i>0;i--){
+            if(nums[i]>9){
+                nums[i]-=10;
+                nums[i-1]++;
+            }
+        }
+        ListNode ans=new ListNode(0);
+        ListNode tmp=ans;
+        for(int n:nums){
+            // System.out.println(n);
+            tmp.next=new ListNode(n);
+            tmp=tmp.next;
+        }
+        while(ans!=null && ans.val==0){
+            ans=ans.next;
+        }
+        if(ans==null){
+            return new ListNode(0);
+        }
+        return ans;
+    }
+    
+    private int getLen(ListNode l){
+        int n=0;
+        while(l!=null){
+            n++;
+            l=l.next;
+        }
+        return n;
+    }
+}
+
+Runtime: 2 ms	98.98%
+Memory Usage: 39.1 MB
+
+O(N) time and O(N) space.
+One problem with my previous solution is that the third stack is not necessary.

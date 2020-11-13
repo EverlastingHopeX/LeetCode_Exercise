@@ -1,0 +1,17 @@
+class Solution {
+    public int maxPower(String s) {
+        int left=0,right=0;
+        int max=1;
+        while(left<s.length()){
+            while(right<s.length() && s.charAt(right)==s.charAt(left)){
+                right++;
+            }
+            max=Math.max(max,right-left);
+            left=right;
+        }
+        return max;
+    }
+}
+
+Runtime: 1 ms
+Memory Usage: 37.6 MB

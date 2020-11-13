@@ -1,0 +1,87 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Codec {
+    // Encodes an n-ary tree to a binary tree.
+    public TreeNode encode(Node root) {
+        if(root==null){
+            return null;
+        }
+        TreeNode broot=new TreeNode(root.val);
+        broot.left=encodeHelper(root.children,0);
+        return broot;
+    }
+    
+    //build binary tree based on li
+    private TreeNode encodeHelper(List<Node> li, int idx){
+        if(idx>=li.size()){
+            return null;
+        }
+        Node root=li.get(idx);
+        TreeNode broot=new TreeNode(root.val);
+        //for one node, its right children are at the same level
+        broot.right=encodeHelper(li,idx+1);
+        broot.left=encodeHelper(root.children,0);
+        return broot;
+    }
+	
+    // Decodes your binary tree to an n-ary tree.
+    public Node decode(TreeNode root) {
+        if(root==null){
+            return null;
+        }
+        Node nroot=new Node(root.val);
+        nroot.children=decodeHelper(root.left);
+        return nroot;
+    }
+    
+    //return a list of children at same level of root
+    private List<Node> decodeHelper(TreeNode root){
+        List<Node> li=new ArrayList<>();
+        TreeNode cur=root;
+        while(cur!=null){
+            Node tmp=new Node(cur.val);
+            tmp.children=decodeHelper(cur.left);
+            li.add(tmp);
+            cur=cur.right;
+        }
+        return li;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.decode(codec.encode(root));
+
+Runtime: 1 ms	99.55%
+Memory Usage: 40.6 MB
+
+Pretty easy if you got the idea correctly. No tricky corner cases.
+For encode, for each node t, I first construct its children, t.children, into a binary tree, and put this tree in its left. As for its right, I put the next node which is next to t in its parent nodes' children list. By doing this recursively, for each node in the encoded tree, its left is the tree constructed by its children, and its right is the tree constructed by its brothers (sisters?).
+The decode is also easy to implement based on this.

@@ -47,3 +47,42 @@ Runtime: 7 ms, faster than 86.46% of Java online submissions for Find the Smalle
 Memory Usage: 41.3 MB, less than 92.80% of Java online submissions for Find the Smallest Divisor Given a Threshold.
 
 For the binary search problem, the most important thing is to update the boundaries properly, and be aware of which boundary will be the final answer.
+
+class Solution {
+    public int smallestDivisor(int[] nums, int threshold) {
+        int offset=threshold-1;
+        int low=0,high=0;
+        for(int n:nums){
+            low+=n;
+            high=Math.max(high,n);
+        }
+        low=(low+threshold-1)/threshold;
+        while(low<high){
+            // System.out.println(low+" "+high);
+            int mid=low+(high-low)/2;
+            int sum=getSum(nums,mid);
+            // System.out.println(mid+": "+sum);
+            if(sum<=threshold){
+                high=mid;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return high;
+    }
+    
+    private int getSum(int[] nums,int mid){
+        int offset=mid-1;
+        int sum=0;
+        for(int s:nums){
+            sum+=(s+offset)/mid;
+        }
+        return sum; 
+    }
+}
+
+Runtime: 6 ms	97.30%
+Memory Usage: 41.6 MB
+
+Basically the same as previous solution, but use offset to get the nearest integer.

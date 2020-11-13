@@ -58,3 +58,29 @@ It is easy to come up with a BFS with queue solution, but it won't satisfy the f
 Other's O(1) space solution.
 It's still BFS but the queue is not necessary since we know the next node in this level.
 https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/37461/Java-solution-with-O(1)-memory%2B-O(n)-time
+
+class Solution {
+    public Node connect(Node root) {
+        DFS(root);
+        return root;
+    }
+    
+    private void DFS(Node root){
+        if(root==null){
+            return;
+        }
+        if(root.left!=null){
+            root.left.next=root.right;
+        }
+        if(root.right!=null && root.next!=null){
+            root.right.next=root.next.left;
+        }
+        DFS(root.left);
+        DFS(root.right);
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 39.3 MB
+
+For each node, since we already set its next node when visit its parent, we can access its next node with next. In that case, we can set its right child's next node, which is root's next node's left child, if root has next node.

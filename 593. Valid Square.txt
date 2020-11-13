@@ -1,0 +1,43 @@
+class Solution {
+    
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        if(!helper(p1,p2,p3) || !helper(p1,p2,p4) || !helper(p1,p3,p4) || !helper(p2,p3,p4)){
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean helper(int[] p1, int[] p2, int[] p3){
+        int d1=getDist(p1,p2),d2=getDist(p1,p3),d3=getDist(p3,p2);
+        if(d1==0 || d2==0 || d3==0){
+            return false;
+        }
+        if(d1==d2){
+            if(d3==d1+d2){
+                return true;
+            }
+        }
+        else if(d1==d3){
+            if(d2==d1+d3){
+                return true;
+            }
+        }
+        else if(d2==d3){
+            if(d1==d3+d2){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private int getDist(int[] p1, int[] p2){
+        return (int)Math.pow(Math.abs(p1[0]-p2[0]),2)+(int)Math.pow(Math.abs(p1[1]-p2[1]),2);
+    }
+    
+}
+
+Runtime: 0 ms
+Memory Usage: 37.1 MB
+
+Pythagoras theorem.

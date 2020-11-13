@@ -50,3 +50,73 @@ class Solution {
 
 Runtime: 2 ms, faster than 98.28% of Java online submissions for Insertion Sort List.
 Memory Usage: 39 MB, less than 69.72% of Java online submissions for Insertion Sort List.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null){
+            return null;
+        }
+        List<ListNode> sorted=new ArrayList<>();
+        ListNode cur=head;
+        while(cur!=null){
+            ListNode tmp=cur.next;
+            // System.out.println(cur.val);
+            int idx=biSearch(sorted,cur.val);
+            // System.out.println("idx "+idx);
+            insert(sorted,idx,cur);
+            cur=tmp;
+        }
+        return sorted.get(0);
+    }
+    
+    private int biSearch(List<ListNode> sorted, int val){
+        if(sorted.size()==0){
+            return 0;
+        }
+        int left=0,right=sorted.size();
+        while(left<right){
+            int mid=left+(right-left)/2;
+            int midVal=sorted.get(mid).val;
+            if(midVal>val){
+                right=mid;
+            }
+            else if(midVal<val){
+                left=mid+1;
+            }
+            else{
+                return mid;
+            }
+        }
+        return left;
+    }
+    
+    private void insert(List<ListNode> sorted, int idx, ListNode cur){
+        cur.next=null;
+        if(idx>0){
+            ListNode prev=sorted.get(idx-1);
+            prev.next=cur;
+        }
+        if(idx<sorted.size()){
+            ListNode next=sorted.get(idx);
+            cur.next=next;
+        }
+        sorted.add(idx,cur);
+    }
+}
+
+Runtime: 3 ms	77.81%
+Memory Usage: 38.5 MB
+
+O(N^2) solution is straight forward. To implement O(NlogN) solution, extra memory is needed to direct access the val at each position.
+However, the performance is close to my previous solution.
+Apart from that, I got a much slower O(N^2) solution this time. The reason is that I didn't skip the nodes that are larger than the tail of sorted nodes. This O(NlogN) solution can also be improved based on this trick.
