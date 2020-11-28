@@ -50,3 +50,28 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Range Sum of BST.
 Memory Usage: 46.3 MB, less than 99.12% of Java online submissions for Range Sum of BST.
+
+
+class Solution {
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        if(root==null){
+            return 0;
+        }
+        int sum=0;
+        if(root.val>low){
+            sum+=rangeSumBST(root.left,low,high);
+        }
+        if(root.val<high){
+            sum+=rangeSumBST(root.right,low,high);
+        }
+        if(root.val>=low && root.val<=high){
+            sum+=root.val;
+        }
+        return sum;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 47.5 MB
+
+More concise than last time.

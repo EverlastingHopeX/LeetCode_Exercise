@@ -1,0 +1,50 @@
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        Stack<Integer> st=new Stack<>();
+        int[] nextLarger=new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            // System.out.println(i);
+            nextLarger[i]=i;
+            while(!st.isEmpty()){
+                int prev=st.peek();
+                if(nums[prev]>=nums[i]){
+                    break;
+                    
+                }
+                st.pop();
+                nextLarger[prev]=i;
+            }
+            st.push(i);
+        }
+        int[] maxs=new int[nums.length-k+1];
+        int p=0;
+        int maxPos=findMax(nextLarger,0,k);
+        while(p<maxs.length){
+            if(p>maxPos || p+k>=nextLarger[maxPos]){
+                maxPos=findMax(nextLarger,p,k);
+            }
+            maxs[p]=nums[maxPos];
+            p++;
+        }
+        return maxs;
+    }
+    
+    private int findMax(int[] nextLarger, int start, int size){
+        int t=start;
+        while(nextLarger[t]<start+size && nextLarger[t]!=t){
+            t=nextLarger[t];
+        }
+        return t;
+    }
+}
+
+Runtime: 41 ms	20.26%
+Memory Usage: 53.9 MB
+
+I thought this is O(N), but this is actually O(N*k) which is no better than brute force solution.
+The worst case is when nums is increasing.
+
+Other's O(N) solution. One comment gives a good explanation.
+The idea is to divide the arrays based on k, then calculate the accumulative max start from left and right within each section.
+Based on that, for any index i, the max value within window (i,i+k-1) is the max of right accumulative max within (i,bound) and left accumulative max within (bound, i+k-1). "bound" is the next division point for i.
+https://leetcode.com/problems/sliding-window-maximum/discuss/65881/O(n)-solution-in-Java-with-two-simple-pass-in-the-array

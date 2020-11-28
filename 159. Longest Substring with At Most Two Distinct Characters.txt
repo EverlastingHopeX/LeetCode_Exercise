@@ -40,3 +40,69 @@ Memory Usage: 39.2 MB, less than 74.18% of Java online submissions for Longest S
 Typical dp. Once we meet the char chArr[k] that is not one of the two chars, we can start a new counting process. I use prev to memorize the length of consecutive chArr[k-1], so that I don't have to start counting one char for multiple times.
 
 Time complexity should be O(n)
+
+class Solution {
+    public int lengthOfLongestSubstringTwoDistinct(String s) {
+        if(s.length()==0){
+            return 0;
+        }
+        int p=0;
+        int max=1;
+        //previous consecutive char
+        int prev=1;
+        while(p<s.length()-1){
+            // System.out.println("p "+p);
+            int[] t=helper(s,p);
+            // System.out.println("end "+t[0]+" prev "+t[1]);
+            int len=t[0]-p+prev;
+            // System.out.println(len);
+            max=Math.max(max,len);
+            prev=t[1];
+            p=t[0];
+        }
+        return max;
+    }
+    
+    private int[] helper(String s, int start){
+        // System.out.println("helper");
+        int p=start;
+        int last=-1;
+        char ch1='?',ch2='?';
+        while(p<s.length()){
+            // System.out.println(p+": "+ch1+", "+ch2);
+            char ch=s.charAt(p);
+            if(ch1=='?'){
+                ch1=ch;
+                last=p;
+                p++;
+                continue;
+            }
+            else if(ch==ch1){
+                if(ch!=s.charAt(last)){
+                    last=p;
+                }
+                p++;
+                continue;
+            }
+            
+            if(ch2=='?'){
+                ch2=ch;
+                last=p;
+            }else if(ch==ch2){
+                if(ch!=s.charAt(last)){
+                    last=p;
+                }
+            }
+            else{
+                break;
+            }
+            p++;
+        }
+        return new int[]{p-1,p-last};
+    }
+}
+
+Runtime: 2 ms	89.55%
+Memory Usage: 39 MB
+
+Not DP. However, this is still O(N).

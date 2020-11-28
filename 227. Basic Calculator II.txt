@@ -150,3 +150,81 @@ Memory Usage: 45.4 MB, less than 12.04% of Java online submissions for Basic Cal
 This still can be improved.
 Other's solution.
 https://leetcode.com/problems/basic-calculator-ii/discuss/63003/Share-my-java-solution
+
+class Solution {
+    public int calculate(String s) {
+        Stack<Integer> operand=new Stack<>();
+        char prev='+';
+        int num=0;
+        for(char ch:s.toCharArray()){
+            // System.out.println(ch);
+            if(ch==' '){
+                continue;
+            }
+            else if(isOpt(ch)){
+                if((prev=='+' || prev=='-') && (ch=='*' || ch=='/')){
+                    //cannot compute now
+                    if(prev=='-'){
+                        num=-num;
+                    }
+                }
+                else if(operand.size()>0){
+                    int op1=operand.pop();
+                    num=compute(op1,prev,num);
+                }
+                operand.push(num);
+                num=0;
+                prev=ch;
+            }
+            else if(ch>='0' && ch<='9'){
+                num=num*10+ch-'0';
+            }
+        }
+        if(operand.size()>0){
+            int op1=operand.pop();
+            num=compute(op1,prev,num);
+        }
+        operand.push(num);
+        int ans=0;
+        while(!operand.isEmpty()){
+            ans+=operand.pop();
+            // System.out.println("ans "+ans);
+        }
+        return ans;
+    }
+    
+    private boolean isOpt(char ch){
+        if(ch=='+' || ch=='-' || ch=='*' || ch=='/'){
+            return true;
+        }
+        return false;
+    }
+    
+    private int compute(int op1, char opt, int op2){
+        // System.out.println("compute "+op1+opt+op2);
+        int ans=0;
+        switch(opt){
+            case '+':
+                ans=op1+op2;
+                break;
+            case '-':
+                ans=op1-op2;
+                break;
+            case '*':
+                ans=op1*op2;
+                break;
+            case '/':
+                ans=op1/op2;
+                break;
+            default:
+                //error
+        }
+        return ans;
+    }
+}
+
+Runtime: 9 ms	65.92%
+Memory Usage: 38.7 MB
+
+Much better than my previous solutions.
+I use a char "prev" rather than an operator queue.

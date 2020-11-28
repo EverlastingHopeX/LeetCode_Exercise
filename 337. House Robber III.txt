@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int rob(TreeNode root) {
+        int[] t=helper(root);
+        return Math.max(t[0],t[1]);
+    }
+    
+    private int[] helper(TreeNode root){
+        if(root==null){
+            return new int[2];
+        }
+        int[] tl=helper(root.left);
+        int[] tr=helper(root.right);
+        //0:rob root, 1: not rob root
+        int[] ans=new int[2];
+        ans[0]=tl[1]+tr[1]+root.val;
+        ans[1]=Math.max(tl[0],tl[1])+Math.max(tr[0],tr[1]);
+        return ans;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 38.2 MB
+
+The recursive solution is pretty easy.

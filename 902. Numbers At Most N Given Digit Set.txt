@@ -1,0 +1,56 @@
+class Solution {
+    public int atMostNGivenDigitSet(String[] digits, int n) {
+        int k=digits.length;
+        char[] nArr=(n+"").toCharArray();
+        char[] nums=new char[digits.length];
+        for(int i=0;i<nums.length;i++){
+            nums[i]=digits[i].charAt(0);
+        }
+        Arrays.sort(nums);
+        //possible number of combination
+        int cnt=1;
+        boolean hasMax=true;
+        for(char cur:(n+"").toCharArray()){
+            if(hasMax){
+                // System.out.println("has max");
+                int t=0;
+                for(char num:nums){
+                    // System.out.println(num);
+                    if(num>=cur){
+                        break;
+                    }
+                    t++;
+                }
+                if(t>=k || nums[t]>cur){
+                    hasMax=false;
+                }
+                else{
+                    t++;
+                }
+                cnt=(cnt-1)*k+1+t;
+            }
+            else{
+                cnt=cnt*k+1;
+            }
+            // System.out.println(pos+": "+cnt+" hasMax "+hasMax);
+        }
+        return cnt-1;
+    }
+}
+
+Runtime: 4 ms	18.80%
+Memory Usage: 36.7 MB
+
+Really hard.
+The idea is dp. 
+I store the number of possible combinations for the first p digits of "n" as "cnt".
+If we cannot form the first p digits with digits provided, then all previous combinations can be expanded k times and the value of they will not exceed the first p+1 digits, and we also need to add one combination which only contains '0'. 
+On the other hand, if we can form the first p digits with the digits provided, for this combination, we can only expand it by "t" times.
+In the end, we need to exclude the one combination that only contains '0'. 
+
+The time is O(NM+MlogM), N is the number of digits in "n", and M is the length of "digits".
+My post: 
+https://leetcode.com/problems/numbers-at-most-n-given-digit-set/discuss/944236/Java-Solution-(count-the-possible-combination-for-first-p-digits)
+
+Other's DP has better performance as O(logN).
+https://leetcode.com/problems/numbers-at-most-n-given-digit-set/discuss/168439/C%2B%2B-O(logN)-Clear-code-with-explanation

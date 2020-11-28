@@ -1,0 +1,57 @@
+class Solution {
+    public int longestSubstring(String s, int k) {
+        int[] freq=new int[26];
+        for(char ch:s.toCharArray()){
+            int idx=ch-'a';
+            freq[idx]++;
+        }
+        int max=0;
+        for(int i=0;i<s.length();i++){
+            int t=expand(s,i,freq,k);
+            max=Math.max(max,t-i+1);
+        }
+        return max>=k?max:0;
+    }
+    
+    private int expand(String s, int start, int[] freq,int k){
+        // System.out.println("expand "+start);
+        int missing=0;
+        int[] cnt=new int[26];
+        int end=start;
+        for(int i=start;i<s.length();i++){
+            // System.out.println(i);
+            int idx=s.charAt(i)-'a';
+            if(freq[idx]<k){
+                // System.out.println("break");
+                break;
+            }
+            if(cnt[idx]==0){
+                missing+=k-1;
+                cnt[idx]++;
+            }
+            else if(cnt[idx]<k){
+                missing--;
+                cnt[idx]++;
+            }
+            
+            // System.out.println("missing "+missing);
+            if(missing==0){
+                end=i;
+            }
+        }
+        // System.out.println("end "+end);
+        return end;
+    }
+    
+}
+
+Runtime: 10 ms	26.59%
+Memory Usage: 39.8 MB
+
+O(N^2) time complexity.
+Try to expand start at every index.
+Can be improved with DP. Dp[i] is the end when expand starts from i.
+The run time would be 5 ms. But it is still O(N^2).
+
+Other's O(N) two pointer solution.
+https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/87739/Java-Strict-O(N)-Two-Pointer-Solution

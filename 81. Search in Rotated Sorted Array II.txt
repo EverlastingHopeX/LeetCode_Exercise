@@ -3,3 +3,5 @@ I tried to find the pivot, but it is really hard to determine where we are if th
 
 Other's solution.
 https://leetcode.com/problems/search-in-rotated-sorted-array-ii/discuss/28216/Java-1ms-binary-search-solution-with-comments
+
+Still cannot figure it out. I hate this question.

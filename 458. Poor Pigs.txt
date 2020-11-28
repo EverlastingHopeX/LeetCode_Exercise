@@ -1,0 +1,6 @@
+Couldn't solve this.
+
+Other's solution. It is like encoding, we use pigs' condition to encode the buckets. As each pigs' condition has a unique number, we can find the only one poison bucket based on pigs' condition.
+For t pigs, the length of number being generated after encode is t. And the range of numbers depends on the base of the number. If it is k based, there there can be k^t numbers. k^t need to be just enough to cover all buckets, so k^t>=N>k^(t-1). This t is the answer (log(k)(N)).
+Another way to think about it is to use binary instead of k based number. For each round, we encode 2^t buckets with t pigs. This process continues until there is one pig dead. Since we can make at most k attempts. k*2^t >= N. So t >=log(2)(N/k).
+https://leetcode.com/problems/poor-pigs/discuss/94273/Solution-with-detailed-explanation

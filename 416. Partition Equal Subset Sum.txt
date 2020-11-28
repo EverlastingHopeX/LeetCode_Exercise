@@ -1,0 +1,88 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int n:nums){
+            sum+=n;
+        }
+        if(sum%2!=0){
+            return false;
+        }
+        int k=sum/2;
+        
+        return find(nums,k);
+    }
+    
+    private boolean find(int[] nums, int k){
+        // System.out.println("find "+k);
+        Set<Integer> set=new HashSet<>();
+        for(int n:nums){
+            if(n==k){
+                return true;
+            }
+            List<Integer> li=new ArrayList<>();
+            for(int p:set){
+                int sum=n+p;
+                if(sum==k){
+                    return true;
+                }
+                // System.out.println("add "+sum);
+                li.add(sum);
+            }
+            set.addAll(li);
+            // System.out.println("add n "+n);
+            set.add(n);
+        }
+        return false;
+    }
+}
+
+Runtime: 223 ms	6.34%
+Memory Usage: 100.1 MB
+
+It is O(2^N) as the size of set will be 2^u for uth number.
+I didn't realize this is backpack problem, which can be solved with dp.
+However, my solution has the same process, but use set instead of array. The set itself has overhead, also, I didn't skip the sum that is over k.
+
+Improved version with array.
+
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int sum=0;
+        for(int n:nums){
+            sum+=n;
+        }
+        if(sum%2!=0){
+            return false;
+        }
+        int k=sum/2;
+        Arrays.sort(nums);
+        return find(nums,k);
+    }
+    
+    private boolean find(int[] nums, int k){
+        // System.out.println("find "+k);
+        boolean[] exist=new boolean[k+1];
+        exist[0]=true;
+        for(int n:nums){
+            if(n==k){
+                return true;
+            }
+            for(int i=exist.length-1;i>=0;i--){
+                if(exist[i] && i+n<exist.length){
+                    // System.out.println("exist "+(i+n));
+                    exist[i+n]=true;
+                }
+            }
+            if(exist[k]==true){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+Runtime: 12 ms	84.25%
+Memory Usage: 38.2 MB
+
+It is O(NlogN+N*K).
+The size of "set" is now K instead of 2^u. For this problem, since nums[i]<= 100 and nums.length<=200, so K can be at max 10000, while 2^u will be at max 2^200, which is 1.6e60. So this solution is much faster than previous one.

@@ -1,0 +1,33 @@
+class Solution {
+    public int mirrorReflection(int p, int q) {
+        // System.out.println("size "+p+" target "+q);
+        int[] dest=helper(p,q);
+        return dest[1]==0?0:(dest[0]<0?2:1);
+    }
+    
+    private int[] helper(int size, int q){
+        int x=1,y=q;
+        int dir=1;
+        while(y!=size && y!=0){
+            y+=dir*q;
+            x=-x;
+            if(y>size){
+                y=2*size-y;
+                dir=-dir;
+            }
+            else if(y<0){
+                y=-y;
+                dir=-dir;
+            }
+            // System.out.println(x+", "+y);
+        }
+        // System.out.println(x+", "+y);
+        return new int[]{x,y};
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 35.6 MB
+
+O(N) simulation solution.
+Could be solved with mathematical way, which is O(logN).

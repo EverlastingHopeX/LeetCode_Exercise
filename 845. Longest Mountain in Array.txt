@@ -30,3 +30,49 @@ Memory Usage: 38.6 MB, less than 100.00% of Java online submissions for Longest 
 
 Other's solution. 1 pass.
 https://leetcode.com/problems/longest-mountain-in-array/discuss/135593/C%2B%2BJavaPython-1-pass-and-O(1)-space
+
+class Solution {
+    public int longestMountain(int[] A) {
+        int max=0;
+        int p=0;
+        while(p<A.length){
+            // System.out.println(p);
+            int top=Up(A,p);
+            // System.out.println("top "+top);
+            if(top==p){
+                p++;
+                continue;
+            }
+            int bottom=Down(A,top);
+            // System.out.println("bottom "+bottom);
+            if(bottom==top){
+                p=top;
+                continue;
+            }
+            max=Math.max(max,bottom-p+1);
+            p=bottom;
+        }
+        return max;
+    }
+    
+    private int Up(int[] A, int pos){
+        int top=pos+1;
+        while(top<A.length && A[top]>A[top-1]){
+            top++;
+        }
+        return top-1;
+    }
+    
+    private int Down(int[] A, int pos){
+        int bottom=pos+1;
+        while(bottom<A.length && A[bottom]<A[bottom-1]){
+            bottom++;
+        }
+        return bottom-1;
+    }
+}
+
+Runtime: 2 ms	85.73%
+Memory Usage: 40.1 MB
+
+Pretty easy.

@@ -1,0 +1,24 @@
+class Solution {
+    public int uniqueMorseRepresentations(String[] words) {
+        Set<String> set=new HashSet<>();
+        for(String w:words){
+            set.add(transform(w));
+        }
+        return set.size();
+    }
+    
+    String[] morse=new String[]{".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+    
+    private String transform(String word){
+        StringBuilder sb=new StringBuilder("");
+        for(char ch:word.toCharArray()){
+            sb.append(morse[ch-'a']);
+        }
+        return sb.toString();
+    }
+}
+
+Runtime: 1 ms	100%
+Memory Usage: 36.8 MB
+
+Easy and cannot learn anything from it. Not a good question.

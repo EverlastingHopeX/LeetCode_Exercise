@@ -79,3 +79,32 @@ Runtime: 7 ms, faster than 32.57% of Java online submissions for Merge Intervals
 Memory Usage: 42.8 MB, less than 14.51% of Java online submissions for Merge Intervals.
 
 I use Arrays.sort() this time, kind of curious about how my memory works, since I don't really recall what I wrote last time.
+
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals,(o1,o2)->(o1[0]-o2[0]));
+        int p=0;
+        List<int[]> li=new ArrayList<>();
+        while(p<intervals.length){
+            int t=p+1;
+            int end=intervals[p][1];
+            while(t<intervals.length && intervals[t][0]<=end){
+                end=Math.max(end,intervals[t][1]);
+                t++;
+            }
+            li.add(new int[]{intervals[p][0],end});
+            p=t;
+        }
+        int[][] ans=new int[li.size()][2];
+        for(int i=0;i<ans.length;i++){
+            ans[i][0]=li.get(i)[0];
+            ans[i][1]=li.get(i)[1];
+        }
+        return ans;
+    }
+}
+
+Runtime: 5 ms	94.11%
+Memory Usage: 41.7 MB
+
+Pretty easy. Using list instead of stack is better.
