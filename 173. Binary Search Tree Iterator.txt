@@ -61,3 +61,50 @@ class BSTIterator {
 Runtime: 17 ms, faster than 99.47% of Java online submissions for Binary Search Tree Iterator.
 Memory Usage: 49.9 MB, less than 93.83% of Java online submissions for Binary Search Tree Iterator.
 
+class BSTIterator {
+    int min;
+    Stack<TreeNode> st;
+    public BSTIterator(TreeNode root) {
+        TreeNode cur=root;
+        st=new Stack<>();
+        while(cur!=null){
+            min=cur.val;
+            st.push(cur);
+            cur=cur.left;
+        }
+    }
+    
+    public int next() {
+        TreeNode t=st.peek();
+        // System.out.println("peek "+t.val);
+        //left is visited
+        if(t.left==null || t.left.val<=min ){
+            //visited current
+            st.pop();
+            // System.out.println("pop "+t.val);
+            min=t.val;
+            //traverse right
+            if(t.right!=null){
+                st.push(t.right);
+                // System.out.println("push "+t.right.val);
+            }
+        }
+        else{
+            //traverse left
+            st.push(t.left);
+            // System.out.println("push "+t.left.val);
+            return next();
+        }
+        return min;
+    }
+    
+    public boolean hasNext() {
+        return !st.isEmpty();
+    }
+}
+
+Runtime: 16 ms	40.82%
+Memory Usage: 42.9 MB
+
+Similar idea as before, but this time it is a recursive version.
+The runtime is also similar, but it needs to be less than 15 ms to beats 100%.

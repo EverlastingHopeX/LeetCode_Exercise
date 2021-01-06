@@ -46,3 +46,53 @@ Not hard, but my solution is at worst O(NlogN).
 
 Other's O(N) solution.
 https://leetcode.com/problems/next-greater-element-iii/discuss/101843/Java-Solution-like-Next-Permutation-Problem-O(n)
+
+class Solution {
+    public int nextGreaterElement(int n) {
+        String num=n+"";
+        char[] chArr=num.toCharArray();
+        int pos=chArr.length-2;
+        while(pos>=0){
+            if(chArr[pos]<chArr[pos+1]){
+                break;
+            }
+            pos--;
+        }
+        if(pos<0){
+            return -1;
+        }
+        //find min 
+        int min=pos+1;
+        for(int i=pos+1;i<chArr.length;i++){
+            if(chArr[i]<=chArr[pos]){
+                break;
+            }
+            min=i;
+        }
+        //swap
+        // System.out.println("swap "+pos+", "+min);
+        char t=chArr[pos];
+        chArr[pos]=chArr[min];
+        chArr[min]=t;
+        
+        Arrays.sort(chArr,pos+1,chArr.length);
+        int ans=0;
+        for(char ch:chArr){
+            int next=ans*10+ch-'0';
+            if(next<=ans){
+                return -1;
+            }
+            ans=next;
+        }
+        
+        return ans;
+    }
+    
+}
+
+Runtime: 4 ms	41.12%
+Memory Usage: 35.6 MB
+
+Still O(NlogN).
+
+There is no need to sort since The part we sort is actually decreasing, we only need to reverse it.

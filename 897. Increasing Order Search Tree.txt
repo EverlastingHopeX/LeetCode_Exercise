@@ -32,3 +32,25 @@ Memory Usage: 45.5 MB, less than 12.50% of Java online submissions for Increasin
 
 Other's recursive solution.
 https://leetcode.com/problems/increasing-order-search-tree/discuss/165885/C%2B%2BJavaPython-Self-Explained-5-line-O(N)
+
+class Solution {
+    public TreeNode increasingBST(TreeNode root) {
+        return DFS(root,null);
+    }
+    
+    private TreeNode DFS(TreeNode cur, TreeNode next){
+        if(cur==null){
+            return next;
+        }
+        TreeNode first=DFS(cur.left,cur);
+        TreeNode t=DFS(cur.right,next);
+        cur.left=null;
+        cur.right=t;
+        return first;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 36.3 MB
+
+Recurssive is easy. But does not meet the requirement of in-order traversal.

@@ -33,3 +33,42 @@ Runtime: 0 ms, faster than 100.00% of Java online submissions for Remove Duplica
 Memory Usage: 39.4 MB, less than 5.26% of Java online submissions for Remove Duplicates from Sorted Array II.
 
 Use findNext() make the code more readable. The performance will not increased if I don't extract it as a function.
+
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int pos=0,p=0;
+        while(p<nums.length){
+            // System.out.println("pos "+pos+" p "+p);
+            int len=count(nums,p);
+            // System.out.println("len "+len);
+            if(len==1){
+                nums[pos]=nums[p];
+                pos++;
+                p++;
+            }
+            else{
+                for(int i=0;i<2;i++){
+                    nums[pos]=nums[p];
+                    pos++;
+                    p++;
+                }
+                p=p+len-2;
+            }
+        }
+        return pos;
+    }
+    
+    private int count(int[] nums, int idx){
+        // System.out.println("count "+idx);
+        int p=idx+1;
+        while(p<nums.length && nums[p]==nums[idx]){
+            p++;
+        }
+        return p-idx;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 39.4 MB
+
+Similar solution as previous one.

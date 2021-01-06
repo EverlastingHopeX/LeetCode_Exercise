@@ -1,0 +1,9 @@
+Didn't work it out.
+
+Other's solution.
+https://leetcode.com/problems/smallest-range-ii/discuss/173377/C%2B%2BJavaPython-Add-0-or-2-*-K
+
+Assume for array C, C[i]=A[i]+2*K, then A[i] and C[i] can represent A[i]+K and A[i]-K. Now we can construct B[i] by either pick A[i] or C[i].
+Now we sort A, we consider A and C as two increasing lines. We pick some elements on these two lines to construct B, to find the smallest range, the former part of B must come from C and the latter part must come from A.
+Why? If we assume we select pA from A and pC from C, and pA is before pC. Then if min of pA is smaller than A[0], select pA instead of that part from C will make the range larger, while min of pA is larger than A[0], it does not cause any effect. It is similar to pC, select pC instead of that part from A could make the range larger by providing a larger max.
+Now we just need to find the best boundary which provides smallest range. For each index i, the max when we choose it as boundary are max(C[i],A[n-1]) while the min is min(A[i+1], C[0]). We keep updating the smallest range in this process and we will get the answer after we iterate all indexes.

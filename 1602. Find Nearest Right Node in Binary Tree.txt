@@ -1,0 +1,53 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int tgLv=-1;
+    TreeNode next=null;
+    
+    public TreeNode findNearestRightNode(TreeNode root, TreeNode u) {
+        DFS(root,u,0);
+        return next;
+    }
+    
+    private void DFS(TreeNode cur, TreeNode target, int level){
+        if(next!=null){
+            return;
+        }
+        // System.out.println("cur "+cur.val+" lv "+level);
+        if(cur==target){
+            tgLv=level;
+            return;
+        }
+        if(level==tgLv){
+            next=cur;
+            return;
+        }
+        if(cur.left!=null){
+            DFS(cur.left,target, level+1);
+        }
+        if(cur.right!=null){
+            DFS(cur.right,target, level+1);
+        }
+    }
+}
+
+Runtime: 5 ms	100%
+Memory Usage: 55.4 MB 36.75%
+
+BFS would be easy and straightforward, but not efficient, especially if the target is in the lowest level.
+A preorder DFS is better since it only visit the nodes in the path from target to next.
+
+

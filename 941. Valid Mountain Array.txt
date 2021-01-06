@@ -1,0 +1,24 @@
+class Solution {
+    public boolean validMountainArray(int[] arr) {
+        int top=1;
+        while(top<arr.length && arr[top]>arr[top-1]){
+            top++;
+        }
+        // System.out.println("top "+top);
+        if(top==1){
+            return false;
+        }
+        int bottom=top;
+        while(bottom<arr.length && arr[bottom]<arr[bottom-1]){
+            bottom++;
+        }
+        // System.out.println("bottom "+bottom);
+        if(bottom==arr.length && bottom>top){
+            return true;
+        }
+        return false;
+    }
+}
+
+Runtime: 1 ms 100%
+Memory Usage: 40.4 MB

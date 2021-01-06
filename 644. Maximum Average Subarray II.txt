@@ -1,0 +1,9 @@
+Can't solve this.
+
+The brute force solution is easy, but costs too much time and cannot be accepted.
+
+Other's binary search solution is hard to understand.
+It test whether there is a subarray whose average is equal or larger than an value "m". If there is, then set "l" as "m", otherwise set "r" as "m".
+For the test function, it there is a subarray, then the sum(nums[i]-m)>0, a[i] is the element in this subarray. We can first compute a[i] which is nums[i]-m, then use "cur" to store the sum of current window and use "prev" to store the sum of current window except last k elements. So when "prev" is smaller than 0, we should shrink the window by discarding the elements covered by "prev", then the window's size (k) still satisfies the condition and its average is larger than before. In this process, if "cur" is equal or larger than 0, then the current window has an average equal or larger than "m".
+
+https://leetcode.com/problems/maximum-average-subarray-ii/discuss/132164/Java-Clear-Code-using-Binary-Search-with-Detailed-Explanations

@@ -23,3 +23,32 @@ Runtime: 1 ms, faster than 99.70% of Java online submissions for Shortest Word D
 Memory Usage: 39.4 MB, less than 75.36% of Java online submissions for Shortest Word Distance.
 
 Solved this with an O(N^2) solution at first. It is not that easy if you follow the wrong direction. I used map to memorize each word's index, then find the min distance based on the indexs of word1 and word2.
+
+class Solution {
+    public int shortestDistance(String[] words, String word1, String word2) {
+        int p1=-1,p2=-1;
+        int pos=0;
+        int dist=words.length;
+        for(String w:words){
+            if(w.equals(word1)){
+                p1=pos;
+                if(p2!=-1){
+                    dist=Math.min(dist,p1-p2);
+                }
+            }
+            if(w.equals(word2)){
+                p2=pos;
+                if(p1!=-1){
+                    dist=Math.min(dist,p2-p1);
+                }
+            }
+            pos++;
+        }
+        return dist;
+    }
+}
+
+Runtime: 1 ms
+Memory Usage: 41.3 MB
+
+Pretty easy this time.

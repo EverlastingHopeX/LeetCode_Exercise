@@ -1,0 +1,28 @@
+class Solution {
+    public int fourSumCount(int[] A, int[] B, int[] C, int[] D) {
+        Map<Integer,Integer> cnt=new HashMap<>();
+        for(int i=0;i<A.length;i++){
+            for(int j=0;j<B.length;j++){
+                int sum=A[i]+B[j];
+                int t=cnt.getOrDefault(sum,0);
+                cnt.put(sum,t+1);
+            }
+        }
+        int ans=0;
+        for(int k=0;k<C.length;k++){
+            for(int l=0;l<D.length;l++){
+                int sum=C[k]+D[l];
+                int t=cnt.getOrDefault(-sum,0);
+                ans+=t;
+            }
+        }
+        return ans;
+    }
+}
+
+Runtime: 98 ms	22.67%
+Memory Usage: 70.1 MB
+
+O(N^2) is easy.
+The performance is not good enough, but the other solutions in the discussion are also O(N^2).
+Can be further extended to fit kSum, which is also split the element into two groups.

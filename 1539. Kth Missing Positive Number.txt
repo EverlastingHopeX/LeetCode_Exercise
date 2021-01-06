@@ -1,0 +1,26 @@
+class Solution {
+    public int findKthPositive(int[] arr, int k) {
+        int left=0,right=arr.length;
+        while(left<right){
+            int mid=left+(right-left)/2;
+            int missing=arr[mid]-mid-1;
+            if(missing<k){
+                left=mid+1;
+            }
+            else{
+                right=mid;
+            }
+        }
+        int t=left-1;
+        if(t<0){
+            return k;
+        }
+        k-=arr[t]-t-1;
+        return arr[t]+k;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 38.8 MB
+
+Pretty easy since it's positive integers in order, so we can get the missing number of integers from the different of array's value and index.

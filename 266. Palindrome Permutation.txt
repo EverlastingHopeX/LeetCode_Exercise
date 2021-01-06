@@ -1,0 +1,27 @@
+class Solution {
+    public boolean canPermutePalindrome(String s) {
+        Map<Character,Boolean> isOdd=new HashMap<>();
+        for(char ch:s.toCharArray()){
+            // System.out.println(ch);
+            isOdd.put(ch,!isOdd.getOrDefault(ch,false));
+        }
+        boolean odd=false;
+        for(boolean i:isOdd.values()){
+            // System.out.println(i);
+            if(i){
+                if(odd){
+                    return false;
+                }
+                else{
+                    odd=true;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+Runtime: 1 ms
+Memory Usage: 37.3 MB
+
+Only need to count the number of odd occurance of char. Could have used set. Array could be faster, but there is no guarantee that the number of chars will stay the same, and it is pretty large if considering characters from different languages.

@@ -66,3 +66,36 @@ class Solution {
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Spiral Matrix II.
 Memory Usage: 37.4 MB, less than 8.33% of Java online submissions for Spiral Matrix II.
 
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix=new int[n][n];
+        fill(matrix,0,0,0);
+        return matrix;
+    }
+    int[][] dirs=new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+    int cnt=1;
+    private void fill(int[][] matrix, int r, int c, int d){
+        // System.out.println("fill "+r+","+c+" d "+d);
+        matrix[r][c]=cnt;
+        if(cnt==matrix.length*matrix[0].length){
+            return;
+        }
+        cnt++;
+        int nr=r+dirs[d][0],nc=c+dirs[d][1];
+        if(nr<0 || nr>=matrix.length || nc<0 || nc>=matrix.length || matrix[nr][nc]!=0){
+            d++;
+            if(d>=dirs.length){
+                d=0;
+            }
+            nr=r+dirs[d][0];
+            nc=c+dirs[d][1];
+        }
+        fill(matrix,nr,nc,d);
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 38.5 MB
+
+Same idea as previous solution but more concise.
+This is tail recursion, so it can be turned into a iterative solution.

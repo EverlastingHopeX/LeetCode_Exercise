@@ -1,0 +1,59 @@
+class Solution {
+    public String decodeAtIndex(String S, int K) {
+        Stack<String> strSt=new Stack<>();
+        Stack<Long> szSt=new Stack<>();
+        long cnt=0;
+        StringBuilder sb=new StringBuilder("");
+        for(char ch:S.toCharArray()){
+            if(ch>='a' && ch<='z'){
+                sb.append(ch);
+            }
+            else{
+                String str=sb.toString();
+                long size=cnt+str.length();
+                // System.out.println("push "+str+" "+size);
+                strSt.push(str);
+                sb=new StringBuilder("");
+                szSt.push(size);
+                int multi=ch-'0';
+                cnt=size*multi;
+            }
+            if(cnt>=K){
+                break;
+            }
+        }
+        if(sb.length()!=0){
+            String str=sb.toString();
+            long size=cnt+str.length();
+            strSt.push(str);
+            szSt.push(size);
+        }
+        return find(strSt,szSt,K-1)+"";
+    }
+    
+    private char find(Stack<String> strSt, Stack<Long> szSt, long pos){
+        // System.out.println("find "+pos);
+        String str=strSt.pop();
+        long size=szSt.pop();
+        // System.out.println(str+" "+size);
+        pos=pos%size;
+        long bound=size-str.length();
+        if(pos>=bound){
+            pos=pos-bound;
+            return str.charAt((int)pos);
+        }
+        return find(strSt,szSt,pos);
+    }
+}
+
+Runtime: 3 ms 18.10%
+Memory Usage: 37.1 MB	46.55%
+
+First, we need to find that decoding the string is modify a string by either append string to its tail or multiple the string. Then, we can find the char on certain position recursively. 
+For example, we have original string s, and we have string str which need to be appended, and a number multi which means the string combined s and str need to repeat multi times. We can compute the size of combined string size as s.length()+str.length(), assume K is less or equal to multi*size which means the char we need is in the combined string. The position of our target, pos, is K%size. Assume bound is the position of first char of str, then if the target's position is larger or equal to bound, then we don't have to go into the composition of s, we can just return the (pos-bound) char of str. Otherwise, we need to find the pos char of s, which can be done recursively.
+One problem I met was overflow, int is too small to hold the size. So I use long instead.
+
+This is O(N) time and O(N) space. Can be improved by removing stacks since we can find these values in string S.
+
+Other's O(N) time O(1) space solution.
+https://leetcode.com/problems/decoded-string-at-index/discuss/156747/C%2B%2BPython-O(N)-Time-O(1)-Space

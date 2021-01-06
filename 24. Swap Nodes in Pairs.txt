@@ -29,3 +29,38 @@ class Solution {
 
 Runtime: 0 ms, faster than 100.00% of Java online submissions for Swap Nodes in Pairs.
 Memory Usage: 34.3 MB, less than 100.00% of Java online submissions for Swap Nodes in Pairs.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode dummy=new ListNode();
+        dummy.next=head;
+        ListNode prev=dummy, curr=head;
+        while(curr!=null){
+            if(curr.next==null){
+                break;
+            }
+            ListNode t=curr.next;
+            curr.next=t.next;
+            prev.next=t;
+            t.next=curr;
+            prev=curr;
+            curr=curr.next;
+        }
+        return dummy.next;
+    }
+}
+
+Runtime: 0 ms
+Memory Usage: 36.4 MB
+
+Pretty similar solution as previous solution.
